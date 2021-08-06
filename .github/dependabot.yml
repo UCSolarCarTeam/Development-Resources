@@ -9,7 +9,7 @@ updates:
     directory: "/Recruit-Training/Telemetry-Recruit-Training" # Location of package manifests
     schedule:
       interval: "daily"
-    default_reviewers:
+    reviewers:
       - "JaydenBischoff"
-    default_labels:
+    labels:
       - "dependencies"
