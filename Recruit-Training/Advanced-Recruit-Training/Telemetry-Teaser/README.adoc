@@ -8,27 +8,16 @@ Installations
 For this project and any future telemetry projects, you will need the following:
 
 . NodeJS
-* NodeJS can be downloaded by using the following command in your terminal:
+* The NodeJS installer can also be downloaded here: https://nodejs.org/en/download/
+* If you are using linux, NodeJS can be downloaded by using the following command in your terminal:
 +
 -----
 sudo apt install nodejs
 -----
-* Once the installation is complete, open your terminal and use the following command to check the version of node that you have installed:
+* Once the installation is complete, restart your terminal and use the following command to check the version of node that you have installed:
 +
 -----
 node -v
------
-
-. NPM
-* The Node Package Manager (NPM) is needed to install Angular CLI and can be downloaded by using the following command in your terminal:
-+
------
-sudo apt install npm
------
-* Once the installation is complete, open your terminal and use the following command to check the version of node that you have installed:
-+
------
-npm -v
 -----
 
 . Angular CLI
