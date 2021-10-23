@@ -36,7 +36,7 @@ int main()
 
     bar(p, y);
 
-    cout << "Predicted value of *p: " << "42" << endl;
+    cout << "Predicted value of *p: " << "365" << endl;
     cout << "Actual value of *p: " << *p << endl;
     cout << "Predicted value of y: " << "4" << endl;
     cout << "Actual value of y: " << y << endl;
