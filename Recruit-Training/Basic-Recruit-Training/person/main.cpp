@@ -18,11 +18,15 @@ void compareAnswers(const std::string myAnswer, const std::string correctAnswer)
     }
 }
 // Swaps a & b.
-void mySwap(int& a, int& b){
-    std::swap(a,b);
+void mySwap(int& a, int& b)
+{
+    int temp = a;
+    a = b;
+    b = temp;
 }
 // Increment the int that x is pointing to by one.
-void myIncrement(int* x){
+void myIncrement(int* x)
+{
     int temp = *x;
     temp++;
     *x = temp;

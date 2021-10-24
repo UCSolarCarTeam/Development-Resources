@@ -63,8 +63,7 @@ void bar(int *a, int b)
 
 void mySwap(int *a, int *b)
 {
-    int temp1 = *a;
-    int temp2 = *b;
-    *a = temp2;
-    *b = temp1;
+    int temp = *a;
+    *a = *b;
+    *b = temp;
 }
