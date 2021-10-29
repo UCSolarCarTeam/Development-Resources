@@ -44,21 +44,22 @@ void Person::setAge(int newAge)
 
 void Person::printInfo() const
 {
-    std::cout << "Name is " << name_<< std::endl;
-    std::cout << "Age is " << *age_<< std:: endl;
+    std::cout << "Name is " << name_ << std::endl;
+    std::cout << "Age is " << *age_ << std:: endl;
 }
 
 int Person::combinedAge(Person** personArray, int size)
 {
     int total = 0;
-    for (int i = 0; i<size; i++)
+    for (int i = 0; i < size; i ++)
     {
-        total += *(personArray[i]->age_);
+        total += *(personArray[i] -> age_);
     }
     return total;
 }
 
 void Person::birthday(Person& x)
 {
-    *(x.age_) +=1;
+    *(x.age_) += 1;
 }
+
