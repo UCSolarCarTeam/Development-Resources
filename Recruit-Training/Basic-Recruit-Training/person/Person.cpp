@@ -2,7 +2,7 @@
 
 #include "Person.h"
 
-Person::Person():name_("NONE")
+Person::Person() : name_("NONE")
 {
     age_ = new int;
     *age_ = -1;
@@ -57,5 +57,5 @@ int Person::combinedAge(Person **personArray, int size)
 
 void Person::birthday(Person &x)
 {
-    *(x.age_) +=1;
+    *(x.age_) += 1;
 }
