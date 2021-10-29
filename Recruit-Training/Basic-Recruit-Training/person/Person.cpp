@@ -23,7 +23,7 @@ const std::string& Person::getName() const
 
 void Person::setName(const std::string& newName)
 {
-    name_=newName;
+    name_ = newName;
 }
 
 void Person::setAge(int newAge)
@@ -44,7 +44,7 @@ int Person::combinedAge(Person** personArray, int size)
         return 0;
     int combined_age = personArray[0]->getAge();
     for(int i = 1; i < size; i++)
-        combined_age+=personArray[i]->getAge();
+        combined_age += personArray[i]->getAge();
     return combined_age;
 }
 

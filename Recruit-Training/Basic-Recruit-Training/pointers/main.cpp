@@ -63,7 +63,7 @@ void var(int *a, int b)
 
 void mySwap(int* a, int* b)
 {
-    *a = *a xor *b;
-    *b = *b xor *a;
-    *a = *a xor *b;
+    int temp = *a;
+    *b = *a;
+    *a = temp;
 }

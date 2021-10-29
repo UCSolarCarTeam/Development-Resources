@@ -10,3 +10,5 @@ build*
 debug
 *.depend
 *.layout
+*.exe
+
