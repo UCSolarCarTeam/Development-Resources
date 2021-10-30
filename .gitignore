@@ -11,4 +11,4 @@ debug
 *.depend
 *.layout
 *.exe
-
+*.json
