@@ -3,7 +3,7 @@
 Person::Person(const std::string &name, int age) : name_(name), age_(new int(age))
 {};
 
-Person::Person()
+Person::Person() : age_(new int)
 {};
 
 Person::~Person()
@@ -28,8 +28,7 @@ void Person::setName(const std::string& newName)
 
 void Person::setAge(int newAge)
 {
-    delete age_;
-    age_ = new int(newAge);
+    *age_ = newAge;
 }
 
 void Person::printInfo() const
