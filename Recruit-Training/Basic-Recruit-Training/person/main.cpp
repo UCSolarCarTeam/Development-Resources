@@ -27,9 +27,7 @@ void mySwap(int& a, int& b)
 // Increment the int that x is pointing to by one.
 void myIncrement(int* x)
 {
-    int temp = *x;
-    temp++;
-    *x = temp;
+    *x += 1;
 }
 
 void personFunctions()

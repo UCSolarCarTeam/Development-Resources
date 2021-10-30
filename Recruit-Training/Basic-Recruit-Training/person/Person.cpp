@@ -48,8 +48,9 @@ void Person::printInfo() const
 
 int Person::combinedAge(Person **personArray, int size)
 {
-    int combined_age=0;
-    for (int i=0; i<size; i++){
+    int combined_age = 0;
+    for (int i = 0; i < size; i++)
+    {
         combined_age += *(personArray[i]->age_);
     }
     return combined_age;
