@@ -48,8 +48,6 @@ export class AppComponent {
 
   calculateRange() {
     this.buttonPress = true;
-    console.log(this.speed);
-    console.log(this.battery);
     this.range = -(this.speed * this.speed * this.battery / 2500) + (4 * this.battery) + this.weather;
     this.outputMessage = 'The predicted range of the Elysia is ' + this.range + ' km.';
   }
