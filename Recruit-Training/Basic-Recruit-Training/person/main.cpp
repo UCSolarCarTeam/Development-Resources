@@ -20,10 +20,16 @@ void compareAnswers(const std::string myAnswer, const std::string correctAnswer)
 // Swaps a & b.
 void mySwap(int& a, int& b)
 {
+    int hold = a;
+    a = b;
+    b = hold;
 }
+
 // Increment the int that x is pointing to by one.
 void myIncrement(int* x)
 {
+  int newX = *x + 1;
+  *x = newX;
 }
 
 // Uncomment this when person.cpp has been created.
@@ -66,7 +72,10 @@ int main()
     int b = 6;
 
     // Pass a & b into mySwap here
+    mySwap(a, b);
+
     // Pass in a to myIncrement here
+    myIncrement(&a);
 
     std::cout << "Checking Swap and Increment: " << std::endl;
 

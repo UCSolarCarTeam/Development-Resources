@@ -1,4 +1,5 @@
 #include "Person.h"
+#include "main.cpp"
 Person::Person()
 {
     name_="";
@@ -37,8 +38,8 @@ void Person::setAge(int newAge)
 }
 void Person::printInfo() const 
 {
-  printf("%s", name_);
-  printf("%d", age_);
+  printf("%s", name_.c_str());
+  printf("%d", *age_);
 }
 int Person::combinedAge(Person** personArray, int size)
 {
