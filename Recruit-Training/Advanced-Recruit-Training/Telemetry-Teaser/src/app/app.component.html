@@ -1,18 +1,43 @@
+<script src="app.component.ts"></script>
 <body>
-  <div>
-    <h1> Elysia Range Simulator </h1>
-    <form name="simulator" #simulator="ngForm" novalidate>
-      <label>Speed (km/h):</label>
-      <br>
-      <input name="speed" type="number" placeholder="Speed" (keyup)="onKeySpeed($event)">
-      <br>
-      <label>Battery Percentage (%):</label>
-      <br>
-      <input name="battery"type="number" placeholder="Battery" (keyup)="onKeyBattery($event)">
-      <br>
-      <img src="/assets/Cloud.png">
-      <input type="range" min="0" max="100" value="50" (mouseup)="onMouseWeather($event)">
-      <img src="/assets/Sun.png">
-    </form>
-  </div>
+<div>
+  <h1> Elysia Range Simulator </h1>
+  <form name="simulator" #simulator="ngForm" novalidate [formGroup]="validate" class="form">
+    <label>Speed (km/h):</label>
+    <br>
+    <input name="speed" type="number" placeholder="Speed" (keyup)="onKeySpeed($event)" class="form-control" formControlName="speedIn">
+    <div *ngIf="validateControl.speedIn.invalid && (!validateControl.speedIn.touched || validateControl.speedIn.dirty || this.speed === 0) && this.buttonclick"
+         class="alert alert-danger">
+      <div *ngIf="validateControl.speedIn.errors?.required && this.buttonclick">
+        Speed is required.
+      </div>
+      <div *ngIf="(validateControl.speedIn.errors?.min || validateControl.speedIn.errors?.max) && this.buttonclick">
+        Speed must be between 0 and 90.
+      </div>
+    </div>
+
+    <br>
+    <label>Battery Percentage (%):</label>
+    <br>
+    <input name="battery" type="number" placeholder="Battery" (keyup)="onKeySpeed($event)" class="form-control" formControlName="batteryIn">
+    <div *ngIf="validateControl.batteryIn.invalid && (!validateControl.batteryIn.touched || validateControl.batteryIn.dirty || this.battery === 0) && this.buttonclick"
+         class="alert alert-danger">
+      <div *ngIf="validateControl.batteryIn.errors?.required && this.buttonclick">
+        Battery is required.
+      </div>
+      <div *ngIf="(validateControl.batteryIn.errors?.min || validateControl.batteryIn.errors?.max) && this.buttonclick"
+           class="alert alert-danger">
+        Battery must be between 0 and 100.
+      </div>
+    </div>
+    <br>
+
+    <img src="/assets/Cloud.png" alt="Cloud">
+    <input type="range" min="0" max="100" value="50" (mouseup)="onMouseWeather($event)">
+    <img src="/assets/Sun.png" alt="Cloud">
+  </form>
+  <button type="button" (click)="calculateRange()">Calculate</button>
+  <p *ngIf="(!validateControl.speedIn.invalid && !validateControl.batteryIn.invalid) && this.buttonclick"> The predicted range of the Elysia is {{this.range}}</p>
+</div>
 </body>
+
