@@ -25,6 +25,8 @@
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
 //TODO: Include task header files
+#include "BlueLedToggleTask.h"
+#include "GreenLedToggleTask.h"
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -49,9 +51,15 @@ osThreadId_t defaultTaskHandle;
 /* USER CODE BEGIN PV */
 static const uint32_t BLUE_MESSAGE_STDID = 0xAAA;
 //TODO: Add STDID for green message
+static const uint32_t GREEN_MESSAGE_STDID = 0xBBB;
 //TODO: Add CAN_TX header definition
+CAN_TxHeaderTypeDef CAN_TX;
 //TODO: Define thread for tasks
+osThreadId_t blueThread;
+osThreadId_t greenThread;
 //TODO: Define a blue LED toggle flag and a green LED toggle flag
+uint8_t blueFlag;
+uint8_t greenFlag;
 /* USER CODE END PV */
 
 /* Private function prototypes -----------------------------------------------*/
@@ -102,6 +110,7 @@ int main(void)
 
     /* USER CODE BEGIN 2 */
     //TODO: Call MX_CAN2_UserInit
+    MX_CAN2_UserInit();
     //Activate Can Recieve Interrupts
     if (HAL_CAN_ActivateNotification(&hcan2, CAN_IT_RX_FIFO0_MSG_PENDING |
                                     CAN_IT_ERROR_WARNING |
@@ -125,6 +134,9 @@ int main(void)
 
     /* USER CODE BEGIN RTOS_MUTEX */
     //TODO: Define and create mutexes and mutex attributes
+    osMutexId_t mutexHandle;
+    const osMutexAttr_t mutexAttr = { "MutexAttr", 0, NULL, 0 };
+    mutexHandle = osMutexNew(&mutexAttr);
     /* add mutexes, ... */
     /* USER CODE END RTOS_MUTEX */
 
@@ -152,7 +164,11 @@ int main(void)
 
     /* USER CODE BEGIN RTOS_THREADS */
     //TODO: Create threads and thread attributes
+    const osThreadAttr_t blueTask_attributes = { .name = "blueTask", .priority = (osPriority_t) osPriorityNormal, .stack_size = 128 };
+    const osThreadAttr_t greenTask_attributes = { .name = "greenTask", .priority = (osPriority_t) osPriorityNormal, .stack_size = 128 };
     /* add threads, ... */
+    blueThread = osThreadNew((osThreadFunc_t)blueLedToggleTask, mutexHandle, &blueTask_attributes);
+    greenThread = osThreadNew((osThreadFunc_t)greenLedToggleTask, mutexHandle, &blueTask_attributes);
     /* USER CODE END RTOS_THREADS */
 
     /* Start scheduler */
@@ -293,7 +309,26 @@ void HAL_CAN_RxFifo0MsgPendingCallback(CAN_HandleTypeDef* hcan)
     }
 
     //TODO: Match StdId of header and data length content for green and blue messages and check data for set bit of toggling green and blue led
+
+    if (BLUE_MESSAGE_STDID == hdr.StdId && hdr.DLC == 1){
+        if (data[0] == 0x10010001){
+            blueFlag = 1;
+        }
+        else{
+            blueFlag = 0;
+        }
+    }
+    else if (GREEN_MESSAGE_STDID == hdr.StdId && hdr.DLC == 1){
+        if (data[1] == 0x00000011){
+             greenFlag = 1;
+         }
+        else{
+            greenFlag = 0;
+        }
+    }
 }
+
+
 
 static void MX_CAN2_UserInit(void)
 {
@@ -315,7 +350,24 @@ static void MX_CAN2_UserInit(void)
     }
 
     //TODO: Configure filter for green message
+    CAN_FilterTypeDef greenMessageFilterConfig;
+    greenMessageFilterConfig.FilterBank = 1;
+    greenMessageFilterConfig.FilterMode = CAN_FILTERMODE_IDLIST;
+    greenMessageFilterConfig.FilterScale = CAN_FILTERSCALE_32BIT;
+    greenMessageFilterConfig.FilterIdHigh = GREEN_MESSAGE_STDID << 5;
+    greenMessageFilterConfig.FilterIdLow = 0;
+    greenMessageFilterConfig.FilterMaskIdHigh = 0;
+    greenMessageFilterConfig.FilterFIFOAssignment = 0;
+    greenMessageFilterConfig.FilterActivation = ENABLE;
+    greenMessageFilterConfig.SlaveStartFilterBank = 0;
+
     //TODO: Configure CAN_TX header
+
+    CAN_TX.ExtId = 0;
+    CAN_TX.RTR = CAN_RTR_DATA;
+    CAN_TX.IDE = CAN_ID_STD;
+    CAN_TX.TransmitGlobalTime = DISABLE;
+
 }
 /* USER CODE END 4 */
 
