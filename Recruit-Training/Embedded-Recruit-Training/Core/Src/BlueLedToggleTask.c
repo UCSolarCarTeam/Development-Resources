@@ -1,10 +1,11 @@
 #include "BlueLedToggleTask.h"
 
+static const uint32_t BLUE_LED_STATUS_STDID = 0xCCC;
+static const uint32_t BLUE_LED_TOGGLE_FREQ = 1000;
+
 void blueLedToggleTask(void const* arg)
 {
     //One time osDelayUntil initialization
-    static const uint32_t BLUE_LED_STATUS_STDID = 0xCCC;
-    static const uint32_t BLUE_LED_TOGGLE_FREQ = 1000;
     uint32_t prevWakeTime = osKernelSysTick();
 
     osMutexId_t* canMutex = (osMutexId_t*)arg; // Get mutex that was passed as an argument
@@ -15,7 +16,7 @@ void blueLedToggleTask(void const* arg)
         prevWakeTime += BLUE_LED_TOGGLE_FREQ;
         osDelayUntil(prevWakeTime);
         //TODO: Check blue toggle flag and toggle blue LED
-        if (blueFlag == 1){
+        if (blueFlag){
             HAL_GPIO_TogglePin(LED_RED_GPIO_Port, LED_RED_Pin);
         }
 

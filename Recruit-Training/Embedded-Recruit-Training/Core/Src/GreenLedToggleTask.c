@@ -1,10 +1,11 @@
 #include "GreenLedToggleTask.h"
 
+static const uint32_t GREEN_LED_STATUS_STDID = 0xDDD;
+static const uint32_t GREEN_LED_TOGGLE_FREQ = 100;
+
 void greenLedToggleTask(void const* arg)
 {
     //One time osDelayUntil initialization
-    static const uint32_t GREEN_LED_STATUS_STDID = 0xDDD;
-    static const uint32_t GREEN_LED_TOGGLE_FREQ = 100;
     uint32_t prevWakeTime = osKernelSysTick();
 
     osMutexId_t* canMutex = (osMutexId_t*)arg;
@@ -15,7 +16,7 @@ void greenLedToggleTask(void const* arg)
         prevWakeTime += GREEN_LED_TOGGLE_FREQ;
         osDelayUntil(prevWakeTime);
         //TODO: Check blue toggel flag and toggle blue LED
-        if (greenFlag == 1){
+        if (greenFlag){
             HAL_GPIO_TogglePin(LED_GREEN_GPIO_Port, LED_GREEN_Pin);
         }
         //TODO: Send CAN message indicating current state of LED
@@ -31,7 +32,7 @@ void greenLedToggleTask(void const* arg)
 
                 HAL_CAN_AddTxMessage(&hcan2, &CAN_TX, data, &mailbox);
             }
-        osMutexRelease(canMutex);
+            osMutexRelease(canMutex);
         }
     }
 }
