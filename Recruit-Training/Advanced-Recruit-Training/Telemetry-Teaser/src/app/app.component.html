@@ -4,15 +4,23 @@
     <form name="simulator" #simulator="ngForm" novalidate>
       <label>Speed (km/h):</label>
       <br>
-      <input name="speed" type="number" placeholder="Speed" (keyup)="onKeySpeed($event)">
+      <input name="speed" type="number" placeholder="Speed" (keyup)="onKeySpeed($event)"  ngModel #speed = "ngModel" required min="0" max="90">
+      <div *ngIf="speed.errors && (speed.invalid && speed.touched)"> Speed is required </div>
+      <div *ngIf="checkSpeedRange() == false">Speed must be between 0 and 90 </div> 
       <br>
       <label>Battery Percentage (%):</label>
       <br>
-      <input name="battery"type="number" placeholder="Battery" (keyup)="onKeyBattery($event)">
+      <input name="battery"type="number" placeholder="Battery" (keyup)="onKeyBattery($event)" ngModel #battery = "ngModel" min="0" max="100" required>
+      <div *ngIf = "battery.errors && (battery.invalid && battery.touched)"> Battery percentage is required</div>
+      <div *ngIf = "checkBatteryRange() == false"> Battery percentage must be between 0 and 100</div>
       <br>
       <img src="/assets/Cloud.png">
-      <input type="range" min="0" max="100" value="50" (mouseup)="onMouseWeather($event)">
+      <input type="range" min="0" max="100" value="50" (mouseup)="onMouseWeather($event)" >
       <img src="/assets/Sun.png">
+      <br>
+      <button (click) = toggle()>Calculate</button> 
+      <br>
+      <div  *ngIf = "show == true && checkBatteryRange() == true && speed.valid && battery.valid" > The predicted range of Elysia is {{this.range}}km</div>
     </form>
   </div>
 </body>
