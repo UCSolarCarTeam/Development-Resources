@@ -1,5 +1,4 @@
 #include "Person.h"
-#include "main.cpp"
 Person::Person()
 {
     name_="";
