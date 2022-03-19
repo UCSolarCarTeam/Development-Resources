@@ -19,13 +19,13 @@
 }
 .dataset {
   text-align: center;
-  font-family: Arial, sans-serif;
+  font-family: Georgia, serif;
   font-size: 0.8rem;
   color: rgb(255, 255, 255);
   color: rgba(255, 255, 255, 0.75);
 }
 .item {
-  font-family: Arial, sans-serif;
+  font-family: Georgia, serif;
   color: rgb(255, 255, 255);
   color: rgba(255, 255, 255, 0.9);
   font-size: 0.8rem;
@@ -41,7 +41,7 @@
   margin: 5px 20px 10px 20px;
   padding: 5px;
   background-color: transparent;
-  border-bottom: 1px solid white;
+  border-bottom: 1px solid rgb(15, 193, 247);
 }
 .grid-container {
   display: grid;

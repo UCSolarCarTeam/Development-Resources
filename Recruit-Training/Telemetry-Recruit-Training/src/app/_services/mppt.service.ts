@@ -26,9 +26,9 @@ export class MpptService {
   getData(num: number): Mppt {
     return this[`mppt${num}`];
   }
-
+  
   private updateMppt(num: number): void {
-    this[`mppt${num}`].alive = this.rs.randomBool();
+    this[`mppt${num}`].heartbeat = this.rs.randomBool();
     this[`mppt${num}`].arrayCurrent = this.rs.randomNumber();
     this[`mppt${num}`].arrayVoltage = this.rs.randomNumber();
     this[`mppt${num}`].batteryVoltage = this.rs.randomNumber();
