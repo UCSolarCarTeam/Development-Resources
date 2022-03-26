@@ -20,7 +20,8 @@
       <br>
       <button (click) = toggle()>Calculate</button> 
       <br>
-      <div  *ngIf = "show == true && checkBatteryRange() == true && speed.valid && battery.valid" > The predicted range of Elysia is {{this.range}}km</div>
+      <div *ngIf = "!this.show && speed.valid && battery.valid" > The predicted range of Elysia is {{this.range}}km</div>
+      <div *ngIf = "toggle.Default"> </div>
     </form>
   </div>
 </body>

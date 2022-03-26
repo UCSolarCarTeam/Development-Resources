@@ -1,5 +1,7 @@
+import { ThrowStmt } from '@angular/compiler';
 import { Component, OnInit } from '@angular/core';
 import { NgModule } from "@angular/core";
+import { resetFakeAsyncZone } from '@angular/core/testing';
 import { visitFunctionBody } from 'typescript';
 
 @Component({
@@ -16,25 +18,36 @@ export class AppComponent {
   speed = 0;
   battery = 0;
   range = 0;
-  show = false;
+  show = true;
 
   onMouseWeather(event: MouseEvent) {
     this.weather = parseInt((event.target as HTMLInputElement).value);
+   
   }
 
   onKeySpeed(event: KeyboardEvent) {
     this.speed = parseInt((event.target as HTMLInputElement).value);
-    this.calculateRange();
+    this.toggle();
+    this.show = true;
+   
+  
   }
 
   onKeyBattery(event: KeyboardEvent) {
     this.battery = parseInt((event.target as HTMLInputElement).value);
-    this.calculateRange();
+    this.toggle();
+    this.show = true;
+   
+    
+  
   }
 
   calculateRange() {
+
       this.range = -(this.speed * this.speed * this.battery / 2500) + (4 * this.battery) + this.weather;
-  }
+  
+    }
+    
   checkBatteryRange(){
     if (this.battery > 100 || this.battery < 0){
       return false; 
@@ -53,9 +66,12 @@ export class AppComponent {
     }
     
   }
-  toggle(){
-    this.show = true;
-    return true;
-  }
-
+  toggle(){ 
+    if (this.checkSpeedRange() == true && this.checkBatteryRange() == true ){
+      this.show = !this.show;
+      this.calculateRange();
+    }        
 }
+}
+
+
