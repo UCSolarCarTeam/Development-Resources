@@ -9,12 +9,12 @@ void greenLedToggleTask(void const* arg)
     //One time osDelayUntil initialization
     uint32_t prevWakeTime = osKernelSysTick();
 
-    osMutexId_t* canMutex = (osMutexId_t*)arg;
+    osMutexId* canMutex = (osMutexId*)arg;
 
     for (;;)
     {
         prevWakeTime += GREEN_LED_TOGGLE_FREQ;
-        osDelayUntil(prevWakeTime);
+        osDelayUntil(prevWakeTime, 100);
 
         if (greenLedToggleFlag)
         {
@@ -23,7 +23,7 @@ void greenLedToggleTask(void const* arg)
 
         uint8_t greenLedVal = HAL_GPIO_ReadPin(LED_GREEN_GPIO_Port, LED_GREEN_Pin);
 
-        if (osMutexAcquire(canMutex, 0) == osOK)
+        if (osMutexWait(canMutex, 0) == osOK)
         {
             if (HAL_CAN_GetTxMailboxesFreeLevel(&hcan2) > 0)
             {
