@@ -11,6 +11,7 @@ using namespace std;
 
 void foo(int *a, int b);
 void bar(int *a, int b);
+void mySwap(int &p, int *b);
 
 int main()
 {
@@ -19,27 +20,31 @@ int main()
     int *p = &x;
 
     //TODO in the line below predict what what is going to be output
-    cout << "Predicted value of p: " /* << PLACE YOUR PREDICTION HERE*/ << endl;
+    cout << "Predicted value of p: address of x" /* << PLACE YOUR PREDICTION HERE*/ << endl;
     cout << "Actual value of p: " << p << endl;
-    cout << "Predicted value &x: " /* << PLACE YOUR PREDICTION HERE*/ << endl;
+    cout << "Predicted value &x: address of x" /* << PLACE YOUR PREDICTION HERE*/ << endl;
     cout << "Actual value &x: " << &x << endl;
-    cout << "Predicted value of *p: " /* << PLACE YOUR PREDICTION HERE*/ << endl;
+    cout << "Predicted value of *p: 3" /* << PLACE YOUR PREDICTION HERE*/ << endl;
     cout << "Actual value of *p: " << *p << endl;
     
     foo(p, x);
     
-    cout << "Predicted value of *p: " /* << PLACE YOUR PREDICTION HERE*/ << endl;
+    cout << "Predicted value of *p: 42" /* << PLACE YOUR PREDICTION HERE*/ << endl;
     cout << "Actual value of *p: " << *p << endl;
-    cout << "Predicted value of x: " /* << PLACE YOUR PREDICTION HERE*/ << endl;
+    cout << "Predicted value of x: 42" /* 3 << PLACE YOUR PREDICTION HERE*/ << endl;
     cout << "Actual value of x: " << x << endl;
     foo(p, y);
 
-    cout << "Predicted value of *p: " /* << PLACE YOUR PREDICTION HERE*/ << endl;
+    cout << "Predicted value of *p: 42" /* << PLACE YOUR PREDICTION HERE*/ << endl;
     cout << "Actual value of *p: " << *p << endl;
-    cout << "Predicted value of y: " /* << PLACE YOUR PREDICTION HERE*/ << endl;
+    cout << "Predicted value of y: 4" /* << PLACE YOUR PREDICTION HERE*/ << endl;
     cout << "Actual value of y: " << y << endl;
 
     //start writing mySwap here
+	mySwap(*p, &y);
+	cout << "After mySwap:" << endl;
+	cout << "The value of *p is: " << *p << endl;
+	cout << "The value of y is: " << y << endl;
     
     return 0;
 }
@@ -54,4 +59,10 @@ void var(int *a, int b)
 {
     *a = 365;
     b = 912;
+}
+
+void mySwap(int &p, int *b){
+	int holder = *b;
+	*b = p;
+	p = holder;
 }
