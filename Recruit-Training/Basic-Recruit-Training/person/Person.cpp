@@ -2,6 +2,7 @@
 #include "Person.h"
 #include <iostream>
 #include <string>
+#include <cstdlib>
 
 // -- Constructors --
 Person::Person() {
@@ -16,8 +17,8 @@ Person::Person(const std::string& name, int age) {
 
 // -- Descontructor --
 Person::~Person() {
-   name_ = "";
-    *age_ = 0;
+    name_.clear();
+    delete age_;
 }
 
 // -- Getters --
