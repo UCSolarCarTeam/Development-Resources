@@ -1,3 +1,5 @@
+#include "cmsis_os.h"
+
 #include "GreenLedToggleTask.h"
 
 static const uint32_t GREEN_LED_STATUS_STDID = 0xDDD;

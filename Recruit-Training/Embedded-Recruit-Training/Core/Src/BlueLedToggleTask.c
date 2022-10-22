@@ -1,3 +1,5 @@
+#include "cmsis_os.h"
+
 #include "BlueLedToggleTask.h"
 
 static const uint32_t BLUE_LED_STATUS_STDID = 0xCCC;
@@ -13,9 +15,9 @@ void blueLedToggleTask(void const* arg)
     for (;;)
     {
         prevWakeTime += BLUE_LED_TOGGLE_FREQ;
-        osDelayUntil(prevWakeTime, 100);
+        osDelayUntil(prevWakeTime, 1000);
 
-        if (blueLedToggleFlag)
+        if (1)
         {
             HAL_GPIO_TogglePin(LED_RED_GPIO_Port, LED_RED_Pin);
         }
