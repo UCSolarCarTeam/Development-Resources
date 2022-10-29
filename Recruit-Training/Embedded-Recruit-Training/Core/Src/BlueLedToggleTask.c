@@ -17,7 +17,7 @@ void blueLedToggleTask(void const* arg)
         prevWakeTime += BLUE_LED_TOGGLE_FREQ;
         osDelayUntil(prevWakeTime, 1000);
 
-        if (1)
+        if (blueLedToggleFlag)
         {
             HAL_GPIO_TogglePin(LED_RED_GPIO_Port, LED_RED_Pin);
         }

@@ -20,12 +20,14 @@
 
 /* Includes ------------------------------------------------------------------*/
 #include "main.h"
+#include "stm32f4xx_hal.h"
 #include "cmsis_os.h"
 
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
 #include "BlueLedToggleTask.h"
 #include "GreenLedToggleTask.h"
+#include "SendHeartbeatTask.h"
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -53,6 +55,8 @@ static const uint32_t GREEN_MESSAGE_STDID = 0xBBB;
 CAN_TxHeaderTypeDef canTxHdr;
 static osThreadId blueLedToggleTaskHandle;
 static osThreadId greenLedToggleTaskHandle;
+static osThreadId heartbeatHandle;
+uint8_t reset = 0;
 uint8_t blueLedToggleFlag;
 uint8_t greenLedToggleFlag;
 /* USER CODE END PV */
@@ -154,6 +158,10 @@ int main(void)
 
   /* USER CODE BEGIN RTOS_THREADS */
     //TODO: Create threads and thread attributes
+
+    osThreadDef(heartbeatTask, sendHeartbeatTask, osPriorityNormal, 1, configMINIMAL_STACK_SIZE);
+    heartbeatHandle = osThreadCreate(osThread(heartbeatTask), canHandleMutex);
+
     osThreadDef(blueLedTask, blueLedToggleTask, osPriorityNormal, 1, configMINIMAL_STACK_SIZE);
     blueLedToggleTaskHandle = osThreadCreate(osThread(blueLedTask), NULL);
 
