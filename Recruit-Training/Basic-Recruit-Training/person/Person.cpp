@@ -46,7 +46,7 @@ int Person::combinedAge(Person** personArray, int size)
         total_ += tempPerson->getAge();
     }
 
-    return total_;
+    return total_ ;
 }
 void Person::birthday(Person& x)
 {
