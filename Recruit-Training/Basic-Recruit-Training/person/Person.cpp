@@ -5,8 +5,9 @@ using namespace std;
 
 
 
-Person::Person(){
-    age_ = new int(1);
+Person::Person()
+{
+    age_ = new int();
 }
 
 Person::~Person()
@@ -14,10 +15,9 @@ Person::~Person()
     delete age_;
 }
 
-Person::Person(const std::string &name, int age)
+Person::Person(const std::string& name, int age)
 {
-    age_ = new int(1);
-    *age_ = age;
+    age_ = new int(age);
     name_ = name;
 }
 
