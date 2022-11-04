@@ -4,11 +4,26 @@
     <form name="simulator" #simulator="ngForm" novalidate>
       <label>Speed (km/h):</label>
       <br>
-      <input name="speed" type="number" placeholder="Speed" (keyup)="onKeySpeed($event)">
+      <input name="speed" type="number" placeholder="Speed" [formControl]="speedInput" (keyup)="onKeySpeed($event)">
+        <div *ngIf="speedInput.errors?.required && this.buttonPressed">
+          Speed is required.
+        </div>
+        <div *ngIf="(speedInput.errors?.min || speedInput.errors?.max) && this.buttonPressed">
+          The speed should be within the range of 0 to 90.
+        </div>
       <br>
       <label>Battery Percentage (%):</label>
       <br>
-      <input name="battery"type="number" placeholder="Battery" (keyup)="onKeyBattery($event)">
+      <input name="battery"type="number" placeholder="Battery" [formControl]="batteryInput" (keyup)="onKeyBattery($event)">
+        <div *ngIf="batteryInput.errors?.required && this.buttonPressed">
+          Battery percentage is required.
+        </div>
+        <div *ngIf="(batteryInput.errors?.min || batteryInput.errors?.max) && this.buttonPressed">
+          The battery percentage should be with the range of 0 to 100.
+        </div>
+      <br>
+      <button type="submit" (click)=calculateRange()>Calculate</button>
+      <p id="rangeDisplay"></p>
       <br>
       <img src="/assets/Cloud.png">
       <input type="range" min="0" max="100" value="50" (mouseup)="onMouseWeather($event)">
