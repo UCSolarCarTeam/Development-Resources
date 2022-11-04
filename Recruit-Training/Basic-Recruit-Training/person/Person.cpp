@@ -30,7 +30,7 @@ const std::string& Person::getName() const {
     return name_;
 }
 
-void Person::setName(const std::string &newName)
+void Person::setName(const std::string& newName)
 {
     name_ = newName;
 }
@@ -59,7 +59,7 @@ int Person::combinedAge(Person** personArray, int size)
     return combinedAge_;
 }
 
-void Person::birthday(Person &x)
+void Person::birthday(Person& x)
 {
     int oldAge_ = x.getAge();
     oldAge_++;
