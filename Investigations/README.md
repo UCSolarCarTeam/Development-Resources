@@ -1,3 +1,0 @@
-# Investigations
-
-* [Grafana](Grafana.md)
