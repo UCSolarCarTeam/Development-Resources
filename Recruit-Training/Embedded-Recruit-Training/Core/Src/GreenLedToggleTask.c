@@ -5,8 +5,6 @@ void greenLedToggleTask(void const* arg)
     //One time osDelayUntil initialization
     uint32_t prevWakeTime = osKernelSysTick();
 
-    osMutexId_t* canMutex = (osMutexId_t*)arg;
-
     for (;;)
     {
         //TODO: Add GREEN_LED_TOGGLE_FREQ to prevWakeTime
