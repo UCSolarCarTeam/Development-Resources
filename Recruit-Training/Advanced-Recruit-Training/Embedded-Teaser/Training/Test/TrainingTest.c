@@ -19,11 +19,10 @@ void test_EverythingValid()
     inputArray[1] = 0b10000000;
     inputArray[2] = 0b00000000;
     trainingTask(inputArray);
-    // TEST_ASSERT_EQUAL_UINT8(0b00000111, trainingTask(inputArray));
-    TEST_ASSERT_EQUAL_UINT8(0b00000001, outputArray[0]);
-    TEST_ASSERT_EQUAL_UINT8(0b00000010, outputArray[1]);
-    TEST_ASSERT_EQUAL_UINT8(0b00000100, outputArray[2]);
-
+    // TEST_ASSERT_EQUAL_UINT8(0b00000001, outputArray[0]);
+    // TEST_ASSERT_EQUAL_UINT8(0b00000010, outputArray[1]);
+    TEST_ASSERT_EQUAL_UINT8(0b00000111, validData);
+    
 }
 
 void test_EverythingInvalid()
@@ -33,9 +32,10 @@ void test_EverythingInvalid()
     inputArray[1] = 0b00000000;
     inputArray[2] = 0b00000011;
     trainingTask(inputArray);
-    TEST_ASSERT_EQUAL_UINT8(0b00000001, outputArray[0]);
-    TEST_ASSERT_EQUAL_UINT8(0b00000010, outputArray[1]);
-    TEST_ASSERT_EQUAL_UINT8(0b00000100, outputArray[2]);
+    // TEST_ASSERT_EQUAL_UINT8(0b00000001, outputArray[0]);
+    // TEST_ASSERT_EQUAL_UINT8(0b00000010, outputArray[1]);
+    // TEST_ASSERT_EQUAL_UINT8(0b00000100, outputArray[2]);
+    TEST_ASSERT_EQUAL_UINT8(0b00000111, validData);
 }
 
 void test_OnlyLightsInvalid()
@@ -45,9 +45,10 @@ void test_OnlyLightsInvalid()
     inputArray[1] = 0b10000000;
     inputArray[2] = 0b00000011;
     trainingTask(inputArray);    
-    TEST_ASSERT_EQUAL_UINT8(0b00000001, outputArray[0]);
-    TEST_ASSERT_EQUAL_UINT8(0b00000010, outputArray[1]);
-    TEST_ASSERT_EQUAL_UINT8(0b00000100, outputArray[2]);
+    // TEST_ASSERT_EQUAL_UINT8(0b00000001, outputArray[0]);
+    // TEST_ASSERT_EQUAL_UINT8(0b00000010, outputArray[1]);
+    // TEST_ASSERT_EQUAL_UINT8(0b00000100, outputArray[2]);
+    TEST_ASSERT_EQUAL_UINT8(0b00000011, validData);
 }
 
 void test_OnlyMotorsInvalid()
@@ -57,7 +58,8 @@ void test_OnlyMotorsInvalid()
     inputArray[1] = 0b00000000;
     inputArray[2] = 0b00000000;
     trainingTask(inputArray);
-    TEST_ASSERT_EQUAL_UINT8(0b00000001, outputArray[0]);
-    TEST_ASSERT_EQUAL_UINT8(0b00000010, outputArray[1]);
-    TEST_ASSERT_EQUAL_UINT8(0b00000100, outputArray[2]);
+    // TEST_ASSERT_EQUAL_UINT8(0b00000001, outputArray[0]);
+    // TEST_ASSERT_EQUAL_UINT8(0b00000010, outputArray[1]);
+    // TEST_ASSERT_EQUAL_UINT8(0b00000100, outputArray[2]);
+    TEST_ASSERT_EQUAL_UINT8(0b00000100, validData);
 }
