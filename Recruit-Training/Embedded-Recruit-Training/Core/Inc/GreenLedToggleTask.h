@@ -9,5 +9,6 @@
 extern CAN_HandleTypeDef hcan2;
 extern CAN_TxHeaderTypeDef canTxHdr;
 extern uint8_t greenLedToggleFlag;
+extern osMutexId_t canMutex;
 
 void greenLedToggleTask(void const* arg);

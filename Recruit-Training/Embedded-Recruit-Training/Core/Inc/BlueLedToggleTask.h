@@ -9,5 +9,6 @@
 extern CAN_HandleTypeDef hcan2;
 extern CAN_TxHeaderTypeDef canTxHdr;
 extern uint8_t blueLedToggleFlag;
+extern osMutexId_t canMutex;
 
 void blueLedToggleTask(void const* arg);

@@ -55,6 +55,7 @@ osThreadId_t blueLedToggleTaskHandle;
 osThreadId_t greenLedToggleTaskHandle;
 uint8_t blueLedToggleFlag;
 uint8_t greenLedToggleFlag;
+osMutexId_t canMutex;
 /* USER CODE END PV */
 
 /* Private function prototypes -----------------------------------------------*/
@@ -127,8 +128,11 @@ int main(void)
     osKernelInitialize();
 
     /* USER CODE BEGIN RTOS_MUTEX */
-    const osMutexAttr_t canMutexAttr = {"CanMutexAttr", 0, NULL, 0};
-    osMutexId_t canMutex = osMutexNew(&canMutexAttr);
+    const osMutexAttr_t canMutexAttr =
+    {
+    		.name = "CanMutexAttr"
+    };
+    canMutex = osMutexNew(&canMutexAttr);
     /* add mutexes, ... */
     /* USER CODE END RTOS_MUTEX */
 
@@ -168,8 +172,8 @@ int main(void)
         .priority = (osPriority_t) osPriorityNormal,
         .stack_size = 128
     };
-    blueLedToggleTaskHandle = osThreadNew((osThreadFunc_t)blueLedToggleTask, &canMutex, &blueLedToggleTask_attributes);
-    greenLedToggleTaskHandle = osThreadNew((osThreadFunc_t)greenLedToggleTask, &canMutex, &greenLedToggleTask_attributes);
+    blueLedToggleTaskHandle = osThreadNew((osThreadFunc_t)blueLedToggleTask, NULL, &blueLedToggleTask_attributes);
+    greenLedToggleTaskHandle = osThreadNew((osThreadFunc_t)greenLedToggleTask, NULL, &greenLedToggleTask_attributes);
     /* add threads, ... */
     /* USER CODE END RTOS_THREADS */
 
