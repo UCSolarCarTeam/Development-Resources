@@ -11,6 +11,7 @@ using namespace std;
 
 void foo(int *a, int b);
 void bar(int *a, int b);
+void mySwap(int *a, int* b);
 
 int main()
 {
@@ -19,28 +20,30 @@ int main()
     int *p = &x;
 
     //TODO in the line below predict what what is going to be output
-    cout << "Predicted value of p: " /* << PLACE YOUR PREDICTION HERE*/ << endl;
+    cout << "Predicted value of p: " /* << PREDICTION: address of x */ << endl;
     cout << "Actual value of p: " << p << endl;
-    cout << "Predicted value &x: " /* << PLACE YOUR PREDICTION HERE*/ << endl;
+    cout << "Predicted value &x: " /* << PREDICTION: value of p */ << endl;
     cout << "Actual value &x: " << &x << endl;
-    cout << "Predicted value of *p: " /* << PLACE YOUR PREDICTION HERE*/ << endl;
+    cout << "Predicted value of *p: " /* << PREDICTION: 3 */ << endl;
     cout << "Actual value of *p: " << *p << endl;
     
     foo(p, x);
     
-    cout << "Predicted value of *p: " /* << PLACE YOUR PREDICTION HERE*/ << endl;
+    cout << "Predicted value of *p: " /* << PREDICTION: 42 */ << endl;
     cout << "Actual value of *p: " << *p << endl;
-    cout << "Predicted value of x: " /* << PLACE YOUR PREDICTION HERE*/ << endl;
+    cout << "Predicted value of x: " /* << PREDICTION: 42 */ << endl;
     cout << "Actual value of x: " << x << endl;
     foo(p, y);
 
-    cout << "Predicted value of *p: " /* << PLACE YOUR PREDICTION HERE*/ << endl;
+    cout << "Predicted value of *p: " /* << PREDICTION: 42 */ << endl;
     cout << "Actual value of *p: " << *p << endl;
-    cout << "Predicted value of y: " /* << PLACE YOUR PREDICTION HERE*/ << endl;
+    cout << "Predicted value of y: " /* << PREDICTION: 4 */ << endl;
     cout << "Actual value of y: " << y << endl;
 
     //start writing mySwap here
-    
+    mySwap(p, &y);
+    printf("value of *p: %d, value of y: %d", *p, y);
+
     return 0;
 }
 
@@ -50,8 +53,15 @@ int main()
    b = 78;
 }
 
-void var(int *a, int b)
+void bar(int *a, int b)
 {
     *a = 365;
     b = 912;
+}
+
+void mySwap(int *a, int* b) {
+    int temp = *b;
+    *b = *a;
+    *a = temp;
+    
 }
