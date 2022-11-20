@@ -1,6 +1,5 @@
 #include "Training.h"
 #include <stdio.h>
-//Testing...
 
 void trainingTask(uint8_t* data){
     uint8_t motor1_forward_or_reverse = data[0] & 0b00000001;
@@ -54,8 +53,8 @@ void trainingTask(uint8_t* data){
         validData &= 0b00000101;        
     }
     
-    //Headlights off = 1, low or high != 1
-    //Hazards = off, left = 0, right = 0
+    //Headlights off = 1 and low or high == 0
+    //left/right signals ON when hazards ON
     if(
     (headlights_off == 0b00000001 && (headlights_low == 0b00000010 || headlights_high == 0b00000100)) ||
     (hazards == 0b00000000 && right_signal == 0b00001000 && left_signal == 0b00010000)

@@ -1,7 +1,6 @@
 #include "unity.h"
 #include "TrainingTest.h"
 #include "Training.h"
-//Is this just a truth table of valid and invalid combinations?
 void runTrainingTests()
 {
     // Run all the tests here using RUN_TEST()
@@ -9,7 +8,6 @@ void runTrainingTests()
     RUN_TEST(test_EverythingInvalid);
     RUN_TEST(test_OnlyLightsInvalid);
     RUN_TEST(test_OnlyMotorsInvalid);
-
 }
 
 void test_EverythingValid()
@@ -26,6 +24,7 @@ void test_EverythingValid()
 void test_EverythingInvalid()
 {
     uint8_t inputArray[3];
+    //Motors out of sync. headlights both off and low.
     inputArray[0] = 0b10000000;
     inputArray[1] = 0b00000000;
     inputArray[2] = 0b00000011;
@@ -35,6 +34,7 @@ void test_EverythingInvalid()
 
 void test_OnlyLightsInvalid()
 {
+    //Headlights both off and low.
     uint8_t inputArray[3];
     inputArray[0] = 0b10000000;
     inputArray[1] = 0b10000000;
@@ -45,6 +45,7 @@ void test_OnlyLightsInvalid()
 
 void test_OnlyMotorsInvalid()
 {
+    //Motors out of sync.
     uint8_t inputArray[3];
     inputArray[0] = 0b10000000;
     inputArray[1] = 0b00000000;
