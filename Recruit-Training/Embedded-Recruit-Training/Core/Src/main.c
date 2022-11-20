@@ -49,6 +49,7 @@ osThreadId_t defaultTaskHandle;
 /* USER CODE BEGIN PV */
 static const uint32_t BLUE_MESSAGE_STDID = 0xAAA;
 //TODO: Add STDID for green message
+//TODO: Add CAN Mutex handle definition
 //TODO: Add CAN_TX header definition
 //TODO: Define thread for tasks
 //TODO: Define a blue LED toggle flag and a green LED toggle flag
