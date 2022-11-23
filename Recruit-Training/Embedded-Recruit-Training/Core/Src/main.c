@@ -48,8 +48,8 @@ CAN_HandleTypeDef hcan2;
 
 osThreadId_t defaultTaskHandle;
 /* USER CODE BEGIN PV */
-static const uint32_t BLUE_MESSAGE_STDID = 0xAAA;
-static const uint32_t GREEN_MESSAGE_STDID = 0xBBB;
+static const uint64_t BLUE_MESSAGE_EXID  = 0xAAAAAAA;
+static const uint64_t GREEN_MESSAGE_EXID = 0xBBBBBBB;
 CAN_TxHeaderTypeDef canTxHdr;
 osThreadId_t blueLedToggleTaskHandle;
 osThreadId_t greenLedToggleTaskHandle;
@@ -314,12 +314,12 @@ void HAL_CAN_RxFifo0MsgPendingCallback(CAN_HandleTypeDef* hcan)
         return;
     }
 
-    if (hdr.StdId == BLUE_MESSAGE_STDID && hdr.DLC == 1)
+    if (hdr.ExtId == BLUE_MESSAGE_EXID && hdr.DLC == 1)
     {
         blueLedToggleFlag = ((data[0] & 0x89) == 0x89);
     }
 
-    if (hdr.StdId == GREEN_MESSAGE_STDID && hdr.DLC == 1)
+    if (hdr.ExtId == GREEN_MESSAGE_EXID && hdr.DLC == 1)
     {
         greenLedToggleFlag = (data[0] == 0x3);
     }
@@ -331,8 +331,8 @@ static void MX_CAN2_UserInit(void)
     blueMessageFilterConfig.FilterBank = 0; // Use first filter bank
     blueMessageFilterConfig.FilterMode = CAN_FILTERMODE_IDLIST; //Look for specific CAN messages
     blueMessageFilterConfig.FilterScale = CAN_FILTERSCALE_32BIT;
-    blueMessageFilterConfig.FilterIdHigh = BLUE_MESSAGE_STDID << 5; // Filter registers need to be shifted left 5 bits
-    blueMessageFilterConfig.FilterIdLow = 0;
+    blueMessageFilterConfig.FilterIdHigh = (BLUE_MESSAGE_EXID >> 13); //reference manual page 1088
+    blueMessageFilterConfig.FilterIdLow = (BLUE_MESSAGE_EXID & 0x1fff) << 3 | 0x4; //reference manual page 1088
     blueMessageFilterConfig.FilterMaskIdHigh = 0;
     blueMessageFilterConfig.FilterFIFOAssignment = 0; //unused
     blueMessageFilterConfig.FilterActivation = ENABLE;
@@ -348,8 +348,8 @@ static void MX_CAN2_UserInit(void)
     greenMessageFilterConfig.FilterBank = 1; // Use first filter bank
     greenMessageFilterConfig.FilterMode = CAN_FILTERMODE_IDLIST; //Look for specific CAN messages
     greenMessageFilterConfig.FilterScale = CAN_FILTERSCALE_32BIT;
-    greenMessageFilterConfig.FilterIdHigh = GREEN_MESSAGE_STDID << 5; // Filter registers need to be shifted left 5 bits
-    greenMessageFilterConfig.FilterIdLow = 0;
+    greenMessageFilterConfig.FilterIdHigh = (GREEN_MESSAGE_EXID >> 13); //reference manual page 1088
+    greenMessageFilterConfig.FilterIdLow = (GREEN_MESSAGE_EXID & 0x1fff) << 3 | 0x4; //reference manual page 1088
     greenMessageFilterConfig.FilterMaskIdHigh = 0;
     greenMessageFilterConfig.FilterFIFOAssignment = 0; //unused
     greenMessageFilterConfig.FilterActivation = ENABLE;
@@ -367,6 +367,7 @@ static void MX_CAN2_UserInit(void)
     canTxHdr.TransmitGlobalTime = DISABLE;
 
 }
+
 /* USER CODE END 4 */
 
 /* USER CODE BEGIN Header_StartDefaultTask */
