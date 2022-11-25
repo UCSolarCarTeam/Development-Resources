@@ -4,15 +4,27 @@
     <form name="simulator" #simulator="ngForm" novalidate>
       <label>Speed (km/h):</label>
       <br>
-      <input name="speed" type="number" placeholder="Speed" (keyup)="onKeySpeed($event)">
+
+      <input required name="speed" type="number" placeholder="Speed" [(ngModel)]="Speed" #speedControl="ngModel" (keyup)="onKeySpeed($event)">
+      <div *ngIf="speedControl.invalid">Speed is required</div>
+      <div *ngIf="speedControl.value < 0 || speedControl.value > 90">Speed should be within the range of 0 to 90</div>
+
       <br>
       <label>Battery Percentage (%):</label>
       <br>
-      <input name="battery"type="number" placeholder="Battery" (keyup)="onKeyBattery($event)">
+      <input required name="battery" type="number" placeholder="Battery" [(ngModel)]="Battery" #batteryControl="ngModel" (keyup)="onKeyBattery($event)">
+      <div *ngIf="batteryControl.invalid">Battery Percentage is required</div>
+      <div *ngIf="batteryControl.value < 0 || batteryControl.value > 100">Battery percentage should be within the range of 0 to 100</div>
       <br>
       <img src="/assets/Cloud.png">
       <input type="range" min="0" max="100" value="50" (mouseup)="onMouseWeather($event)">
       <img src="/assets/Sun.png">
+      <br>
+      <button type="button" [disabled]="speedControl.invalid || batteryControl.invalid  || speedControl.value < 0 || speedControl.value > 90 || batteryControl.value < 0 || batteryControl.value > 100" (click)="calculateRange()">Calculate</button>
+      <br>
+      <h1 *ngIf="clicked">
+        The predicted range of the Eylsia is {{carRange}} km.
+      </h1>
     </form>
   </div>
 </body>
