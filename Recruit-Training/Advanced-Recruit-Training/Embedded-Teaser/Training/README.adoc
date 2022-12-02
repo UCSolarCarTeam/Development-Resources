@@ -58,3 +58,10 @@ Under `Training/Test`you should find 3 files. `TrainingTest.c`, `TrainingTest.h`
 Good luck and let us know if you have any questions!
 
 Created by the Embedded Team, Nov 2020.
+
+
+
+int Person::getAge() const
+{
+  
+}
