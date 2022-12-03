@@ -25,7 +25,7 @@ void mySwap(int& a, int& b)
     b = temp_a;
 }
 // Increment the int that x is pointing to by one.
-void myIncrement(int& x)
+void myIncrement(int* x)
 {
     x++;
 }
@@ -62,17 +62,17 @@ void personFunctions()
               << myBirthdayAnswer.str() << std::endl;
     compareAnswers(myBirthdayAnswer.str(), correctBirthdayAnswer);
     delete Joe;
+    std:: cout << std::endl;
 }
 
 int main()
 {
     int a = 5;
     int b = 6;
-
     // Pass a & b into mySwap here
     mySwap(a,b);
     // Pass in a to myIncrement here
-    myIncrement(a);
+    myIncrement(&a);
     std::cout << "Checking Swap and Increment: " << std::endl;
 
     std::stringstream swapIncrementAnswer;
@@ -84,7 +84,7 @@ int main()
     // Pass a and b into mySwap
     mySwap(a,b);
     // Pass in a to myIncrement
-    myIncrement(a);
+    myIncrement(&a);
     personFunctions(); // Uncomment this once you have completed the definitions of the Person class.
 
     return 0;
