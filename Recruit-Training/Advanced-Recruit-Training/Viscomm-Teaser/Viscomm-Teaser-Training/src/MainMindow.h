@@ -18,11 +18,15 @@ public:
     void updateInformation();
 public slots:
     void nextPageButtonClicked();
+    void backPageButtonClicked();
+    void addMemberButtonClicked();
+    void removeMemberButtonClicked();
 
 private:
     Ui::MainWindow *ui_;
     InformationParser parser_;
 
+    void updateList();
     void setImage();
 };
 #endif // MAINWINDOW_H
