@@ -1,8 +1,9 @@
 Embedded Recruit Training 
 ------------------------
 
-In this recruit training you will be receiving two “control” CAN messages, one for the blue LED and the green LED. Depending on which bits are ‘set’ you will toggle either the blue or green LEDS. 
-You will also send back a message with current state of the LEDs at a frequency of 1hz for the blue LED and 10Hz for the green. 
+In this recruit training you will be implementing two tasks for the Lights Board. You will need to write code to receieve two “control” CAN messages, upon reading the CAN messages you will toggle either the blue LED or green LED on the lights board. You will also send back a message with current state of the LEDs at a frequency of 1hz for the blue LED and 10Hz for the green LED. 
+
+If you aren't familiar with CAN messages or how they work, refer to https://uofcsolarcar.atlassian.net/wiki/spaces/ES/pages/19988502/Controller+Area+Network+CAN[this]
 
 We will begin by discussing the directory structure for the recruit training project.
 
@@ -10,14 +11,14 @@ We will begin by discussing the directory structure for the recruit training pro
 ** `Inc`: where all of the header files go 
 ** `Src`: where all of the source files go 
 * Drivers: where all the HAL driver functions go
-* Middlewares: where all of the os functions (FREERTOS and CMSIS) are
+* Middlewares: where all of the OS functions (FREERTOS and CMSIS) are
 
 If there are any functions that you think you need, but aren't given, refer to Documentation/HALFunctionReferences.adoc and Documentation/RTOSReferences.adoc
 
 These are available in the embedded repository, or by clicking https://github.com/UCSolarCarTeam/Epsilon-Embedded-Software[here]
 
 
-Start by going to `Core/Src/main.c` and search for `TODO` this will show you where you need to make changes
+Start by going to `Core/Src/main.c'.
 
 . Within `USER CODE BEGIN Includes` and `USER CODE END Includes`
 ** Include all task header files, these will be found under Core/Inc and have “Task” in the filename
@@ -26,12 +27,14 @@ Start by going to `Core/Src/main.c` and search for `TODO` this will show you whe
 ** Add CAN Tx Header definition. The type is `CAN_TxHeaderTypeDef`
 ** Define threads for the blue and green toggle LED tasks. The type will be `osThreadId_t`
 ** Define toggle flags for blue and green LEDs. The type will be `uint8_t`
+** Define a mutex handle. The type will be `osMutexId_t`
+** If you are unfamilar with how threads or mutexes work, check out https://www.computerhope.com/jargon/t/thread.htm[this] for threads and https://www.computerhope.com/jargon/m/mutex.htm[this] for mutexes.
 . Within `USER CODE BEGIN 2` and `USER CODE END 2`
 ** Call the function `MX_CAN2_UserInit`, it takes no arguments
-. Within `USER CODE BEGIN RTOS_MUTEX` and `USER CODE END RTOS_MUTEX`
+. Within `USER CODE BEGIN RTOS MUTEX` and `USER CODE END RTOS MUTEX`
 ** Create mutexes for CAN transmit
 *** To create a mutex:
-**** Define a mutex handle of `osMutexId_t`
+**** Define a mutex handle of `osMutexId_t`. You should have already done this in Step 2.
 **** Define attributes of const `osMutexAttr_t`
 ***** This is a struct and will be initialized with:
 * String name 
@@ -49,7 +52,7 @@ Start by going to `Core/Src/main.c` and search for `TODO` this will show you whe
 **** Call `osMutexNew()`
 ***** It accepts one argument of type `const osMutexAttr_t*` and its return type is `osMutexId_t`
 ***** Assign the value returned to the mutex handle you defined
-. Within `USER CODE BEGIN RTOS_THREADS` and `USER CODE ENDS RTOS_THREADS`
+. Within `USER CODE BEGIN RTOS THREADS` and `USER CODE ENDS RTOS THREADS`
 ** Create blue and green thread handles and pass CAN transmit mutex handle as an argument  (The function prototypes can be found in the task header files)
 *** To create a thread:
 **** Define attributes of `const osThreadAttr_t`
@@ -67,12 +70,11 @@ Start by going to `Core/Src/main.c` and search for `TODO` this will show you whe
  };```
 **** Call `osThreadNew()`
 ***** It accepts three arguments:
-****** Pointer to task function
-******* This will be the name of your task
-******* You will need to cast this to `osThreadFunc_t`
-****** A pointer to any arguments being passed to your function
-******* You will be passing the CAN Mutex you created earlier as an argument to both tasks
-****** Pointer to attributes of `const osThreadAttr_t`
+****** pointer to task function,
+******* this will be the name of your task
+******* and you will need to cast this to `osThreadFunc_t`,
+****** NULL,
+****** pointer to attributes of `const osThreadAttr_t`
 ***** Assign the value returned to the thread handle you defined in step 2
 . Within `USER CODE BEGIN 4` and `USER CODE END 4`
 ** Inside `HAL_CAN_RxFifo0MsgPendingCallback`
@@ -97,9 +99,10 @@ Start by going to `Core/Src/main.c` and search for `TODO` this will show you whe
 
 Then go into `Core/Inc/BlueLedToggleTask.h`
 
-. Define an external CAN handle (same variable as in main) of type `extern CAN_HandleTypeDef`
-. Define an external CAN_Tx header (same variable as in main) of type `extern CAN_TxHeaderTypeDef`
-. Define an external toggle flag for the blue LED (same variable as in main) of type `extern uint8_t`
+. Define an external CAN handle (same variable as in main) of type `CAN_HandleTypeDef`
+. Define an external CAN_Tx header (same variable as in main) of type `CAN_TxHeaderTypeDef`
+. Define an external toggle flag for the blue LED (same variable as in main) of type `uint8_t`
+. Define a mutex handle for CAN (same variable as in main) of type `osMutexId_t`
 
 Then go into `Core/Inc/GreenLedToggleTask.h`
 
@@ -107,29 +110,25 @@ Then go into `Core/Inc/GreenLedToggleTask.h`
 
 Then go into `Core/Src/BlueLedToggleTask.c`
 
-. Define a `static const uint32_t` global variable called `BLUE_LED_STATUS_STDID`
+. Define a static constant global variable called `BLUE_LED_STATUS_STDID`
 ** Give it a value of 0xCCC
-. Define a `static const uint32_t` global variable called `BLUE_LED_TOGGLE_FREQ`
+. Define a `static const` variable called `BLUE_LED_TOGGLE_FREQ`
 ** Set this value so that the task runs at a frequency of 1Hz
 *** Hint: this will be used in the `osDelayUntil` function call (the argument will be in time units of ms)
-.  increment `prevWakeTime` by `BLUE_LED_TOGGLE_FREQ`
-** This will cause `osDelayUntil` to make the task to execute every `BLUE_LED_TOGGLE_FREQ` ms. 
+. In the line before `osDelayUntil()`, increment prevWakeTime by `BLUE_LED_TOGGLE_FREQ`
+** This will cause the task to execute every `BLUE_LED_TOGGLE_FREQ` ms. 
 . Check if the blue led toggle flag is set. If so, toggle the blue led. This will require a HAL GPIO function.
-** You can find reader friendly names in `main.h`
-** You won't be able to find the blue LED so you can use the red LED instead 
 . Read the value of the blue led. This will require a HAL GPIO function.
 . Send a CAN message indicating the current state of the led 
 ** First you will try to acquire the mutex. This can be done by calling `osMutexAcquire`
-*** Its arguments are `osMutexId_t` and how long it should wait to acquire the mutex, and use a timeout of 0
+*** It’s arguments are `osMutexId_t*` and how long it should wait to acquire the mutex 
 *** The return type of this function is `osStatus_t`, if this is != to `osOK` then the mutex has not been acquired and you cannot use the CAN transmitter
 ** If you successfully acquired the mutex, you must check if there are any free CAN mailboxes to transmit on 
-*** If you don't successfully aquire the mutex skip the rest of the code in the loop 
 *** You can check this by calling `HAL_CAN_GetTxMailboxesFreeLevel`
 **** This function accepts one argument which is of type `CAN_HandleTypeDef*`
 **** This function returns the number of available mailboxes 
-** Next you will create a one element data array of type `uint8_t`
+** Next you will create a one element data array of type `uint8_t `
 ** You will then create a mailbox variable of type `uint32_t`
-*** This isn't going to be explicitly needed but it's required for `HAL_CAN_AddTxMessage`
 ** You will then set the `StdId` of the CAN Tx Header to  `BLUE_LED_STATUS_STDID`
 ** Then you will set the `DLC` to 1, because you are sending one byte 
 ** Then you will set the only element of the data array to the current status of the LED 
@@ -138,12 +137,10 @@ Then go into `Core/Src/BlueLedToggleTask.c`
 *** This function takes arguments of `CAN_HandleTypeDef*`, `CAN_TxHeaderTypeDef*`, and `uint8_t*` (which will be your data array) and a `uint32_t*` (which will be the address of your mailbox variable)
 *** This function will return `HAL_StatusTypeDef`
 ** You will then release the mutex by calling `osMutexRelease`
-*** This accepts arguments of `osMutexId_t`
+*** This accepts arguments of `osMutexId_t*`
 *** *Note*: You must release the mutex even if you don't send a message.
 
 Then go into `Core/Src/GreenLedToggleTask.c`
 
 . Repeat the steps outlined above for the green LED, except give the `GREEN_LED_STATUS_STDID` a value of 0xDDD, and the frequency of the task is 10Hz.
-
-Finally, go to the root directory (`Embedded-Recruit-Training`) and run `make`. Ensure that there are no errors
 
