@@ -4,14 +4,17 @@
     <form name="simulator" #simulator="ngForm" novalidate>
       <label>Speed (km/h):</label>
       <br>
-      <input name="speed" type="number" placeholder="Speed" (keyup)="onKeySpeed($event)">
+      <input name="speed" type="number" placeholder="Speed is required" (keyup)="onKeySpeed($event)">
       <br>
       <label>Battery Percentage (%):</label>
       <br>
-      <input name="battery"type="number" placeholder="Battery" (keyup)="onKeyBattery($event)">
+      <input name="battery"type="number" placeholder="Battery percentage is required" (keyup)="onKeyBattery($event)">
       <br>
       <img src="/assets/Cloud.png">
       <input type="range" min="0" max="100" value="50" (mouseup)="onMouseWeather($event)">
+      <button id="calculate" (click)="calculateRange()">Calculate</button>
+      <p *ngIf =  "toggle">{{range}}</p>
+      <p> Elysia Range Simulator </p>
       <img src="/assets/Sun.png">
     </form>
   </div>

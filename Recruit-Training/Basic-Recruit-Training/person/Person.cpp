@@ -24,24 +24,29 @@ int Person::getAge() const{
     return *age_;
 }
 
-const std::string& Person::getName() const{
+const std::string& Person::getName() const
+{
     return name_;
 }
 
-void Person::setName(const std::string& newName){
+void Person::setName(const std::string& newName)
+{
     name_ = newName;
 }
 
-void Person::setAge(int newAge) {
+void Person::setAge(int newAge) 
+{
     *age_ = newAge;
 }
 
-void Person::printInfo() const{
+void Person::printInfo() const
+{
     std::cout<<name_<< " " << *age_ <<std::endl;
 }
 
 
-int Person::combinedAge(Person** personArray, int size){
+int Person::combinedAge(Person** personArray, int size)
+{
     int totalAge = 0;
     for(int i = 0; i < size; i ++) {
         totalAge += *(personArray[i]->age_);
@@ -49,6 +54,7 @@ int Person::combinedAge(Person** personArray, int size){
     return totalAge;
 }
 
-void Person::birthday(Person& x){
+void Person::birthday(Person& x)
+{
     *(x.age_) =   *(x.age_) + 1 ;
 }

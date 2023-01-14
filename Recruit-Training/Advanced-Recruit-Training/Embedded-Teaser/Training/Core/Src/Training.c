@@ -100,6 +100,44 @@ void trainingTask(uint8_t* data)
         }
     }
 
+    //the lights cant be on when the lights off symbol is true
+    if (LightInfoHeadLightsOff)
+    {
+       if ((!LightInfoHeadLightsLow && !LightInfoHeadLightsHigh))
+       {
+            validData = validData & 0b00000100;
+       }
+    }
+
+
+    //The forward has to be true when the velocity is true, same with the negative
+    if (Motor1forwardVsReverse == Motor2forwardVsReverse)
+    {
+        if ((Motor1forwardVsReverse == Motor1VelocitySign) && (Motor2forwardVsReverse == Motor2VelocitySign))
+        {
+            validData = validData & 0b00000100;
+        }
+    }
+    //the low lights can't be on when the high lights are on
+    if ((LightInfoHeadLightsLow) != (LightInfoHeadLightsHigh))
+    {
+        validData = validData & 0b00000100;
+    }
+    //the right light can't be on when the left light is on
+    if (LightInfoLeftSignal != LightInfoRightSignal)
+    {
+        validData = validData & 0b00000100;
+    }
+    //the hazard light is on when all the lights (high,low,left,right) are on
+    if (LightInfoBrakes)
+    {
+        if ((!LightInfoHeadLightsHigh) && (!LightInfoHeadLightsLow) && (!LightInfoLeftSignal) && (!LightInfoRightSignal))
+        {
+            validData = validData & 0b00000100;
+        }
+    }
+
+
 
 
 //what u have to do now is defining and changing the outputArray ✓

@@ -30,9 +30,9 @@ void test_EverythingValid()
     char buf[1024];
     snprintf(buf, 1024, "Expected %d, %d, %d, %d but got %d, %d, %d, 7", input[0], input[1], input [2], validData, outputArray[0], outputArray[1], outputArray[2]);
 
-    UnityAssertEqualNumber(input[0], outputArray[0], "oh no, it doens't work 1",32, NULL);
-    UnityAssertEqualNumber(input[1], outputArray[1], "this don't work 2",32, NULL);
-    UnityAssertEqualNumber(input[2], outputArray[2], buf,32, NULL);
+    TEST_ASSERT_EQUAL_INT8(input[0], outputArray[0]);
+    TEST_ASSERT_EQUAL_INT8(input[1], outputArray[1]);
+    TEST_ASSERT_EQUAL_INT8(input[2], outputArray[2]);
     UnityAssertBits(0b00000111, 0b00000111, validData, "This is incorrect but gg", 34);
 }
 
@@ -44,7 +44,7 @@ void test_EverythingInvalid()
     input[0] = 0b11111111;
     //for the second motor
     input[1] = 0b01111110;
-    //for the third motor 
+    //for the lights
     input[2] = 0b00011111;
 
     //calling our trainingTask function from the Training.c
@@ -56,9 +56,9 @@ void test_EverythingInvalid()
 
 
 
-    UnityAssertEqualNumber(0, outputArray[0], "this dont work 11",32, NULL);
-    UnityAssertEqualNumber(0, outputArray[1], "this don't work 22",32, NULL);
-    UnityAssertEqualNumber(0, outputArray[2], buf,32, NULL);
+    TEST_ASSERT_EQUAL_INT8(0, outputArray[0]);
+    TEST_ASSERT_EQUAL_INT8(0, outputArray[1]);
+    TEST_ASSERT_EQUAL_INT8(0, outputArray[2]);
     UnityAssertBits(0b00000111, 0b00000000, validData, "This is incorrect but gg2", 60);
 
 
@@ -76,20 +76,20 @@ void test_OnlyLightsInvalid()
     //for our second motor
     input[1] = 0b10111111;
     //for the lights
-    input[2] = 0b01000001;
+    input[2] = 0b00011111;
 
     //calling our trainingTask function from the Training.c
     trainingTask(input);
 
 
-    char buf[1024];
-    snprintf(buf, 1024, "Expected %d, %d, %d, %d but got %d, %d, %d, 7", input[0], input[1], input [2], validData, outputArray[0], outputArray[1], outputArray[2]);
+    // char buf[1024];
+    // snprintf(buf, 1024, "Expected %d, %d, %d, %d but got %d, %d, %d, 7", input[0], input[1], input [2], validData, outputArray[0], outputArray[1], outputArray[2]);
 
 
 
-    UnityAssertEqualNumber(input[0], outputArray[0], "this doesn't work 111",32, NULL);
-    UnityAssertEqualNumber(input[1], outputArray[1], "this don't work 222",32, NULL);
-    UnityAssertEqualNumber(0, outputArray[2], "this don't be working 333",32, NULL);
+    TEST_ASSERT_EQUAL_INT8(input[0], outputArray[0]);
+    TEST_ASSERT_EQUAL_INT8(input[1], outputArray[1]);
+    TEST_ASSERT_EQUAL_INT8(0, outputArray[2]);
     UnityAssertBits(0b00000111, 0b00000011, validData, "This is incorrect but gg3", 91);
 
 
@@ -115,9 +115,9 @@ void test_OnlyMotorsInvalid()
     snprintf(buf, 1024, "Expected %d, %d, %d, %d but got %d, %d, %d, 7", input[0], input[1], input [2], validData, outputArray[0], outputArray[1], outputArray[2]);
 
 
-    UnityAssertEqualNumber(0, outputArray[0], "This doesn't work 1111", 32, NULL);
-    UnityAssertEqualNumber(0, outputArray[1], "this doesn't work 2222", 32, NULL);
-    UnityAssertEqualNumber(input[2], outputArray[2], buf, 32, NULL);
+    TEST_ASSERT_EQUAL_INT8(0, outputArray[0]);
+    TEST_ASSERT_EQUAL_INT8(0, outputArray[1]);
+    TEST_ASSERT_EQUAL_INT8(input[2], outputArray[2]);
     UnityAssertBits(0b00000111, 0b00000100, validData, "this is incorrect but gg4", 119);
 
 }
