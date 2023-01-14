@@ -6,7 +6,7 @@ static const uint32_t BLUE_LED_TOGGLE_FREQ = 1000;
 void blueLedToggleTask(void const* arg)
 {
     //One time osDelayUntil initialization
-    uint32_t prevWakeTime = osKernelSysTick();
+    uint32_t prevWakeTime = xTaskGetTickCount();
 
     for (;;)
     {

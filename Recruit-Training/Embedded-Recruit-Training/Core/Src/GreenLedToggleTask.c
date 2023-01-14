@@ -7,7 +7,7 @@ static const uint32_t GREEN_LED_TOGGLE_FREQ = 100;
 void greenLedToggleTask(void const* arg)
 {
     //One time osDelayUntil initialization
-    uint32_t prevWakeTime = osKernelSysTick();
+    uint32_t prevWakeTime = xTaskGetTickCount();
 
     for (;;)
     {
