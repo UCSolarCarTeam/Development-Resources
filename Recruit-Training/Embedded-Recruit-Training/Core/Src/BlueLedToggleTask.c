@@ -3,9 +3,7 @@
 void blueLedToggleTask(void const* arg)
 {
     //One time osDelayUntil initialization
-    uint32_t prevWakeTime = osKernelSysTick();
-
-    osMutexId_t* canMutex = (osMutexId_t*)arg; // Get mutex that was passed as an argument
+    uint32_t prevWakeTime = xTaskGetTickCount();
 
     for (;;)
     {
