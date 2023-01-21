@@ -13,6 +13,9 @@
       <img src="/assets/Cloud.png">
       <input type="range" min="0" max="100" value="50" (mouseup)="onMouseWeather($event)">
       <img src="/assets/Sun.png">
+      <br><br>
+      <button *ngIf="backendLogic" onClick="calculateRange()">Calculate Range</button>
+      <p id="button_print"></p>
     </form>
   </div>
 </body>

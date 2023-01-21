@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { range } from 'rxjs';
 
 @Component({
   selector: 'app-root',
@@ -27,6 +28,7 @@ export class AppComponent {
   }
 
   calculateRange() {
-
+    var range:number = -(this.speed * this.speed * this.battery / 2500) + (4 * this.battery) + this.weather;
+    document.getElementById("button_print").innerHTML = "Range: " + range;
   }
 }
