@@ -9,8 +9,8 @@ It has the following properties:
 
 * `array[0]`: contains information from Motor 1
   ** Bit 0 - forward (1) or reverse (0)
-  ** Bit 1 to 6 - velocity (bit 6 is the sign)
-  ** Bit 7 - on/off
+  ** Bit 1 to 6 - velocity (bit 6 is the sign) //say 1 is positive (forward)
+  ** Bit 7 - on/off // this is the MSB
   
 *  `array[1]`: contains information from Motor 2
   ** Bit 0 - forward (1) or reverse (0)
