@@ -4,15 +4,31 @@
     <form name="simulator" #simulator="ngForm" novalidate>
       <label>Speed (km/h):</label>
       <br>
-      <input name="speed" type="number" placeholder="Speed" (keyup)="onKeySpeed($event)">
+
+      <input name="speed" type="number" placeholder="Speed" (keyup)="onKeySpeed($event)" 
+       [formControl]="speedInput">
       <br>
+        <div *ngIf="(speedInput.errors?.min || speedInput.errors?.max) && this.buttonPressed" [ngClass] ="'error'">Speed must be between 0 - 90</div>
+        <div *ngIf="speedInput.errors?.required && this.buttonPressed" [ngClass]="'error'">Speed is required</div>
+      <br>
+
       <label>Battery Percentage (%):</label>
       <br>
-      <input name="battery"type="number" placeholder="Battery" (keyup)="onKeyBattery($event)">
+
+      <input name="battery"type="number" placeholder="Battery" (keyup)="onKeyBattery($event)"
+      class="form-control" required minlength ="0" [formControl]="batteryInput">
       <br>
+      <div *ngIf="(batteryInput.errors?.min || batteryInput.errors?.max) && this.buttonPressed" [ngClass] ="'error'">Battery must be between 0 - 100</div>
+      <div *ngIf="batteryInput.errors?.required && this.buttonPressed" [ngClass]="'error'">Battery percentage is required</div>
+      <br>
+
       <img src="/assets/Cloud.png">
       <input type="range" min="0" max="100" value="50" (mouseup)="onMouseWeather($event)">
       <img src="/assets/Sun.png">
+      <br>
+      <button (click)="(calculateRange())" type="button">Calculate Range</button>
+      <br>
+      <p id="rangeID"></p>
     </form>
   </div>
 </body>
