@@ -1,3 +1,4 @@
+#pragma once
 #include "unity.h"
 #include "TrainingTest.h"
 #include "Training.h"
@@ -23,10 +24,10 @@ void test_EverythingValid()
 
     // Used to print results of trainingTask
     printf("               Expected        Output");
-    printf("Motor1:        %u      %u", input[0], outputArray[0]);
-    printf("Motor2:        %u      %u", input[1], outputArray[1]);
-    printf("Lights:        %u      %u", input[2], outputArray[2]);
-    printf("validData      %u      %u", 0b00000111, validData);
+    printf("Motor1:        %u      %u\n", input[0], outputArray[0]);
+    printf("Motor2:        %u      %u\n", input[1], outputArray[1]);
+    printf("Lights:        %u      %u\n", input[2], outputArray[2]);
+    printf("validData      %u      %u\n", 0b00000111, validData);
 
 
     TEST_ASSERT_EQUAL_UINT8(input[0], outputArray[0]);
@@ -47,10 +48,10 @@ void test_EverythingInvalid()
 
     // Used to print results of trainingTask
     printf("               Expected        Output");
-    printf("Motor1:        %u      %u", 0, outputArray[0]);
-    printf("Motor2:        %u      %u", 0, outputArray[1]);
-    printf("Lights:        %u      %u", 0, outputArray[2]);
-    printf("validData      %u      %u", 0, validData);
+    printf("Motor1:        %u      %u\n", 0, outputArray[0]);
+    printf("Motor2:        %u      %u\n", 0, outputArray[1]);
+    printf("Lights:        %u      %u\n", 0, outputArray[2]);
+    printf("validData      %u      %u\n", 0, validData);
 
 
     TEST_ASSERT_EQUAL_UINT8(0, outputArray[0]);
@@ -71,10 +72,10 @@ void test_OnlyLightsInvalid()
 
     // Used to print results of trainingTask
     printf("               Expected        Output");
-    printf("Motor1:           %u             %u", input[0], outputArray[0]);
-    printf("Motor2:           %u             %u", input[1], outputArray[1]);
-    printf("Lights:           %u             %u", 0, outputArray[2]);
-    printf("validData         %u             %u", 0b00000110, validData);
+    printf("Motor1:           %u             %u\n", input[0], outputArray[0]);
+    printf("Motor2:           %u             %u\n", input[1], outputArray[1]);
+    printf("Lights:           %u             %u\n", 0, outputArray[2]);
+    printf("validData         %u             %u\n", 0b00000110, validData);
 
 
     TEST_ASSERT_EQUAL_UINT8(input[0], outputArray[0]);
@@ -95,10 +96,10 @@ void test_OnlyMotorsInvalid()
 
     // Used to print results of trainingTask
     printf("               Expected        Output");
-    printf("Motor1:           %u             %u", 0, outputArray[0]);
-    printf("Motor2:           %u             %u", 0, outputArray[1]);
-    printf("Lights:           %u             %u", input[2], outputArray[2]);
-    printf("validData         %u             %u", 0, validData);
+    printf("Motor1:           %u             %u\n", 0, outputArray[0]);
+    printf("Motor2:           %u             %u\n", 0, outputArray[1]);
+    printf("Lights:           %u             %u\n", input[2], outputArray[2]);
+    printf("validData         %u             %u\n", 0, validData);
 
 
     TEST_ASSERT_EQUAL_UINT8(0, outputArray[0]);
