@@ -1,5 +1,5 @@
 export class Mppt {
-    alive = false;
+    heartbeat = false;
     arrayCurrent = -1;
     arrayVoltage = -1;
     batteryVoltage = -1;
