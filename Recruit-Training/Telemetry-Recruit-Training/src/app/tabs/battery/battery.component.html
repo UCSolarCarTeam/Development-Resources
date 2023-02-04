@@ -1,10 +1,10 @@
 <ng-template #elseBlock><img class="circle-items" src="../../../assets/RedCircle.png" alt="Red Circle" ></ng-template>
-	<div class="header">
-		<div class="alive-group">
-			<span *ngIf="battery.alive; else elseBlock"><img class="circle-items" src="../../../assets/GreenCircle.png" alt="Green Circle" ></span>
-			<span class="alive-text">Alive</span>
-		</div>
+<div class="header">
+	<div class="alive-group">
+		<span *ngIf="battery.alive; else elseBlock"><img class="circle-items" src="../../../assets/GreenCircle.png" alt="Green Circle" ></span>
+		<span class="alive-text">Alive</span>
 	</div>
+</div>
 <div class="battery-container-grid">
 		<div>
 			<div class ="subheader">BMS Relay Status Flags</div>
@@ -114,8 +114,9 @@
 					<div class="data">{{battery.averageCellVoltage}} V</div>
 				</div>
 				<div class="item">
-					Populated Cells
-					<div class="data">{{battery.populatedCells}}</div>
+					Total Pack Capacity
+					<div class="data">{{battery.totalPackCapacity}}</div>
 				</div>
 			</div>
 		</div>
+<div class="data">{{battery.totalPackCapacity}}</div>

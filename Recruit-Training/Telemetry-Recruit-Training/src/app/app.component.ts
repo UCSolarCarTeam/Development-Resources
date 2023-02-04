@@ -19,7 +19,12 @@ export class AppComponent implements OnInit {
         label: 'Battery',
         link: './battery',
         index: 0
-      }
+      },
+      {
+        label: 'Mppt',
+        link: './mppt',
+        index: 1
+      }      
     ];
   }
 

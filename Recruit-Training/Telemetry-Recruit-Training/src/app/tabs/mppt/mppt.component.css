@@ -5,29 +5,25 @@
   margin-left: 0.2em;
 }
 .circle-items {
-  float: left;
+  /* float: left; */
   width: 1em;
   height: 1em;
+  margin-left: 0.2em;
 }
-.circle-items-two{
-  width: 1em;
-  height: 1em;
+.grid-container {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
 }
-.column {
-  display: flex;
-  flex-direction: column;
-  width: auto;
+.grid-span-row {
+  grid-column: 1 / -1;
+} 
+.heartbeats{
+  font-size: 1.3rem;
+  color:aliceblue;
 }
 .ifs {
   width: 10px;
-}
-.dataset {
-  text-align: center;
-  font-family: Arial, sans-serif;
-  font-size: 0.8rem;
-  color: rgb(255, 255, 255);
-  color: rgba(255, 255, 255, 0.75);
-}
+} 
 .item {
   font-family: Arial, sans-serif;
   color: rgb(255, 255, 255);
@@ -38,31 +34,27 @@
   margin-bottom: 1em;
   white-space: nowrap;
 }
-.text-align-left {
-  text-align: left;
-}
 .data {
   margin: 5px 20px 10px 20px;
   padding: 5px;
   background-color: transparent;
   border-bottom: 1px solid white;
 }
-.grid-container {
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
+.dataset {
+  text-align: center;
+  font-family: Arial, sans-serif;
+  font-size: 0.8rem;
+  color: rgb(255, 255, 255);
+  color: rgba(255, 255, 255, 0.75);
 }
-.battery-container-grid {
+.mppt-container-grid {
   display: grid;
   column-gap: 10px;
   grid-template-columns: repeat(2, 1fr);
 }
-.grid-span-row {
-  grid-column: 1 / -1;
-}
-
 @media only screen
 and (max-width: 768px){
-  .battery-container-grid {
+  .mppt-container-grid {
     grid-template-columns: repeat(1, 1fr);
     margin-left: 5px;
     margin-right: 5px;
