@@ -1,0 +1,48 @@
+.mppt-container-grid {
+  display: grid;
+  column-gap: 10px;
+  grid-template-columns: repeat(2, 1fr);
+  margin-top: 1em;
+  }
+.grid-container{
+  display: grid;
+  column-gap: 10px;
+  grid-template-columns: repeat(2, 1fr);
+}
+.item {
+  font-family: Arial, sans-serif;
+  color: rgb(255, 255, 255);
+  color: rgba(255, 255, 255, 0.9);
+  font-size: 0.8rem;
+  margin-left: -1.4em;
+  margin-right: -1.4em;
+  margin-bottom: 1em;
+  white-space: nowrap;
+}
+.alive-group {
+  margin-left: auto;
+}
+.heartbeat-text {
+  margin-right: 0.2em;
+  color:aliceblue;
+}
+.heartbeat-sign{
+  margin-left: 0.2em;
+}
+.circle-items {
+  width: 1em;
+  height: 1em;
+}
+.data {
+  margin: 5px 20px 10px 20px;
+  padding: 5px;
+  background-color: transparent;
+  border-bottom: 1px solid white;
+}
+.dataset {
+  text-align: center;
+  font-family: Arial, sans-serif;
+  font-size: 0.8rem;
+  color: rgb(255, 255, 255);
+  color: rgba(255, 255, 255, 0.75);
+}

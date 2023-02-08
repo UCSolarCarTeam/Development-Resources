@@ -1,0 +1,96 @@
+<ng-template #elseBlock><img class="circle-items" src="../../../assets/RedCircle.png" alt="Red Circle" ></ng-template>
+<div class="mppt-container-grid">
+	<div>
+		<div class="subheader">Unit 0</div>
+		<div class="grid-container dataset">
+			<div>
+				<div class="subheader">Channel 0
+					<div class="alive-group">
+						<span class="heartbeat-text">Heartbeat</span>
+						<span *ngIf="mppt0.alive; else elseBlock" class="heartbeat-sign"><img class="circle-items" src="../../../assets/GreenCircle.png" alt="Green Circle" ></span>
+					</div>
+				</div>
+				<div class="item">Array Voltage
+					<div class="data">{{mppt0.arrayVoltage}} V</div>
+				</div>
+				<div class="item">Array Current
+					<div class="data">{{mppt0.arrayCurrent}} A</div>
+				</div>
+				<div class="item">Battery Voltage
+					<div class="data">{{mppt0.batteryVoltage}} V</div>
+				</div>
+				<div class="item">Temperature
+					<div class="data">{{mppt0.temperature}} °C</div>
+				</div>
+			</div>
+			<div>
+				<div class="subheader">Channel 1
+					<div class="alive-group">
+						<div>
+							<span class="heartbeat-text">Heartbeat</span>
+							<span *ngIf="mppt1.alive; else elseBlock" class="heartbeat-sign"><img class="circle-items" src="../../../assets/GreenCircle.png" alt="Green Circle" ></span>
+						</div>
+					</div>
+				</div>
+				<div class="item">Array Voltage
+					<div class="data">{{mppt1.arrayVoltage}} V</div>
+				</div>
+				<div class="item">Array Current
+					<div class="data">{{mppt1.arrayCurrent}} A</div>
+				</div>
+				<div class="item">Battery Voltage
+					<div class="data">{{mppt1.batteryVoltage}} V</div>
+				</div>
+				<div class="item">Temperature
+					<div class="data">{{mppt1.temperature}} °C</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div>
+		<div class="subheader">Unit 1</div>
+		<div class="grid-container dataset">
+			<div>
+				<div class="subheader">Channel 0
+					<div class="alive-group">
+						<span class="heartbeat-text">Heartbeat</span>
+						<span *ngIf="mppt2.alive; else elseBlock" class="heartbeat-sign"><img class="circle-items" src="../../../assets/GreenCircle.png" alt="Green Circle" ></span>
+					</div>
+				</div>
+				<div class="item">Array Voltage
+					<div class="data">{{mppt2.arrayVoltage}} V</div>
+				</div>
+				<div class="item">Array Current
+					<div class="data">{{mppt2.arrayCurrent}} A</div>
+				</div>
+				<div class="item">Battery Voltage
+					<div class="data">{{mppt2.batteryVoltage}} V</div>
+				</div>
+				<div class="item">Temperature
+					<div class="data">{{mppt2.temperature}} °C</div>
+				</div>
+			</div>
+			<div>
+				<div class="subheader">Channel 1
+					<div class="alive-group">
+						<span class="heartbeat-text">Heartbeat</span>
+						<span *ngIf="mppt3.alive; else elseBlock"><img class="circle-items" src="../../../assets/GreenCircle.png" alt="Green Circle" ></span>
+					</div>
+				</div>
+				<div class="item">Array Voltage
+					<div class="data">{{mppt3.arrayVoltage}} V</div>
+				</div>
+				<div class="item">Array Current
+					<div class="data">{{mppt3.arrayCurrent}} A</div>
+				</div>
+				<div class="item">Battery Voltage
+					<div class="data">{{mppt3.batteryVoltage}} V</div>
+				</div>
+				<div class="item">Temperature
+					<div class="data">{{mppt3.temperature}} °C</div>
+				</div>
+			</div>
+		</div>
+	</div>
+
+</div>
