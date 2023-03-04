@@ -25,6 +25,8 @@
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
 //TODO: Include task header files
+#include "BlueLedToggleTask.h"
+#include "GreenLedToggleTask.h"
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -49,10 +51,19 @@ osThreadId_t defaultTaskHandle;
 /* USER CODE BEGIN PV */
 static const uint32_t BLUE_MESSAGE_STDID = 0xAAA;
 //TODO: Add STDID for green message
+static const uint32_t GREEN_MESSAGE_STDID = 0xBBB;
 //TODO: Add CAN Mutex handle definition
+osMutexId_t mUtex;
 //TODO: Add CAN_TX header definition
+CAN_TxHeaderTypeDef CanTXHeader;
+
 //TODO: Define thread for tasks
+osThreadId_t blue_message_thread;
+osThreadId_t green_message_thread;
+
 //TODO: Define a blue LED toggle flag and a green LED toggle flag
+uint8_t blue_message_flag;
+uint8_t green_message_flag;
 /* USER CODE END PV */
 
 /* Private function prototypes -----------------------------------------------*/
@@ -63,6 +74,25 @@ void StartDefaultTask(void* argument);
 
 /* USER CODE BEGIN PFP */
 static void MX_CAN2_UserInit(void);
+
+    CAN_FilterTypeDef greenMessageFilterConfig;
+    blueMessageFilterConfig.FilterBank = 1; // Use first filter bank
+    blueMessageFilterConfig.FilterMode = CAN_FILTERMODE_IDLIST; //Look for specific CAN messages
+    blueMessageFilterConfig.FilterScale = CAN_FILTERSCALE_32BIT;
+    blueMessageFilterConfig.FilterIdHigh = GREEN_MESSAGE_STDID << 5; // Filter registers need to be shifted left 5 bits
+    blueMessageFilterConfig.FilterIdLow = 0;
+    blueMessageFilterConfig.FilterMaskIdHigh = 0;
+    blueMessageFilterConfig.FilterFIFOAssignment = 0; //unused
+    blueMessageFilterConfig.FilterActivation = ENABLE;
+    blueMessageFilterConfig.SlaveStartFilterBank = 0; // set all filter banks for CAN2
+    CanTXHeader.ExtId = 0;
+    CanTXHeader.RTR = CAN_RTR_DATA
+    CanTXHeader.IDE = CAN_ID_STD;
+    CanTXHeader.TransmitGlobalTime = DISABLE;
+    
+
+
+
 /* USER CODE END PFP */
 
 /* Private user code ---------------------------------------------------------*/
@@ -103,6 +133,9 @@ int main(void)
 
     /* USER CODE BEGIN 2 */
     //TODO: Call MX_CAN2_UserInit
+    MX_CAN2_UserInit();
+
+
     //Activate Can Recieve Interrupts
     if (HAL_CAN_ActivateNotification(&hcan2, CAN_IT_RX_FIFO0_MSG_PENDING |
                                     CAN_IT_ERROR_WARNING |
@@ -126,6 +159,11 @@ int main(void)
 
     /* USER CODE BEGIN RTOS_MUTEX */
     //TODO: Define and create mutexes and mutex attributes
+    const osMutexAttr_t MutexAttr = 
+    {
+        .name = "MuttexAttr", // name of mutex
+    };
+    osMutexNew(MutexAttr);
     /* add mutexes, ... */
     /* USER CODE END RTOS_MUTEX */
 
@@ -153,6 +191,21 @@ int main(void)
 
     /* USER CODE BEGIN RTOS_THREADS */
     //TODO: Create threads and thread attributes
+    const osThreadAtrr_t blue_message_thread_attributes = {
+        .name = "blue_message_thread",
+        .priority = (osPriority_t) osPriorityNormal,
+        .stack_size = 128
+    }
+
+    const osThreadAtrr_t green_message_thread_attributes = {
+        .name = "blue_message_thread",
+        .priority = (osPriority_t) osPriorityNormal,
+        .stack_size = 128
+    }
+    osThreadNew((osThreadFunc_t)blue_message_thread, NONE, blue_message_thread_attributes)
+    osThreadNew((osThreadFunc_t)green_message_thread, NONE, green_message_thread_attributes)
+
+
     /* add threads, ... */
     /* USER CODE END RTOS_THREADS */
 
@@ -292,8 +345,23 @@ void HAL_CAN_RxFifo0MsgPendingCallback(CAN_HandleTypeDef* hcan)
     {
         return;
     }
-
     //TODO: Match StdId of header and data length content for green and blue messages and check data for set bit of toggling green and blue led
+    //blue
+    if (hdr.StdId == 0xAAA && hdr.DLC == 1) 
+    {
+        if (data[0] & 0b10001001 == 0b10001001)
+        {
+            blue_message_flag = 1;
+        }
+    }
+    //green
+    if (hdr.StdId == 0xBBB && hdr.DLC == 1 )
+    {
+        if (data[0] & 00000011 = 00000011) 
+        {
+            green_message_flag = 1;
+        }
+    }
 }
 
 static void MX_CAN2_UserInit(void)

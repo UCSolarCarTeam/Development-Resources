@@ -7,8 +7,16 @@
 #include "main.h"
 
 //TODO: Define an external CAN handle (same variable as in main)
+extern CAN_HandleTypeDef hcan2;
+
 //TODO: Define an external CAN Mutex handle (same variable as in main)
+extern osMutexId_t mUtex;
+
 //TODO: Define external CAN_Tx header (same variable as in main)
+extern CAN_TxHeaderTypeDef CanTXHeader;
+
 //TODO: Define external blue LED toggle flag (same variable as in main)
+extern uint8_t blue_message_flag;
+
 
 void blueLedToggleTask(void const* arg);

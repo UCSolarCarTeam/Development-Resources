@@ -23,7 +23,7 @@ Start by going to `Core/Src/main.c'.
 . Within `USER CODE BEGIN Includes` and `USER CODE END Includes`
 ** Include all task header files, these will be found under Core/Inc and have “Task” in the filename
 . Within `USER CODE BEGIN PV` and `USER CODE END PV`
-** Add the StdId for the green led, this value will be 0XBBB, look to blue StdId for an example
+** Add the StdId for the green led, this value will be 0xBBB, look to blue StdId for an example
 ** Add CAN Mutex handle definition, the type is 'osMutexId_t'
 ** Add CAN Tx Header definition. The type is `CAN_TxHeaderTypeDef`
 ** Define threads for the blue and green toggle LED tasks. The type will be `osThreadId_t`
@@ -82,6 +82,12 @@ Start by going to `Core/Src/main.c'.
 *** Check data to see if the LED should be toggled. Data can be accessed by data array (`data`). This array stores individual bytes of data received
 **** For blue LEDs if bits 0,3,7 are set (i.e. 1) then toggle 
 **** For green LED if the lower two bits are set (i.e. 1) and upper six bits are not set (i.e. 0) then toggle
+
+
+
+
+
+//START HERE KHADEEJA, DO THE INSIDE 'MX..." whatever, GO TO GITHUB SINCE ITS EASIER TO READ
 ** Inside `MX_CAN2_UserInit`
 *** Create the filter configuration for green messages
 **** Follow the example given for the blue messages with the following differences:
