@@ -74,21 +74,6 @@ void StartDefaultTask(void* argument);
 
 /* USER CODE BEGIN PFP */
 static void MX_CAN2_UserInit(void);
-
-    CAN_FilterTypeDef greenMessageFilterConfig;
-    blueMessageFilterConfig.FilterBank = 1; // Use first filter bank
-    blueMessageFilterConfig.FilterMode = CAN_FILTERMODE_IDLIST; //Look for specific CAN messages
-    blueMessageFilterConfig.FilterScale = CAN_FILTERSCALE_32BIT;
-    blueMessageFilterConfig.FilterIdHigh = GREEN_MESSAGE_STDID << 5; // Filter registers need to be shifted left 5 bits
-    blueMessageFilterConfig.FilterIdLow = 0;
-    blueMessageFilterConfig.FilterMaskIdHigh = 0;
-    blueMessageFilterConfig.FilterFIFOAssignment = 0; //unused
-    blueMessageFilterConfig.FilterActivation = ENABLE;
-    blueMessageFilterConfig.SlaveStartFilterBank = 0; // set all filter banks for CAN2
-    CanTXHeader.ExtId = 0;
-    CanTXHeader.RTR = CAN_RTR_DATA
-    CanTXHeader.IDE = CAN_ID_STD;
-    CanTXHeader.TransmitGlobalTime = DISABLE;
     
 
 
@@ -192,18 +177,18 @@ int main(void)
     /* USER CODE BEGIN RTOS_THREADS */
     //TODO: Create threads and thread attributes
     const osThreadAtrr_t blue_message_thread_attributes = {
-        .name = "blue_message_thread",
+        .name = "blueMessageThread",
         .priority = (osPriority_t) osPriorityNormal,
         .stack_size = 128
-    }
+    };
 
     const osThreadAtrr_t green_message_thread_attributes = {
-        .name = "blue_message_thread",
+        .name = "greenMessageThread",
         .priority = (osPriority_t) osPriorityNormal,
         .stack_size = 128
-    }
-    osThreadNew((osThreadFunc_t)blue_message_thread, NONE, blue_message_thread_attributes)
-    osThreadNew((osThreadFunc_t)green_message_thread, NONE, green_message_thread_attributes)
+    };
+    blue_message_thread = osThreadNew((osThreadFunc_t)blueMessageThread, mUtex, blue_message_thread_attributes);
+    green_message_thread = osThreadNew((osThreadFunc_t)greenMessageThread, mUtex, green_message_thread_attributes);
 
 
     /* add threads, ... */
@@ -349,16 +334,18 @@ void HAL_CAN_RxFifo0MsgPendingCallback(CAN_HandleTypeDef* hcan)
     //blue
     if (hdr.StdId == 0xAAA && hdr.DLC == 1) 
     {
-        if (data[0] & 0b10001001 == 0b10001001)
+        if (data[0] == 0b10001001)
         {
+            //if its 1 make it 0 --add this
             blue_message_flag = 1;
         }
     }
     //green
     if (hdr.StdId == 0xBBB && hdr.DLC == 1 )
     {
-        if (data[0] & 00000011 = 00000011) 
+        if (data[0] == 0b00000011) 
         {
+             //if its 1 make it 0 --add this
             green_message_flag = 1;
         }
     }
@@ -384,7 +371,21 @@ static void MX_CAN2_UserInit(void)
     }
 
     //TODO: Configure filter for green message
+    CAN_FilterTypeDef greenMessageFilterConfig;
+    blueMessageFilterConfig.FilterBank = 1; // Use first filter bank
+    blueMessageFilterConfig.FilterMode = CAN_FILTERMODE_IDLIST; //Look for specific CAN messages
+    blueMessageFilterConfig.FilterScale = CAN_FILTERSCALE_32BIT;
+    blueMessageFilterConfig.FilterIdHigh = GREEN_MESSAGE_STDID << 5; // Filter registers need to be shifted left 5 bits
+    blueMessageFilterConfig.FilterIdLow = 0;
+    blueMessageFilterConfig.FilterMaskIdHigh = 0;
+    blueMessageFilterConfig.FilterFIFOAssignment = 0; //unused
+    blueMessageFilterConfig.FilterActivation = ENABLE;
+    blueMessageFilterConfig.SlaveStartFilterBank = 0; // set all filter banks for CAN2
     //TODO: Configure CAN_TX header
+    CanTXHeader.ExtId = 0;
+    CanTXHeader.RTR = CAN_RTR_DATA;
+    CanTXHeader.IDE = CAN_ID_STD;
+    CanTXHeader.TransmitGlobalTime = DISABLE;
 }
 /* USER CODE END 4 */
 

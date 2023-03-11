@@ -1,7 +1,6 @@
 #include "GreenLedToggleTask.h"
 
     static const uint32_t GREEN_LED_STATUS_STDID = 0xDDD;
-    //because it's 10Hz instead of 1Hz
     static const uint32_t GREEN_LED_TOGGLE_FREQ = 10000U;
 
 
