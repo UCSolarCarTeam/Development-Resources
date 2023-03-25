@@ -1,18 +1,16 @@
 #include "GreenLedToggleTask.h"
 
-static const uint8_t GREEN_LED_STATUS_STIDID = 0xDDD;
+static const uint32_t GREEN_LED_STATUS_STDID = 0xDDD;
 
 void greenLedToggleTask(void const* arg)
 {
     //One time osDelayUntil initialization
     uint32_t prevWakeTime = osKernelSysTick();
 
-    osMutexId_t* canMutex = (osMutexId_t*)arg;
-
     for (;;)
     {
         //TODO: Add GREEN_LED_TOGGLE_FREQ to prevWakeTime
-        static const GREEN_LED_TOGGLE_FREQ = 10000U;
+        static const uint32_t GREEN_LED_TOGGLE_FREQ = 10000U;
         prevWakeTime += GREEN_LED_TOGGLE_FREQ;
         osDelayUntil(prevWakeTime);
         //TODO: Check green toggle flag and toggle blue LED
@@ -30,16 +28,15 @@ void greenLedToggleTask(void const* arg)
             uint32_t mailbox;
 
             txHeader.StdId = GREEN_LED_STATUS_STDID;
-            txHeader.dlc = 1;
+            txHeader.DLC = 1;
 
             dataArr[0] = readPin;
 
             if (HAL_CAN_GetTxMailboxesFreeLevel(&hcan2) != 0) {
-                HAL_CAN_ADDTxMessage(&hcan2, &txHeader, &dataArr, &mailbox);
+                HAL_CAN_AddTxMessage(&hcan2, &txHeader, dataArr, &mailbox);
             }
 
-            osMutexRelease(&mutexHandle);
+            osMutexRelease(mutexHandle);
         }
-
     }
 }

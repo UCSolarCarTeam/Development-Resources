@@ -11,7 +11,7 @@ CAN_HandleTypeDef hcan2;
 //TODO: Define external CAN_Tx header (same variable as in main)
 CAN_TxHeaderTypeDef txHeader;
 //TODO: Define external blue LED toggle flag (same variable as in main)
-extern uint8_t blueFlag = 0;
-extern osMutexId_t mutexHandle;
+extern uint8_t blueFlag;
+osMutexId_t mutexHandle;
 
 void blueLedToggleTask(void const* arg);

@@ -109,7 +109,7 @@ int main(void)
 
     /* USER CODE BEGIN 2 */
     //TODO: Call MX_CAN2_UserInit
-    MX_CAN2_Init();
+    MX_CAN2_UserInit();
     //Activate Can Recieve Interrupts
     if (HAL_CAN_ActivateNotification(&hcan2, CAN_IT_RX_FIFO0_MSG_PENDING |
                                     CAN_IT_ERROR_WARNING |
@@ -168,20 +168,22 @@ int main(void)
     /* USER CODE BEGIN RTOS_THREADS */
     //TODO: Create threads and thread attributes
     /* add threads, ... */
-    const osThreadAttr_t greenThread_attributes = {
+    const osThreadAttr_t greenThread_attributes =
+    {
         .name = "greenThread",
         .priority = (osPriority_t) osPriorityNormal,
         .stack_size = 128
     };
 
-    const osThreadAttr_t blueThread_attributes = {
+    const osThreadAttr_t blueThread_attributes =
+    {
         .name = "blueThread",
         .priority = (osPriority_t) osPriorityNormal,
         .stack_size = 128
     };
 
-    greenThread = osThreadNew((osThreadFunc_t) greenLedToggleTask, NONE, &greenThread);
-    blueThread = osThreadNew((osThreadFunc_t) blueLedToggleTask, NONE, &blueThread);
+    greenThread = osThreadNew((osThreadFunc_t)greenLedToggleTask, NULL, &greenThread_attributes);
+    blueThread = osThreadNew((osThreadFunc_t)blueLedToggleTask, NULL, &blueThread_attributes);
     /* USER CODE END RTOS_THREADS */
     /* Start scheduler */
     osKernelStart();
@@ -323,21 +325,23 @@ void HAL_CAN_RxFifo0MsgPendingCallback(CAN_HandleTypeDef* hcan)
 
     //TODO: Match StdId of header and data length content for green and blue messages and check data for set bit of toggling green and blue led
 
-    uint8_t STDID = hdr.StdId;
-    uint8_t DLC = hdr.DLC;
+    uint8_t blueCheck = 138U;
+    uint8_t greenCheck = 3U;
 
-    // Toggle check
-    uint8_t blueCheck = 0x10001001;
-    uint8_t greenCheck = 0x00000011;
 
-    if (data & blueCheck = blueCheck) {
-        blueFlag = !blueFlag;
-    } 
-
-    if (data & greenCheck = greenCheck) {
-        greenFlag = !greenFlag;
+    if (hdr.StdId == BLUE_MESSAGE_STDID) {
+        if (data[0] == blueCheck && hdr.DLC == 1) {
+            blueFlag = 1;
+        } else {
+            blueFlag = 0;
+        }
+    } else if (hdr.StdId == GREEN_MESSAGE_STDID) {
+        if (data[0] == greenCheck && hdr.DLC == 1) {
+            greenFlag = 1;
+        } else {
+            greenFlag = 0;
+        }
     }
-
 }
 
 static void MX_CAN2_UserInit(void)
@@ -359,6 +363,8 @@ static void MX_CAN2_UserInit(void)
         Error_Handler();
     }
 
+    
+
     //TODO: Configure filter for green message
     CAN_FilterTypeDef greenMessageFilterConfig;
     greenMessageFilterConfig.FilterBank = 1; 
@@ -371,13 +377,19 @@ static void MX_CAN2_UserInit(void)
     greenMessageFilterConfig.FilterActivation = ENABLE;
     greenMessageFilterConfig.SlaveStartFilterBank = 0; // set all filter banks for CAN2
 
+
+    if (HAL_CAN_ConfigFilter(&hcan2, &greenMessageFilterConfig) != HAL_OK)
+    {
+        /* Filter configuration Error */
+        Error_Handler();
+    }
     //TODO: Configure CAN_TX header
-    txHeader = {
-        .ExtId = 0,
-        .RTR = CAN_RTR_DATA,
-        .IDE - CAN_ID_STD,
-        .TransmitGlobalTime = DISABLE
-    };
+
+    txHeader.ExtId = 0;
+    txHeader.RTR = CAN_RTR_DATA;
+    txHeader.IDE = CAN_ID_STD;
+    txHeader.TransmitGlobalTime = DISABLE;
+
 }
 /* USER CODE END 4 */
 
