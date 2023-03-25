@@ -144,11 +144,13 @@ int main(void)
 
     /* USER CODE BEGIN RTOS_MUTEX */
     //TODO: Define and create mutexes and mutex attributes
-    const osMutexAttr_t MutexAttr = 
+
+
+    const osMutexAttr_t MutexStep4Attr=
     {
-        .name = "MuttexAttr", // name of mutex
+        .name = "mUtex", // name of mutex
     };
-    osMutexNew(MutexAttr);
+    mUtex = osMutexNew(&MutexStep4Attr);
     /* add mutexes, ... */
     /* USER CODE END RTOS_MUTEX */
 
@@ -165,30 +167,25 @@ int main(void)
     /* USER CODE END RTOS_QUEUES */
 
     /* Create the thread(s) */
-    /* definition and creation of defaultTask */
-    const osThreadAttr_t defaultTask_attributes =
-    {
-        .name = "defaultTask",
-        .priority = (osPriority_t) osPriorityNormal,
-        .stack_size = 128
-    };
-    defaultTaskHandle = osThreadNew(StartDefaultTask, NULL, &defaultTask_attributes);
+
+
 
     /* USER CODE BEGIN RTOS_THREADS */
     //TODO: Create threads and thread attributes
-    const osThreadAtrr_t blue_message_thread_attributes = {
-        .name = "blueMessageThread",
-        .priority = (osPriority_t) osPriorityNormal,
-        .stack_size = 128
+    const osThreadAttr_t blueMessageTask_attributes = {
+      .name = "blueMessageThread",
+      .priority = (osPriority_t) osPriorityNormal,
+      .stack_size = 128
     };
 
-    const osThreadAtrr_t green_message_thread_attributes = {
-        .name = "greenMessageThread",
-        .priority = (osPriority_t) osPriorityNormal,
-        .stack_size = 128
+    const osThreadAttr_t greenMessageTask_attributes = {
+      .name = "greenMessageThread",
+      .priority = (osPriority_t) osPriorityNormal,
+      .stack_size = 128
     };
-    blue_message_thread = osThreadNew((osThreadFunc_t)blueMessageThread, mUtex, blue_message_thread_attributes);
-    green_message_thread = osThreadNew((osThreadFunc_t)greenMessageThread, mUtex, green_message_thread_attributes);
+
+    blue_message_thread = osThreadNew(blueLedToggleTask, NULL, &blueMessageTask_attributes);
+    green_message_thread = osThreadNew(greenLedToggleTask, NULL, &greenMessageTask_attributes);
 
 
     /* add threads, ... */
@@ -337,7 +334,11 @@ void HAL_CAN_RxFifo0MsgPendingCallback(CAN_HandleTypeDef* hcan)
         if (data[0] == 0b10001001)
         {
             //if its 1 make it 0 --add this
+        	if (blue_message_flag == 1) {
+        		blue_message_flag = 0;
+        	}
             blue_message_flag = 1;
+
         }
     }
     //green
@@ -346,6 +347,9 @@ void HAL_CAN_RxFifo0MsgPendingCallback(CAN_HandleTypeDef* hcan)
         if (data[0] == 0b00000011) 
         {
              //if its 1 make it 0 --add this
+        	if (blue_message_flag == 1) {
+				blue_message_flag = 0;
+			}
             green_message_flag = 1;
         }
     }

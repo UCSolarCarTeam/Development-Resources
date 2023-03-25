@@ -29,30 +29,20 @@ void blueLedToggleTask(void const* arg)
         //TODO: Send CAN message indicating current state of LED
         uint32_t timer = 1000U;
         osStatus_t osMutexAcquire(mUtex, timer);
-        if (osMutexAcquire() != osOK) {
-            //the mutex has not been aquired!
+
+        if (osMutexAcquire(mUtex, timer) == osOK) {
+            HAL_CAN_GetTxMailboxesFreeLevel(&hcan2);
+            uint8_t* oneElement[1];
+            uint32_t mailbox;
+
+            CanTXHeader.StdId = BLUE_LED_STATUS_STDID;
+            CanTXHeader.DLC = 1;
+            oneElement[0] = pinState;
+            HAL_CAN_AddTxMessage(&hcan2, &CanTXHeader, oneElement, &mailbox);
+            osMutexRelease(mUtex);
         }
 
-        if (osMutexAcquire() == osOK) {
-            int MailBoxesNumber = HAL_CAN_GetxMailboxesFreeLevel(hcan2);
-        }
-
-        uint8_t* oneElement[0];
-        uint32_t mailbox;
-
-        CanTXHeader.StdID = BLUE_LED_STATUS_STDID;
-        CanTXHeader.DLC = 1;
-        oneElement[0] = pinState;
-        HAL_CAN_AddTxMessage(hcan2, CanTXHeader, oneElement, &mailbox);
-        osMutexRelease(mUtex);
-
-
-
-
-
-
-
-
+        
 
     }
 }
