@@ -1,7 +1,6 @@
-
 # Basic Telemetry Training
 
-Introduction project to learn the basics of React and Typescript
+Introduction project to learn the basics of React, Typescript and Tailwind
 
 ## Installations
 
@@ -46,7 +45,7 @@ following:
 
     - To edit the web-app, you will need to use a text editor. You may
       use any text editor that you prefer, however we use [Visual Studio
-      Code](https://code.visualstudio.com) 
+      Code](https://code.visualstudio.com)
 
 ## Running the React App
 
@@ -58,12 +57,13 @@ within your terminal and use the following command:
 
 When the program begins compiling, your terminal will display a message
 like the following:
-````
+
+```
   VITE v4.4.9  ready in 160 ms
   ➜  Local:   http://localhost:5173/
   ➜  Network: use --host to expose
   ➜  press h to show help
-````
+```
 
 By using the link specified in your terminal in your browser, you will
 be able to view the react app locally once the project has finished
@@ -77,23 +77,24 @@ accepts inputs for the speed, battery percentage, and weather
 (percentage of visible sunlight). You must implement the following to
 complete this calculator program:
 
-1.  Add a button below the inputs labeled *Calculate*.
+1.  Add a button below the inputs labeled _Calculate_.
 
     - When this button is clicked, the calculateRange function in
       App.tsx should be called.
+    - Style this button using Tailwind, the button should be blue, have rounded corners, centered text, and rectangular.
 
 2.  Implement the calculateRange function
 
     - Since we do not have enough data to determine the range of the
       Elysia at this moment, we will have to use an equation that does
-      not relate to the statistics of the Elysia car but simulates how 
+      not relate to the statistics of the Elysia car but simulates how
       the range may change with the input variables instead. The
       following equation may be used to simulate the range of the car:
 
           range = -(s * s * b / 2500) + (4 * b) + w
-	      Where s = speed, b = battery percentage w = weather
+          Where s = speed, b = battery percentage w = weather
 
-1.  Validate Inputs
+3.  Validate Inputs
 
     - For both the speed and battery percentage inputs, a number must be
       sent. You must implement input validation for both of these input
@@ -112,7 +113,7 @@ complete this calculator program:
         not true, the message "The speed should be with the range of 0
         to 90" needs to be displayed below the speed input.
 
-2.  Display the Result
+4.  Display the Result
 
     - If all of the inputs are valid and the calculate button has been
       clicked, the calculated range should be displayed below the
@@ -125,4 +126,4 @@ complete this calculator program:
 ## Extra Help
 
 There are many resources online that can help you learn more about how
-to use React. The [React](https://react.dev/) website has a lot of useful and reliable information that may be helpful. Feel free to ask any members for help as well!
+to use React and Tailwind. The [React](https://react.dev/) and [Tailwind](https://tailwindcss.com/) website has a lot of useful and reliable information that may be helpful. Feel free to ask any members for help!
