@@ -28,10 +28,11 @@ void mySwap(int& a, int& b)
 // Increment the int that x is pointing to by one.
 void myIncrement(int* x)
 {
+    *x += 1; 
 }
 
 // Uncomment this when person.cpp has been created.
-/* void personFunctions()
+void personFunctions()
 {
     Person Bill;
     Bill.setName("Bill");
@@ -62,7 +63,7 @@ void myIncrement(int* x)
               << myBirthdayAnswer.str() << std::endl;
     compareAnswers(myBirthdayAnswer.str(), correctBirthdayAnswer);
     delete Joe;
-} */
+}
 
 int main()
 {
