@@ -11,7 +11,7 @@ using namespace std;
 
 void foo(int *a, int b);
 void bar(int *a, int b);
-void mySwap(int *a, int *b);
+void mySwap(int* &a, int* &b);
 
 int main()
 {
@@ -40,6 +40,16 @@ int main()
     cout << "Predicted value of y: " << "4" << endl;
     cout << "Actual value of y: " << y << endl;
     
+    //start writing mySwap here
+    int *q = &y;
+    mySwap(p, q);
+
+    cout << "Testing mySwap:" << endl;
+    cout << "Predicted value of *p: " << "4" << endl;
+    cout << "Actual value of *p: " << *p << endl;
+    cout << "Predicted value of *q: " << "42" << endl;
+    cout << "Actual value of *q: " << *q << endl;
+
     return 0;
 }
 
@@ -55,8 +65,9 @@ void bar(int *a, int b)
     b = 912;
 }
 
-void mySwap(int *a, int *b) {
+// Pass references to the pointers so values are changed inside main
+void mySwap(int* &a, int *&b) {
     int *temp = a;
     a = b;
-    b = a;
+    b = temp;
 }
