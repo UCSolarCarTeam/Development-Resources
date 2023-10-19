@@ -11,6 +11,7 @@ using namespace std;
 
 void foo(int *a, int b);
 void bar(int *a, int b);
+void mySwap(int *a, int *b);
 
 int main()
 {
@@ -38,8 +39,6 @@ int main()
     cout << "Actual value of *p: " << *p << endl;
     cout << "Predicted value of y: " << "4" << endl;
     cout << "Actual value of y: " << y << endl;
-
-    //start writing mySwap here
     
     return 0;
 }
@@ -54,4 +53,10 @@ void bar(int *a, int b)
 {
     *a = 365;
     b = 912;
+}
+
+void mySwap(int *a, int *b) {
+    int *temp = a;
+    a = b;
+    b = a;
 }
