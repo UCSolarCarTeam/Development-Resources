@@ -3,6 +3,7 @@
 #include <string>
 
 #include "Person.h"
+#include "Person.cpp"
 
 void compareAnswers(const std::string myAnswer, const std::string correctAnswer)
 {
