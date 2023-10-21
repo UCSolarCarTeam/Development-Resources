@@ -1,7 +1,7 @@
 #include <iostream>
 #include <sstream>
 #include <string>
-
+#include "Person.cpp"
 #include "Person.h"
 
 void compareAnswers(const std::string myAnswer, const std::string correctAnswer)
