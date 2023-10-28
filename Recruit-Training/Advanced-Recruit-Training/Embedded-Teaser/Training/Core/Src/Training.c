@@ -49,7 +49,11 @@ void trainingTask(uint8_t* data)
                 output2 = output2 | Rsignal << 4;
                 output2 = output2 | Lsignal << 3;         
     }
-    output2 = output2 | hazardsStatus << 2;
+    if (hazardsStatus == 1){
+        if(Rsignal == Lsignal){
+            output2 = output2 | hazardsStatus << 2;
+        }
+    }
     output2 = output2 | brakesStatus << 1;
     
     //output
