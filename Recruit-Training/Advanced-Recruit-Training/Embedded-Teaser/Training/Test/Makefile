@@ -1,14 +1,14 @@
-TARGET = TEST
+TARGET = UNIT_TEST
 EMBEDDED_REPO_ROOT = ../../
 
-UNITY_DIR = $(EMBEDDED_REPO_ROOT)/UnityTestingTool/
-UNITY_SRC_DIR = $(UNITY_DIR)/src/
+UNITY_DIR = $(EMBEDDED_REPO_ROOT)UnityTestingTool/
+UNITY_SRC_DIR = $(UNITY_DIR)src/
 
-TRAINING_DIR = $(EMBEDDED_REPO_ROOT)/Training/
-TRAINING_TESTS_DIR = $(TRAINING_DIR)/Test/
-TRAINING_SRC_DIR = $(TRAINING_DIR)/Core/Src/
+TRAINING_DIR = $(EMBEDDED_REPO_ROOT)Training/
+TRAINING_TESTS_DIR = $(TRAINING_DIR)Test/
+TRAINING_SRC_DIR = $(TRAINING_DIR)Core/Src/
 
-TRAINING_INC_DIR = $(TRAINING_DIR)/Core/Inc/
+TRAINING_INC_DIR = $(TRAINING_DIR)Core/Inc/
 
 ifeq ($(OS),Windows_NT)
   ifeq ($(shell uname -s),) # not in a bash-like shell
@@ -44,7 +44,7 @@ COMPILE=gcc
 CFLAGS=$(PATHS)
 
 TRAINING_SOURCES = \
-				$(TRAINING_SRC_DIR)/Training.c \
+				$(TRAINING_SRC_DIR)Training.c \
 
 TEST_SOURCES = \
 			main.c \
@@ -65,11 +65,11 @@ $(PATHO)%.o: %.c
 	$(COMPILE) -c -o $@ $< $(CFLAGS)
 
 # Parse the unity sources
-$(PATHO)%.o: $(UNITY_SRC_DIR)/%.c
+$(PATHO)%.o: $(UNITY_SRC_DIR)%.c
 	$(COMPILE) -c -o $@ $< $(CFLAGS)
 
 # Parse files within the Training source
-$(PATHO)%.o: $(TRAINING_SRC_DIR)/%.c
+$(PATHO)%.o: $(TRAINING_SRC_DIR)%.c
 	echo "building $@"
 	$(MKDIR) $(dir $@)
 	$(COMPILE) -c -o $@ $< $(CFLAGS)
@@ -87,7 +87,7 @@ clean:
 	$(CLEANUP) $(PATHB)
 
 test:
-	$(PATHB)/$(TARGET)
+	$(PATHB)$(TARGET)
 
 .PRECIOUS: $(PATHB)Test%.$(TARGET_EXTENSION)
 .PRECIOUS: $(PATHD)%.d
