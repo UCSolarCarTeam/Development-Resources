@@ -2,6 +2,9 @@
 #include "TrainingTest.h"
 #include "Training.h"
 
+extern uint8_t outputArray[3];
+extern uint8_t validData;
+
 void runTrainingTests()
 {
     // Run all the tests here using RUN_TEST()
