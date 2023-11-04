@@ -26,7 +26,7 @@ void trainingTask(uint8_t* data)
 
     // Check Lights validity
 
-    while(lstatus){ // count how many bits are set in bits 0-2
+    while(lstatus){     // count how many bits are set in bits 0-2
         count += lstatus & 1;
         lstatus >>= 1;
     }
