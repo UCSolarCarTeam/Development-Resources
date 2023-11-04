@@ -13,8 +13,11 @@ const SpeedInput = (props : props) => {
           className="mx-[8px] w-1/4 rounded-md border border-solid border-[#ccc] px-[20px] py-[12px] text-black"
           name="speed"
           type="number"
+          max="90"
+          min="0"
           placeholder="Speed"
-          onChange={(e)=>(props.setSpeed(e.target.valueAsNumber))}
+          value={props.speed}
+          onChange={(e)=>(props.setSpeed(parseInt(e.target.value)))}
         />
       </div>
     </>

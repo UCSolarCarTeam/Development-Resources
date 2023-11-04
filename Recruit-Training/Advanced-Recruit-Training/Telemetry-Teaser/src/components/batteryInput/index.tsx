@@ -12,7 +12,10 @@ const BatteryInput = (props: props) => {
         className="mx-[8px] w-1/4 rounded-md border border-solid border-[#ccc] px-[20px] py-[12px] text-black"
         name="battery"
         type="number"
+        max="100"
+        min="0"
         placeholder="Battery"
+        value={props.battery}
         onChange={(e)=>(props.setBattery(e.target.valueAsNumber))}
       />
     </div>
