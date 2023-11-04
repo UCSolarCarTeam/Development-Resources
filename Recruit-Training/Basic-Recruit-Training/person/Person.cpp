@@ -1,5 +1,10 @@
-#include <Person.h>
+#include "Person.h"
 #include <iostream>
+
+Person::Person(){
+    name_ = "";
+    age_ = new int(0);
+}
 
 Person::Person(const std::string& name, int age){
     name_ = name;
@@ -19,29 +24,30 @@ const std::string& Person::getName() const {
 }
 
 void Person::setName(const std::string& newName){
-    name_ : newName;
+    name_ = newName;
 }
 
 void Person::setAge(int newAge) {
-    age_ = newAge;
+    *age_ = newAge;
 }
 
 void Person::printInfo() const {
-    cout << "Name = " << name_ << ", Age = " << age_ << endl;
+    std::cout << "Name = " << name_ << ", Age = " << *age_ << std::endl;
 }
 
-static int Person::combinedAge(Person** personArray, int size) {
+int Person::combinedAge(Person** personArray, int size) {
     int sum = 0;
 
     for (int i = 0; i < size; i++)
     {
-        sum += personArray[i];
+        sum += personArray[i] -> getAge();
     }
 
     return sum;
 }
 
- static void birthday(Person& x) {
-    x.setAge = x.getAge + 1;
+void Person::birthday(Person& x) {
+    int currentAge = x.getAge();
+    x.setAge(currentAge + 1);
  }
 
