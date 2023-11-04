@@ -1,10 +1,15 @@
+import { useState } from "react";
 import BatteryInput from "~/components/batteryInput";
 import Header from "~/components/header";
 import SpeedInput from "~/components/speedInput";
 import WeatherInput from "~/components/weatherInput";
 
 const App = () => {
+  const [s, setSpeed] = useState(0);
+  const [b, setBattery] = useState(0);
+  const [w, setWeather] = useState(0);
   const calculateRange = () => {
+    console.log(-(s * s * b / 2500) + (4 * b) + w);
     return;
   }
 
@@ -14,13 +19,14 @@ const App = () => {
         <Header />
         <form name="simulator" className="flex w-full flex-col items-center">
           <div className="mb-4 flex w-full flex-col items-center gap-y-4">
-            <SpeedInput />
-            <BatteryInput />
+            <SpeedInput setSpeed={setSpeed} />
+            <BatteryInput setBattery={setBattery} />
           </div>
           <div className="flex w-full flex-row justify-center gap-4">
-            <WeatherInput />
+            <WeatherInput setWeather={setWeather}/>
           </div>
         </form>
+        <button className="bg-blue-700 text-white rounded-md py-2 px-4 text-center" onClick = {calculateRange}>Calculate</button>
       </div>
     </div>
   );

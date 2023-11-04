@@ -1,4 +1,7 @@
-const BatteryInput = () => {
+const BatteryInput = (props: {setBattery:  React.Dispatch<React.SetStateAction<number>>}) => {
+  const handleBatteryChange = (newValue: number) => {
+    props.setBattery(newValue);
+  }
   return (
     <div className="flex w-full flex-col items-center gap-2">
       <label>Battery Percentage (%):</label>
@@ -8,6 +11,9 @@ const BatteryInput = () => {
         name="battery"
         type="number"
         placeholder="Battery"
+        onChange ={(e) => {
+          handleBatteryChange(parseInt(e.target.value));
+        }}
       />
     </div>
   );
