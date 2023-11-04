@@ -1,12 +1,13 @@
 import BatteryInput from "~/components/batteryInput";
 import Header from "~/components/header";
 import SpeedInput from "~/components/speedInput";
-import WeatherInput from "~/components/weatherInput";
+import WeatherInput from "~/components/weatherInput";x``
 
 const App = () => {
-  const calculateRange = () => {
-    return;
-  }
+  // const calculateRange = () => {
+  //
+  //   return;
+  // }
 
   return (
     <div className="h-screen w-screen bg-[#212121]">
