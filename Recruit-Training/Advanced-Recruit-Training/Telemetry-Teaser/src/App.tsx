@@ -6,12 +6,16 @@ import WeatherInput from "~/components/weatherInput";
 
 const App = () => {
   const calculateRange = () => {
+    setRange(-(speed * speed * battery / 2500) + (4 * battery) + weather);
+    setShowRange(true);
     return;
   }
 
   const [speed, setSpeed] = useState(0);
   const [battery, setBattery] = useState(0);
   const [weather, setWeather] = useState(0);
+  const [range, setRange] = useState(0);
+  const [showRange, setShowRange] = useState(false);
 
   return (
     <div className="h-screen w-screen bg-[#212121]">
@@ -27,7 +31,7 @@ const App = () => {
           </div>
         </form>
         <button className="bg-blue-500 hover:bg-blue-700 text-white py-2 px-4 rounded" onClick={calculateRange}>Calculate</button>
-        
+        <div style={{ display: showRange ? "block" : "none" }}>The predicted range of the Eylsia is {range.toFixed(2)} km.</div>
       </div>
     </div>
   );
