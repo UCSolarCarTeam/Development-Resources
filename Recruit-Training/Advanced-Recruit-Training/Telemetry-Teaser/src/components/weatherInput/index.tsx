@@ -1,7 +1,9 @@
-const WeatherInput = (props: {setWeather: React.Dispatch<React.SetStateAction<number>>}) => {
+const WeatherInput = (props: {
+  setWeather: React.Dispatch<React.SetStateAction<number>>;
+}) => {
   const handleWeatherChange = (newValue: number) => {
     props.setWeather(newValue);
-  }
+  };
   return (
     <>
       <img src="/Cloud.png" height="66px" width="66px" alt="Cloud" />
@@ -11,8 +13,7 @@ const WeatherInput = (props: {setWeather: React.Dispatch<React.SetStateAction<nu
         type="range"
         min="0"
         max="100"
-        value="50"
-        onChange={(e)=>{
+        onChange={(e) => {
           handleWeatherChange(parseInt(e.target.value));
         }}
       />
