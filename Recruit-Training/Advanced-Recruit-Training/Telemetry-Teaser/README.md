@@ -1,4 +1,4 @@
-# Basic Telemetry Training
+x# Basic Telemetry Training
 
 Introduction project to learn the basics of React, Typescript and Tailwind
 
