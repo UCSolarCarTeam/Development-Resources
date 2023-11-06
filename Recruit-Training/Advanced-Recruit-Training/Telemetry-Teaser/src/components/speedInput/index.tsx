@@ -1,4 +1,8 @@
-const SpeedInput = () => {
+interface SpeedInputProps {
+  onChangeHandler: (e: React.ChangeEvent<HTMLInputElement>) => void;
+}
+
+const SpeedInput = ({onChangeHandler} : SpeedInputProps) => {
   return (
     <>
       <div className="flex w-full flex-col items-center gap-2">
@@ -9,6 +13,7 @@ const SpeedInput = () => {
           name="speed"
           type="number"
           placeholder="Speed"
+          onChange={onChangeHandler}
         />
       </div>
     </>
