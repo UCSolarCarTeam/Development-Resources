@@ -1,4 +1,8 @@
-const BatteryInput = () => {
+interface BatteryInputProps {
+  onChangeHandler: (e: React.ChangeEvent<HTMLInputElement>) => void;
+}
+
+const BatteryInput = ({onChangeHandler} : BatteryInputProps) => {
   return (
     <div className="flex w-full flex-col items-center gap-2">
       <label>Battery Percentage (%):</label>
@@ -8,6 +12,7 @@ const BatteryInput = () => {
         name="battery"
         type="number"
         placeholder="Battery"
+        onChange={onChangeHandler}
       />
     </div>
   );
