@@ -2,6 +2,7 @@ interface Props {
   speed: number;
   setSpeed: React.Dispatch<React.SetStateAction<number>>;
 }
+
 const SpeedInput = (props: Props) => {
   return (
     <>
@@ -13,9 +14,8 @@ const SpeedInput = (props: Props) => {
           name="speed"
           type="number"
           placeholder="Speed"
-          onChange={(e) => {
-            props.setSpeed(e.target.valueAsNumber);
-          }}
+          value={props.speed}
+          onChange={(e) => props.setSpeed(parseInt(e.target.value))}
         />
       </div>
     </>

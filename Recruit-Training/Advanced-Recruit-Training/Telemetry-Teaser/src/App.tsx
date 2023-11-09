@@ -1,4 +1,5 @@
 import { useState } from "react";
+
 import BatteryInput from "~/components/batteryInput";
 import Header from "~/components/header";
 import SpeedInput from "~/components/speedInput";
@@ -6,16 +7,30 @@ import WeatherInput from "~/components/weatherInput";
 
 const App = () => {
   const calculateRange = () => {
-    setRange(-(speed * speed * battery / 2500) + (4 * battery) + weather);
-    setShowRange(true);
-    return;
-  }
+    if (validateSpeed() && validateBattery()) {
+      setRange(-((speed * speed * battery) / 2500) + 4 * battery + weather);
+    }
+  };
+
+  const validateSpeed = () => {
+    if (speed >= 0 && speed <= 90) {
+      return true;
+    }
+    return false;
+  };
+
+  const validateBattery = () => {
+    if (battery >= 0 && battery <= 100) {
+      return true;
+    }
+    return false;
+  };
 
   const [speed, setSpeed] = useState(0);
   const [battery, setBattery] = useState(0);
   const [weather, setWeather] = useState(0);
-  const [range, setRange] = useState(0);
-  const [showRange, setShowRange] = useState(false);
+  const [range, setRange] = useState(NaN);
+  // const [showRange, setShowRange] = useState(false);
 
   return (
     <div className="h-screen w-screen bg-[#212121]">
@@ -23,18 +38,61 @@ const App = () => {
         <Header />
         <form name="simulator" className="flex w-full flex-col items-center">
           <div className="mb-4 flex w-full flex-col items-center gap-y-4">
-            <SpeedInput speed={speed} setSpeed={setSpeed}/>
-            <BatteryInput battery={battery} setBattery={setBattery}/>
+            <SpeedInput speed={speed} setSpeed={setSpeed} />
+            {isNaN(speed) && <p className="text-red-600">Speed is required.</p>}
+            {!isNaN(speed) && !validateSpeed() && (
+              <p className="text-red-600">
+                The speed should be within the range of 0 to 90.
+              </p>
+            )}
+            <BatteryInput battery={battery} setBattery={setBattery} />
+            {isNaN(battery) && (
+              <p className="text-red-600">Battery percentage is required.</p>
+            )}
+            {!isNaN(battery) && !validateBattery() && (
+              <p className="text-red-600">
+                The battery percentage should be within the range of 0 to 100.
+              </p>
+            )}
           </div>
           <div className="flex w-full flex-row justify-center gap-4">
-            <WeatherInput weather={weather} setWeather={setWeather}/>
+            <WeatherInput weather={weather} setWeather={setWeather} />
           </div>
         </form>
-        <button className="bg-blue-500 hover:bg-blue-700 text-white py-2 px-4 rounded" onClick={calculateRange}>Calculate</button>
-        <div style={{ display: showRange ? "block" : "none" }}>The predicted range of the Eylsia is {range.toFixed(2)} km.</div>
+        <button
+          className="rounded bg-blue-500 px-4 py-2 text-white hover:bg-blue-700"
+          onClick={calculateRange}
+        >
+          Calculate
+        </button>
+        {/* <div className="py-6" style={{ display: showRange ? "block" : "none" }}>
+          The predicted range of the Eylsia is {range.toFixed(2)} km.
+        </div> */}
+        {!isNaN(range) && validateSpeed() && validateBattery() && (
+          <div className="py-6">
+            The predicted range of the Eylsia is {range.toFixed(2)} km.
+          </div>
+        )}
       </div>
     </div>
   );
+
+  // function validateInput() {
+  //   if (battery >= 0 && battery <= 100) {
+  //     setValidBattery(true);
+  //     console.log("valid battery");
+  //   } else {
+  //     setValidBattery(false);
+  //     console.log("invalid battery");
+  //   }
+  //   if (speed >= 0 && speed <= 90) {
+  //     setValidSpeed(true);
+  //     console.log("valid speed");
+  //   } else {
+  //     setValidSpeed(false);
+  //     console.log("invalid speed");
+  //   }
+  // }
 };
 
 export default App;

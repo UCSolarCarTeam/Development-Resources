@@ -14,7 +14,7 @@ const WeatherInput = (props: Props) => {
         min="0"
         max="100"
         value={props.weather}
-        onChange={(e) => props.setWeather(e.target.valueAsNumber)}
+        onChange={(e) => props.setWeather(parseInt(e.target.value))}
       />
       <img src="/Sun.png" height="66px" width="66px" alt="Sun" />
     </>

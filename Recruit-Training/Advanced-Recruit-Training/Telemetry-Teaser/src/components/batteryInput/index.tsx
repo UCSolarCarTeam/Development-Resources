@@ -13,9 +13,8 @@ const BatteryInput = (props: Props) => {
         name="battery"
         type="number"
         placeholder="Battery"
-        onChange={(e) => {
-          props.setBattery(e.target.valueAsNumber);
-        }}
+        value={props.battery}
+        onChange={(e) => props.setBattery(parseInt(e.target.value))}
       />
     </div>
   );
