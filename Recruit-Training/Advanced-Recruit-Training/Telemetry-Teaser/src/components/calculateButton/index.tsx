@@ -1,8 +1,18 @@
-const CalculateButton = () => {
+interface CalculateButtonProps {
+  onClickHandler: () => void;
+}
+
+const CalculateButton = ({onClickHandler} : CalculateButtonProps) => {
   return (
     <>
       <div className="flex w-full flex-col items-center gap-2">
-        <button type="submit" className="bg-sky-900 mx-[8px] w-1/4 rounded-md px-[20px] py-[12px]" form="">Calculate</button>
+        <button
+          type="button"
+          className="mx-[8px] w-1/4 rounded-md bg-sky-900 px-[20px] py-[12px]"
+          onClick={onClickHandler}
+        >
+          Calculate
+        </button>
       </div>
     </>
   );

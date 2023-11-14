@@ -11,15 +11,22 @@ const App = () => {
     return;
   };
 
+  // Set up hooks for info fields
   const [speed, setSpeed] = useState(0);
   const [battery, setBattery] = useState(0);
   const [weather, setWeather] = useState(0);
 
+  // Field change event handlers to update states
   const onSpeedChange = (e: React.ChangeEvent<HTMLInputElement>) => setSpeed(Number(e.target.value));
 
   const onBatteryChange = (e: React.ChangeEvent<HTMLInputElement>) => setBattery(Number(e.target.value));
 
   const onWeatherChange = (e: React.ChangeEvent<HTMLInputElement>) => setWeather(Number(e.target.value));
+
+  // Handle form submit
+  const onButtonClick = () => {
+    console.log(speed, battery, weather);
+  }
 
 
   return (
@@ -29,6 +36,7 @@ const App = () => {
         <form
           name="simulator"
           className="flex w-full flex-col items-center bg-[#212121]"
+
         >
           <div className="mb-4 flex w-full flex-col items-center gap-y-4">
             <SpeedInput onChangeHandler={onSpeedChange} />
@@ -38,7 +46,7 @@ const App = () => {
             <WeatherInput  onChangeHandler={onWeatherChange}/>
           </div>
           <div className="mb-4 flex w-full flex-row justify-center gap-4">
-            <CalculateButton />
+            <CalculateButton onClickHandler={onButtonClick}/>
           </div>
         </form>
       </div>
