@@ -3,7 +3,7 @@ interface ErrorMessageProps {
 }
 
 const ErrorMessage = ({message} : ErrorMessageProps) => {
-    return <h4>{message}</h4>
+    return <h4 className="text-slate-400">{message}</h4>
 }
 
 export default ErrorMessage;

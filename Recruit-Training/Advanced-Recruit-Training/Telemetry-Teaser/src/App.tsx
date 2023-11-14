@@ -20,8 +20,7 @@ const App = () => {
   const [display, setDisplay] = useState(false);
 
   // Set up hooks for error states
-  // Going to set empty flags as false so errors don't display at first render
-  // Only want errors to display after a button click
+  // Going to set error flags as false so errors don't display at first render when fields are empty
   const [isSpeedEmpty, setSpeedEmpty] = useState(false);
   const [isBatteryEmpty, setBatteryEmpty] = useState(false);
   const [isSpeedError, setSpeedError] = useState(false);
@@ -83,7 +82,6 @@ const App = () => {
           </div>
         </form>
         {display && <RangeDisplay range={calculateRange(Number(speed), Number(battery), weather)}/>}
-        <h1 className=" bg-[#212121]">{String(!(isSpeedEmpty || isSpeedError || isBatteryEmpty || isBatteryError))}</h1>
       </div>
     </div>
   );
