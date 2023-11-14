@@ -6,15 +6,16 @@ import Header from "~/components/header";
 import SpeedInput from "~/components/speedInput";
 import WeatherInput from "~/components/weatherInput";
 import ErrorMessage from "./components/errorMessage";
+import RangeDisplay from "./components/rangeDisplay";
 
 const App = () => {
   const calculateRange = (s: number, b: number, w:number) => {
     return -(s * s * b / 2500) + (4 * b) + w;
   };
 
-  // Set up hooks for info field states
-  const [speed, setSpeed] = useState(Infinity);
-  const [battery, setBattery] = useState(Infinity);
+  // Set up hooks for form field states
+  const [speed, setSpeed] = useState("");
+  const [battery, setBattery] = useState("");
   const [weather, setWeather] = useState(50);
 
   // Set up hooks for error states
@@ -26,27 +27,37 @@ const App = () => {
   const [isBatteryError, setBatteryError ] = useState(false);
 
   // Field change event handlers to update states
-  const onSpeedChange = (e: React.ChangeEvent<HTMLInputElement>) => setSpeed(Number(e.target.value));
+  const onSpeedChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    // Capture new speed value and update error states accordingly
+    const newSpeed = e.target.value;
+    newSpeed == "" ? setSpeedEmpty(true) : setSpeedEmpty(false);
+    !(Number(newSpeed) >= 0 && Number(newSpeed) <= 90) ? setSpeedError(true): setSpeedError(false);
+    // Set new speed
+    setSpeed(newSpeed);
+  };
 
-  const onBatteryChange = (e: React.ChangeEvent<HTMLInputElement>) => setBattery(Number(e.target.value));
+  const onBatteryChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const newBattery = e.target.value;
+    (newBattery == "") ? setBatteryEmpty(true): setBatteryEmpty(false);
+    !(Number(newBattery) >= 0 && Number(newBattery) <= 100) ? setBatteryError(true) : setBatteryError(false);
+
+    setBattery(newBattery);
+  };
 
   const onWeatherChange = (e: React.ChangeEvent<HTMLInputElement>) => setWeather(Number(e.target.value));
 
   // Handle form submit
   const onButtonClick = () => {
-    // Check for input errors upon click
-    if(speed == Infinity)
-      setSpeedEmpty(true);
+    // Check for input errors upon click.  
+    // Comparisons might work without type conversion to Number but let's be proper and avoid funky behaviour
+    // speed == "" ? setSpeedEmpty(true) : setSpeedEmpty(false)
+    // !(Number(speed) >= 0 && Number(speed) <= 90) ? setSpeedError(true): setSpeedError(false);
+    // (battery == "") ? setBatteryEmpty(true): setBatteryEmpty(false);
+    // !(Number(battery) >= 0 && Number(battery) <= 100) ? setBatteryError(true) : setBatteryError(false);
 
-    if(!(speed >= 0 && speed <= 90))
-      setSpeedError(true);
-
-    if(battery == Infinity)
-      setBatteryEmpty(true);
     
-    if(!(battery >= 0 && battery <= 100))
-      setBatteryError(true);
-    
+    console.log(speed, battery, weather);
+    console.log(isSpeedEmpty, isSpeedError, isBatteryEmpty, isBatteryError);
   }
 
 
@@ -74,6 +85,8 @@ const App = () => {
             <CalculateButton onClickHandler={onButtonClick}/>
           </div>
         </form>
+        {!(isSpeedEmpty || isSpeedError || isBatteryEmpty || isBatteryError) && <RangeDisplay range={calculateRange(Number(speed), Number(battery), weather)}/>}
+        <h1 className=" bg-[#212121]">{String(!(isSpeedEmpty || isSpeedError || isBatteryEmpty || isBatteryError))}</h1>
       </div>
     </div>
   );
