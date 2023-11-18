@@ -1,6 +1,6 @@
 interface props {
-  battery : number;
-  setBattery : React.Dispatch<React.SetStateAction<number>>;
+  battery: number;
+  setBattery: React.Dispatch<React.SetStateAction<number>>;
 }
 
 const BatteryInput = (props: props) => {
@@ -16,7 +16,7 @@ const BatteryInput = (props: props) => {
         min="0"
         placeholder="Battery"
         value={props.battery}
-        onChange={(e)=>(props.setBattery(e.target.valueAsNumber))}
+        onChange={(e) => props.setBattery(e.target.valueAsNumber)}
       />
     </div>
   );
