@@ -20,6 +20,9 @@ const App = () => {
           <div className="flex w-full flex-row justify-center gap-4">
             <WeatherInput />
           </div>
+          <button className="display: block; rounded-md bg-blue-500 px-4 py-2 font-bold text-white hover:bg-blue-700">
+            _Calculate_
+          </button>
         </form>
       </div>
     </div>
