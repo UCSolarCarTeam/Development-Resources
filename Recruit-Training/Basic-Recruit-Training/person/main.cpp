@@ -25,8 +25,9 @@ void mySwap(int &a, int &b)
     b = temp;
 }
 // Increment the int that x is pointing to by one.
-void myIncrement(int *x)
+void myIncrement(int *x) // argument is a pointer variable that points to a data type
 {
+    (*x)++;
 }
 
 // Uncomment this when person.cpp has been created.
@@ -71,6 +72,8 @@ int main()
     // Pass a & b into mySwap here
     mySwap(a, b);
     // Pass in a to myIncrement here
+    int *ptr = &a;
+    myIncrement(ptr);
 
     std::cout << "Checking Swap and Increment: " << std::endl;
 
