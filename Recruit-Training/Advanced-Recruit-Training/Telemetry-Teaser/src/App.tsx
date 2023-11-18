@@ -12,12 +12,22 @@ const App = () => {
   const range = -((s * s * b) / 2500) + 4 * b + w;
   const [output, setOutput] = useState<string>("");
 
-  const calculateRange = (range: any) => {
+  const calculateRange = (range: string) => {
     if (!isNaN(s)) {
-      if (!isNaN(b)) {
-        setOutput(range);
+      if (s >= 0 && s <= 90) {
+        if (!isNaN(b)) {
+          if (b >= 0 && b <= 100) {
+            const message = `The predicted range of Elysia is ${range} km.`;
+
+            setOutput(`${message}`);
+          } else {
+            setOutput("Enter a Battery Percentage Between 0% and 100%");
+          }
+        } else {
+          setOutput("Enter Value for Battery %");
+        }
       } else {
-        setOutput("Enter Value for Battery %");
+        setOutput("Enter a Speed between 0km/h and 90km/h");
       }
     } else {
       setOutput("Enter Value for Speed");
