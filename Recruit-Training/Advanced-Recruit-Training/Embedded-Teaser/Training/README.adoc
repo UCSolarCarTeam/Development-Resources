@@ -55,6 +55,13 @@ The following are the test cases you must create:
 For your convenience, we have created the folder structure for you already as well. 
 Under `Training/Test`you should find 3 files. `TrainingTest.c`, `TrainingTest.h` and `main.c`. Like the previous, some barebone structure has been laid out for you. 
 
+For compiling. You need to have "make" and "gcc" installed.
+If using windows you can use the following guides:
+gcc: https://www.linkedin.com/pulse/installing-gcc-compiler-windows-run-c-program-gitbash-david-michael/
+make: https://gnuwin32.sourceforge.net/packages/make.htm (Download "Complete package, except sources" setup file)
+
+Please keep in mind that the make is not guaranteed to add make to your path. If, once you restart your computer, you can't run "make" on a command prompt, please find the bin installation folder and add that to your path.
+
 Good luck and let us know if you have any questions!
 
-Created by the Embedded Team, Nov 2020.
+Editted by the Embedded Team, Nov 2023.
