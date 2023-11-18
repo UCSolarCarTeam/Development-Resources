@@ -13,16 +13,51 @@ NOTE: I decided that if the motors do not have matching ON/OFF status or do not 
 
 void trainingTask(uint8_t* data)
 {
+    // MOTORS
     // Check equality in motor ON/OFF status
-    // 00000001 (1)
-    uint8_t isMotorOneON = 1 & outputArray[0];
-    uint8_t isMotorTwoON = 1 & outputArray[1];
+    uint8_t isMotorOneOn = 0b00000001 & outputArray[0];
+    uint8_t isMotorTwoOn = 0b00000001 & outputArray[1];
 
-    // Check equality in motor velocity
-    // 01111110 (126)
-    uint8_t motorOneVelocity = 126 & outputArray[0];
-    int motorTwoVelocity = 126 & outputArray[1];
+    // Check equality in velocity (magnitude and direction) 
+    uint8_t motorOneVelocity = (0b01111110 & outputArray[0]) >> 1;
+    uint8_t motorTwoVelocity = (0b01111110 & outputArray[1]) >> 1;
 
     // Check motors are in sync
-    int isSynced = (isMotorOneON == isMotorTwoON) && (motorOneVelocity == motorTwoVelocity);
+    int isSynced = (isMotorOneOn == isMotorTwoOn) && (motorOneVelocity == motorTwoVelocity);
+
+    if (isSynced)
+    {
+        // Set Motor 1 
+        checkMotorData(isMotorOneOn, motorOneVelocity) ? validData[0] = 1 : validData[0] = 0;
+        // Set Motor 2
+        checkMotorData(isMotorTwoOn, motorTwoVelocity) ? validData[1] = 1 : validData[1] = 0;
+    } else
+    {
+        validData[0] = 0;
+        validData[1] = 0;
+    }
+
+    // LIGHTS
+
+
+}
+
+/** @brief Function that takes in motor ON/OFF status and returns 1 if data
+* is valid and 0 if data is not valid.  This function only looks at the motor as a
+* standalone unit and aasumes that it is synced with the other motor. 
+* 
+* @param[in] isMotorOn 8 bit integer with value 0000000 or 0000001
+* @param[in] motorVelocity 8 bit integer representing the velocity of the motor
+*/
+int checkMotorData(uint8_t isMotorOn, uint8_t motorVelocity) {
+    // When motor is off we need to check velocity
+    if (!isMotorOn)
+    {
+        // Since motor is off, input is valid iff velocity is 0
+        !velocity? return 1: return 0;
+    }
+
+    // Since we are assuming that motors are synced, any on state is valid
+    return 1;
+    
 }
