@@ -10,7 +10,6 @@ NOTE: I decided that if the motors do not have matching ON/OFF status or do not 
 * Velocity will be compared in its vector form. i.e. v1 = v2 if and only if they are equal in magnitude and direction.
 */
 
-
 void trainingTask(uint8_t* data)
 {
     // MOTORS
@@ -28,9 +27,9 @@ void trainingTask(uint8_t* data)
     if (isSynced)
     {
         // Set Motor 1 
-        checkMotorData(isMotorOneOn, motorOneVelocity) ? validData[0] = 1 : validData[0] = 0;
+        isMotorDataValid(isMotorOneOn, motorOneVelocity) ? validData[0] = 1 : validData[0] = 0;
         // Set Motor 2
-        checkMotorData(isMotorTwoOn, motorTwoVelocity) ? validData[1] = 1 : validData[1] = 0;
+        isMotorDataValid(isMotorTwoOn, motorTwoVelocity) ? validData[1] = 1 : validData[1] = 0;
     } else
     {
         validData[0] = 0;
@@ -38,6 +37,25 @@ void trainingTask(uint8_t* data)
     }
 
     // LIGHTS
+    // Check exactly one of the headlight statuses is on
+    uint8_t isHeadlightOff = (0b10000000 & lightData) >> 7;
+    uint8_t isHeadlightLow = (0b01000000 & lightData) >> 6;
+    uint8_t isHeadlightHigh = (0b00100000 & lightData) >> 5;
+    uint8_t isHeadlightValid = isHeadlightOff ^ isHeadlightLow ^ isHeadlightHigh;
+
+    // In order to check signal lights we needs to know if hazards are on and then determine the right behaviour
+    uint8_t isHazardOn = (0b00000100 & lightData) >> 2;
+    uint8_t isRightSignalOn = (0b00010000 & lightData) >> 4;
+    uint8_t isLeftSignalOn = (0b00001000 & lightData) >> 3;
+    uint8_t isSignalValid;
+    if (isHazardOn)
+    {
+        // When hazard light is on, the signals must both be in the same state to denote blinking.
+        isSignalValid = !(isRightSignalOn ^ isLeftSignalOn);
+    } else {
+        // Signals may not be on at the same time
+        isSignalValid = !(isRightSignalOn && isLeftSignalOn);
+    }
 
 
 }
@@ -49,7 +67,7 @@ void trainingTask(uint8_t* data)
 * @param[in] isMotorOn 8 bit integer with value 0000000 or 0000001
 * @param[in] motorVelocity 8 bit integer representing the velocity of the motor
 */
-int checkMotorData(uint8_t isMotorOn, uint8_t motorVelocity) {
+int isMotorDataValid(uint8_t isMotorOn, uint8_t motorVelocity) {
     // When motor is off we need to check velocity
     if (!isMotorOn)
     {
