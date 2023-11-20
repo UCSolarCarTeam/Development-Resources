@@ -7,7 +7,10 @@ extern uint8_t validData;
 
 void runTrainingTests()
 {
-    // Run all the tests here using RUN_TEST()
+    RUN_TEST(test_EverythingValid);
+    RUN_TEST(test_EverythingInvalid);
+    RUN_TEST(test_OnlyLightsInvalid);
+    RUN_TEST(test_OnlyMotorsInvalid);
 }
 
 void test_EverythingValid()

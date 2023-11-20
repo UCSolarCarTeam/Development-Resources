@@ -14,12 +14,12 @@ void trainingTask(uint8_t* data)
 {
     // MOTORS
     // Check equality in motor ON/OFF status
-    uint8_t isMotorOneOn = 0b00000001 & outputArray[0];
-    uint8_t isMotorTwoOn = 0b00000001 & outputArray[1];
+    uint8_t isMotorOneOn = 0b00000001 & data[0];
+    uint8_t isMotorTwoOn = 0b00000001 & data[1];
 
     // Check equality in velocity (magnitude and direction) 
-    uint8_t motorOneVelocity = (0b01111110 & outputArray[0]) >> 1;
-    uint8_t motorTwoVelocity = (0b01111110 & outputArray[1]) >> 1;
+    uint8_t motorOneVelocity = (0b01111110 & data[0]) >> 1;
+    uint8_t motorTwoVelocity = (0b01111110 & data[1]) >> 1;
 
     // Check motors are in sync
     int isSynced = (isMotorOneOn == isMotorTwoOn) && (motorOneVelocity == motorTwoVelocity);
@@ -38,16 +38,17 @@ void trainingTask(uint8_t* data)
 
     // LIGHTS
     // Check exactly one of the headlight statuses is on
-    uint8_t isHeadlightOff = (0b10000000 & lightData) >> 7;
-    uint8_t isHeadlightLow = (0b01000000 & lightData) >> 6;
-    uint8_t isHeadlightHigh = (0b00100000 & lightData) >> 5;
+    uint8_t isHeadlightOff = (0b10000000 & data[2]) >> 7;
+    uint8_t isHeadlightLow = (0b01000000 & data[2]) >> 6;
+    uint8_t isHeadlightHigh = (0b00100000 & data[2]) >> 5;
     uint8_t isHeadlightValid = isHeadlightOff ^ isHeadlightLow ^ isHeadlightHigh;
 
     // In order to check signal lights we needs to know if hazards are on and then determine the right behaviour
-    uint8_t isHazardOn = (0b00000100 & lightData) >> 2;
-    uint8_t isRightSignalOn = (0b00010000 & lightData) >> 4;
-    uint8_t isLeftSignalOn = (0b00001000 & lightData) >> 3;
+    uint8_t isHazardOn = (0b00000100 & data[2]) >> 2;
+    uint8_t isRightSignalOn = (0b00010000 & data[2]) >> 4;
+    uint8_t isLeftSignalOn = (0b00001000 & data[2]) >> 3;
     uint8_t isSignalValid;
+
     if (isHazardOn)
     {
         // When hazard light is on, the signals must both be in the same state to denote blinking.
@@ -57,6 +58,16 @@ void trainingTask(uint8_t* data)
         isSignalValid = !(isRightSignalOn && isLeftSignalOn);
     }
 
+    isHeadlightValid && isSignalValid ? validData[2] = 1 : validData[2] = 0;
+
+    // Write to outpuData iff data is valid
+    if (validData[0] == 0 && validData[1] == 0 && validData[2] == 0)
+    {
+        for (int i = 0; i < 3; i++)
+        {
+            outputArray[i] = data[i];
+        }
+    }
 
 }
 
