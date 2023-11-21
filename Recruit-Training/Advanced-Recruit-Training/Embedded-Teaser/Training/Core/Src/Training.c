@@ -24,17 +24,8 @@ void trainingTask(uint8_t* data)
     // Check motors are in sync
     int isSynced = (isMotorOneOn == isMotorTwoOn) && (motorOneVelocity == motorTwoVelocity);
 
-    if (isSynced)
-    {
-        // Set Motor 1 
-        isMotorDataValid(isMotorOneOn, motorOneVelocity) ? validData[0] = 1 : validData[0] = 0;
-        // Set Motor 2
-        isMotorDataValid(isMotorTwoOn, motorTwoVelocity) ? validData[1] = 1 : validData[1] = 0;
-    } else
-    {
-        validData[0] = 0;
-        validData[1] = 0;
-    }
+    // If the motors are in sync only need to check if one motor is valid since they must be equal!
+    isSynced && isMotorDataValid(isMotorOneOn, motorOneVelocity) ? validData = 0b11000000 : validData = 0b00000000;
 
     // LIGHTS
     // Check exactly one of the headlight statuses is on
@@ -49,19 +40,15 @@ void trainingTask(uint8_t* data)
     uint8_t isLeftSignalOn = (0b00001000 & data[2]) >> 3;
     uint8_t isSignalValid;
 
-    if (isHazardOn)
-    {
-        // When hazard light is on, the signals must both be in the same state to denote blinking.
-        isSignalValid = !(isRightSignalOn ^ isLeftSignalOn);
-    } else {
-        // Signals may not be on at the same time
-        isSignalValid = !(isRightSignalOn && isLeftSignalOn);
-    }
+    // When hazard light is on, the signals must both be in the same state to denote blinking.
+    // When hazards are not on, signals may not be on at the same time
+    isHazardOn ? isSignalValid = !(isRightSignalOn ^ isLeftSignalOn) : isSignalValid = !(isRightSignalOn && isLeftSignalOn);
 
-    isHeadlightValid && isSignalValid ? validData[2] = 1 : validData[2] = 0;
+    // Set bit 2 of validData accordingly
+    isHeadlightValid && isSignalValid ? validData = 0b00100000 | validData : validData = 0b11011111 & validData;
 
     // Write to outpuData iff data is valid
-    if (validData[0] == 0 && validData[1] == 0 && validData[2] == 0)
+    if (validData == 0b11100000)
     {
         for (int i = 0; i < 3; i++)
         {
