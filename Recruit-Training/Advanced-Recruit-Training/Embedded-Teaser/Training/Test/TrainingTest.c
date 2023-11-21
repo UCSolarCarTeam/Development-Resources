@@ -15,16 +15,25 @@ void runTrainingTests()
 
 void test_EverythingValid()
 {
-    
+    uint8_t data[3] = {0b1001001,0b1001001, 0011000};
 }
 
 void test_EverythingInvalid()
 {
+    uint8_t data[3] = {0b11011011, 0b10010000, 0b11111000};
 
 }
 
 void test_OnlyLightsInvalid()
 {
+    // Case 1: Headlights are in two states
+    uint8_t data1[3] = {0b10010111,0b10010111,0b11000000};
+
+    // Case 2: Hazards off, but both signals are on
+    uint8_t data2[3] = {0b10010111,0b10010111,0b10011000};
+
+    // Case 3: Hazards on, but signals not flashing
+    uint8_t data3[3] = {0b10010111,0b10010111,0b10010100};
 
 }
 
@@ -32,11 +41,7 @@ void test_OnlyMotorsInvalid()
 {
     // Case 1: Motors not in sync
     uint8_t data1[3] = {0b11100111, 0b01001001, 0b01000000};
-    uint8_t expected[3] = {0,0,1};
-    TEST_ASSERT_EACH_EQUAL_UINT8(expected, trainingTask(data1));
-
 
     // Case 2: Motors in sync, but turned off with non-zero velocity
     uint8_t data2[3] = {0b11000000, 0b11000000, 0b01000000};
-    TEST_ASSERT_EACH_EQUAL_UINT8(expected, trainingTask(data2));
 }

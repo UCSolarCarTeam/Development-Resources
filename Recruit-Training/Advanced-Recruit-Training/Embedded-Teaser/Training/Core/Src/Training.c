@@ -66,6 +66,10 @@ void trainingTask(uint8_t* data)
 * @param[in] motorVelocity 8 bit integer representing the velocity of the motor
 */
 int isMotorDataValid(uint8_t isMotorOn, uint8_t motorVelocity) {
+
+    // TODO: If motor is moving forward, then the sign of the bit should be positive.
+
+
     // When motor is off we need to check velocity
     if (!isMotorOn)
     {
