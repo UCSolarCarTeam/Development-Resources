@@ -54,7 +54,7 @@ void trainingTask(uint8_t* data)
         {
             outputArray[i] = data[i];
         }
-    }
+    };
 
 }
 
