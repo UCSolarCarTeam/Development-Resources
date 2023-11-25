@@ -7,7 +7,7 @@ uint8_t validData = 0; // Set bits 0, 1, 2 if the input array elements were vali
 #define MOTOR_FWD 0b10000001
 #define MOTOR_BWD 0b11000001
 #define MOTOR_ON 0b10000000
-#define VELOCITY 0b1111110
+#define VELOCITY 0b111110
 #define VELOCITY_SIGN  0b1000000
 #define DIRECTION 0b1
 
@@ -92,8 +92,9 @@ void trainingTask(uint8_t* data)
     // Check Headights validity
     // Boolean for Valid Headlights: 
         // ~High*~Low*Off + ~High*Low*~Off + High*~Low*~Off
-        // high XOR low XOR off
-    if (high ^ low ^ off){
+        // high XOR low XOR off AND NOT(high AND low AND off)
+    if ((high ^ low ^ off) 
+        && !(high && low && off)){
         isValidHead = 1;
     }
 
