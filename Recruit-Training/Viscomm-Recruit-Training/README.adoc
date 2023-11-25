@@ -2,6 +2,9 @@
 
 Intro project to learn C++ and QT
 
+== Installing Qt
+Follow this guide: https://uofcsolarcar.atlassian.net/wiki/spaces/ST/pages/56721401/Visual+Communication#Qt-Installation-Guide
+
 == Running the project
 
 === Via Command Line
