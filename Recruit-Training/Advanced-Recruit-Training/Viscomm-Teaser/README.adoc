@@ -2,6 +2,9 @@
 
 Intro project to learn about JSON, Qt Designer, and Signals and Slots
 
+== Installing Qt & Qt Creator
+Follow this guide: https://uofcsolarcar.atlassian.net/wiki/spaces/ST/pages/56721401/Visual+Communication#Qt-Installation-Guide
+
 == Running the project via QT Creator
 
 The project can be run through the play button. 
