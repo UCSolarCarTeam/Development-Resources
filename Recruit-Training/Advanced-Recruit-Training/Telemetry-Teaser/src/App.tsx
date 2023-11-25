@@ -13,24 +13,17 @@ const App = () => {
   };
 
   const validateSpeed = () => {
-    if (speed >= 0 && speed <= 90) {
-      return true;
-    }
-    return false;
+    return speed >= 0 && speed <= 90 ? true : false;
   };
 
   const validateBattery = () => {
-    if (battery >= 0 && battery <= 100) {
-      return true;
-    }
-    return false;
+    return battery >= 0 && battery <= 100 ? true : false;
   };
 
   const [speed, setSpeed] = useState(0);
   const [battery, setBattery] = useState(0);
   const [weather, setWeather] = useState(0);
   const [range, setRange] = useState(NaN);
-  // const [showRange, setShowRange] = useState(false);
 
   return (
     <div className="h-screen w-screen bg-[#212121]">
@@ -76,23 +69,6 @@ const App = () => {
       </div>
     </div>
   );
-
-  // function validateInput() {
-  //   if (battery >= 0 && battery <= 100) {
-  //     setValidBattery(true);
-  //     console.log("valid battery");
-  //   } else {
-  //     setValidBattery(false);
-  //     console.log("invalid battery");
-  //   }
-  //   if (speed >= 0 && speed <= 90) {
-  //     setValidSpeed(true);
-  //     console.log("valid speed");
-  //   } else {
-  //     setValidSpeed(false);
-  //     console.log("invalid speed");
-  //   }
-  // }
 };
 
 export default App;
