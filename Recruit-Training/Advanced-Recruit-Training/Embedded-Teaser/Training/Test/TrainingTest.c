@@ -15,7 +15,7 @@ void runTrainingTests()
 
 void test_EverythingValid()
 {
-    uint8_t data[3] = {0b1001001,0b1001001, 0011000};
+    uint8_t data[3] = {0b1001001,0b1001001, 0b011000};
 }
 
 void test_EverythingInvalid()
