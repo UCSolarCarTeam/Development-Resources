@@ -20,10 +20,10 @@ const App = () => {
     return battery >= 0 && battery <= 100 ? true : false;
   };
 
-  const [speed, setSpeed] = useState(0);
-  const [battery, setBattery] = useState(0);
-  const [weather, setWeather] = useState(0);
-  const [range, setRange] = useState(NaN);
+  const [speed, setSpeed] = useState<number>(0);
+  const [battery, setBattery] = useState<number>(0);
+  const [weather, setWeather] = useState<number>(0);
+  const [range, setRange] = useState<number>(NaN);
 
   return (
     <div className="h-screen w-screen bg-[#212121]">
