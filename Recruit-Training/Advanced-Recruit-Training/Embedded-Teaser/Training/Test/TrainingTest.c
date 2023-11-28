@@ -9,7 +9,7 @@ void resetOutput();
 void runTrainingTests()
 {
     RUN_TEST(test_EverythingValid);
-    // RUN_TEST(test_EverythingInvalid);
+    RUN_TEST(test_EverythingInvalid);
     // RUN_TEST(test_OnlyLightsInvalid);
     // RUN_TEST(test_OnlyMotorsInvalid);
 }
@@ -18,23 +18,29 @@ void test_EverythingValid()
 {
     resetOutput();
     uint8_t data[3] = {0b01001011,0b01001011, 0b00110000};
+    uint8_t expected[3] = {0b01001011,0b01001011, 0b00110000};
     trainingTask(data);
     TEST_ASSERT_EQUAL_UINT8(0b11100000, validData);
+    TEST_ASSERT_EQUAL_UINT8_ARRAY(expected, outputArray, 3);
 }
 
 void test_EverythingInvalid()
 {
-    // resetOutput();
+    resetOutput();
     uint8_t data[3] = {0b11011011, 0b10010000, 0b11111000};
-    // trainingTask(data);
-
-
+    uint8_t expected[3] = {0,0,0};
+    trainingTask(data);
+    TEST_ASSERT_EQUAL_UINT8(0b00000000, validData);
+    TEST_ASSERT_EQUAL_UINT8_ARRAY(expected, outputArray, 3);
 }
 
 void test_OnlyLightsInvalid()
 {
     // Case 1: Headlights are in two states
+    // resetOutput();
     uint8_t data1[3] = {0b10010111,0b10010111,0b11000000};
+
+    // TEST_ASSERT_EQUAL_UINT8(0b00000000, validData);
 
     // Case 2: Hazards off, but both signals are on
     uint8_t data2[3] = {0b10010111,0b10010111,0b10011000};
