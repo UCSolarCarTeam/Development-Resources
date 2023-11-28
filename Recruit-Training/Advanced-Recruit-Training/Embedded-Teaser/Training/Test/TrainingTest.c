@@ -4,23 +4,30 @@
 
 extern uint8_t outputArray[3];
 extern uint8_t validData;
+void resetOutput();
 
 void runTrainingTests()
 {
-    // RUN_TEST(test_EverythingValid);
+    RUN_TEST(test_EverythingValid);
     // RUN_TEST(test_EverythingInvalid);
     // RUN_TEST(test_OnlyLightsInvalid);
-    RUN_TEST(test_OnlyMotorsInvalid);
+    // RUN_TEST(test_OnlyMotorsInvalid);
 }
 
 void test_EverythingValid()
 {
-    uint8_t data[3] = {0b1001001,0b1001001, 0b011000};
+    resetOutput();
+    uint8_t data[3] = {0b01001011,0b01001011, 0b00110000};
+    trainingTask(data);
+    TEST_ASSERT_EQUAL_UINT8(0b11100000, validData);
 }
 
 void test_EverythingInvalid()
 {
+    // resetOutput();
     uint8_t data[3] = {0b11011011, 0b10010000, 0b11111000};
+    // trainingTask(data);
+
 
 }
 
@@ -44,4 +51,12 @@ void test_OnlyMotorsInvalid()
 
     // Case 2: Motors in sync, but turned off with non-zero velocity
     uint8_t data2[3] = {0b11000000, 0b11000000, 0b01000000};
+}
+
+void resetOutput() {
+    for (int i = 0; i < 3; i++)
+    {
+        outputArray[i] = 0;
+    }
+    validData = 0;
 }

@@ -68,18 +68,15 @@ void trainingTask(uint8_t* data)
 */
 uint8_t isMotorDataValid(uint8_t isMotorOn, uint8_t motorVelocity) {
 
-    // When motor is off we need to check velocity
-    if (!isMotorOn)
-    { 
-        // Since motor is off, input is valid iff velocity is 0
-        return (!motorVelocity) ? 1 : 0;
-    } else
-    {
+    if(isMotorOn){
         // If motor is on, the sign of the velocity needs to match the direction
         // Forward: 1, Positive: 0
-        uint8_t isForward = (0b01000000 & motorVelocity) >> 6;
-        uint8_t velocitySign = (0b00000001 & motorOneVelocity);
-        return (isForward == ~velocitySign) ? 1 : 0;
+        uint8_t isForward = (0b10000000 & motorVelocity) >> 6;
+        uint8_t velocitySign = (0b00000001 & motorVelocity);
+        return (isForward != velocitySign) ? 1 : 0;
+    } else {
+        // Since motor is off, input is valid iff velocity is 0
+        return (!motorVelocity) ? 1 : 0;
     }
     
 }
