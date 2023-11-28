@@ -10,7 +10,6 @@ NOTE: I decided that if the motors do not have matching ON/OFF status or do not 
 
 * Velocity will be compared in its vector form. i.e. v1 = v2 if and only if they are equal in magnitude and direction.
 */
-
 void trainingTask(uint8_t* data)
 {
     // MOTORS
@@ -36,8 +35,6 @@ void trainingTask(uint8_t* data)
         validData = 0b00000000;
     }
 
-    //validData = isSynced && isMotorDataValid(isMotorOneOn, motorOneVelocity) ? 0b11000000 : 0b00000000;
-
     // LIGHTS
     // Check exactly one of the headlight statuses is on
     uint8_t isHeadlightOff = (0b10000000 & data[2]) >> 7;
@@ -45,7 +42,7 @@ void trainingTask(uint8_t* data)
     uint8_t isHeadlightHigh = (0b00100000 & data[2]) >> 5;
     uint8_t isHeadlightValid = isHeadlightOff ^ isHeadlightLow ^ isHeadlightHigh;
 
-    // In order to check signal lights we needs to know if hazards are on and then determine the right behaviour
+    // In order to check signal lights we needs to know if hazards are on and then determine the right behaviour.
     uint8_t isHazardOn = (0b00000100 & data[2]) >> 2;
     uint8_t isRightSignalOn = (0b00010000 & data[2]) >> 4;
     uint8_t isLeftSignalOn = (0b00001000 & data[2]) >> 3;
@@ -64,16 +61,6 @@ void trainingTask(uint8_t* data)
     } else {
         validData = 0b11011111 & validData;
     }
-    // validData = isHeadlightValid && isSignalValid ? 0b00100000 | validData : 0b11011111 & validData;
-
-    // Write to outpuData iff data is valid
-    // if (validData == 0b11100000)
-    // {
-    //     for (int i = 0; i < 3; i++)
-    //     {
-    //         outputArray[i] = data[i];
-    //     }
-    // };
 
 }
 
