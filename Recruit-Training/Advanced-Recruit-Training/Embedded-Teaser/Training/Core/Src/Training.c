@@ -26,7 +26,17 @@ void trainingTask(uint8_t* data)
     uint8_t isSynced = (isMotorOneOn == isMotorTwoOn) && (motorOneVelocity == motorTwoVelocity);
 
     // If the motors are in sync only need to check if one motor is valid since they must be equal!
-    validData = isSynced && isMotorDataValid(isMotorOneOn, motorOneVelocity) ? 0b11000000 : 0b00000000;
+    // Set validData bits accordingly
+    // If motors are valid, copy data onto outputArray
+    if(isSynced && isMotorDataValid(isMotorOneOn, motorOneVelocity)){
+        validData = 0b11000000;
+        outputArray[0] = data[0];
+        outputArray[1] = data[1];
+    } else {
+        validData = 0b00000000;
+    }
+
+    //validData = isSynced && isMotorDataValid(isMotorOneOn, motorOneVelocity) ? 0b11000000 : 0b00000000;
 
     // LIGHTS
     // Check exactly one of the headlight statuses is on
@@ -45,17 +55,25 @@ void trainingTask(uint8_t* data)
     // When hazards are not on, signals may not be on at the same time
     isSignalValid = isHazardOn ? !(isRightSignalOn ^ isLeftSignalOn) : !(isRightSignalOn && isLeftSignalOn);
 
+    // Copy data onto outputArray if lights are valid
     // Set bit 2 of validData accordingly
-    validData = isHeadlightValid && isSignalValid ? 0b00100000 | validData : 0b11011111 & validData;
+    if (isHeadlightValid && isSignalValid)
+    {
+        validData = 0b00100000 | validData;
+        outputArray[2] = data[2];
+    } else {
+        validData = 0b11011111 & validData;
+    }
+    // validData = isHeadlightValid && isSignalValid ? 0b00100000 | validData : 0b11011111 & validData;
 
     // Write to outpuData iff data is valid
-    if (validData == 0b11100000)
-    {
-        for (int i = 0; i < 3; i++)
-        {
-            outputArray[i] = data[i];
-        }
-    };
+    // if (validData == 0b11100000)
+    // {
+    //     for (int i = 0; i < 3; i++)
+    //     {
+    //         outputArray[i] = data[i];
+    //     }
+    // };
 
 }
 
