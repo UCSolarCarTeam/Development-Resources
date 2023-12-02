@@ -43,7 +43,6 @@ void trainingTask(uint8_t* data)
     uint8_t isSynced = (m1_velocity == m2_velocity) // Velocities Equal
                     && (m1_status == m2_status);    // Both on or both off
 
-
     if(isSynced){ // Velocity and Status are equal
         // Separate motor directions
         uint8_t m1_dir = motor1 & DIRECTION;
@@ -68,6 +67,7 @@ void trainingTask(uint8_t* data)
         } else {
             outputArray[0] = 0;
             outputArray[1] = 0;
+            validData = 0b000000000;
         }
     }
     

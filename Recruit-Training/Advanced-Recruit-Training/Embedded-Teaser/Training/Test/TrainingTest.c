@@ -84,34 +84,38 @@ void test_OnlyLightsInvalid(void) {
     TEST_ASSERT_EQUAL_UINT8_MESSAGE(INVALID_LIGHTS, validData, "Both blinkers without hazards not caught");
     
     resetOutput();
-    invalid_lights_data[2] = 0b1001010;
+    invalid_lights_data[2] = 0b1101010;
     trainingTask(invalid_lights_data);
     TEST_ASSERT_EQUAL_UINT8_ARRAY_MESSAGE(expected_output, outputArray, 3, "Not both blinkers with hazards Array incorrect");
     TEST_ASSERT_EQUAL_UINT8_MESSAGE(INVALID_LIGHTS, validData, "Not both blinkers with Hazards on not caught");
 }
 
 void test_OnlyMotorsInvalid(void) {
-    uint8_t l = 0b100000;
+    uint8_t l = 0b0000001;
     uint8_t expected_output[3] = {0, 0, l};
 
-    uint8_t invalid_motors_data[3] = {0b11100111, 0b01001001, l};
+    resetOutput();
+    uint8_t invalid_motors_data[3] = {0b11100111, 0b10101001, l};
     trainingTask(invalid_motors_data);
-    TEST_ASSERT_EQUAL_UINT8_MESSAGE(INVALID_MOTORS, validData, "Motors not in sync, but was detected as synced");
+    TEST_ASSERT_EQUAL_UINT8_ARRAY_MESSAGE(expected_output, outputArray, 3, "Unsynced Motors Array incorrect");
+    TEST_ASSERT_EQUAL_UINT8_MESSAGE(INVALID_MOTORS, validData, "Unsynced Motors validData incorrect");
     
-    uint8_t invalid_motors_data2[3] = {0b11001001, 0b01001001, 0b100000};
+    resetOutput();
+    uint8_t invalid_motors_data2[3] = {0b11001001, 0b01001001, l};
     trainingTask(invalid_motors_data2);
-    TEST_ASSERT_EQUAL_UINT8_MESSAGE(INVALID_MOTORS, validData, "Both Motors not on, but detected as in sync");
+    TEST_ASSERT_EQUAL_UINT8_ARRAY_MESSAGE(expected_output, outputArray, 3, "Both Motors not on: Array incorrect");
+    TEST_ASSERT_EQUAL_UINT8_MESSAGE(INVALID_MOTORS, validData, "Both Motors not on: validData incorrect");
 }
 
 //
-void resetOutput(int a, int b, int c){
+void resetOutput(){
     outputArray[0] = 0;
     outputArray[1] = 0;
     outputArray[2] = 0;
     
-    expected_output[0] = a;
-    expected_output[1] = b;
-    expected_output[2] = c;
+    // expected_output[0] = a;
+    // expected_output[1] = b;
+    // expected_output[2] = c;
 
     validData = 0;
 }
