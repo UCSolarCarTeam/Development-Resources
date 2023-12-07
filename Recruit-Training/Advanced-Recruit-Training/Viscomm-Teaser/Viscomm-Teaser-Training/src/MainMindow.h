@@ -18,6 +18,9 @@ public:
     void updateInformation();
 public slots:
     void nextPageButtonClicked();
+    void pageBackwardsButtonClicked();
+    void addMemberButtonClicked();
+    void removeMemberButtonClicked();
 
 private:
     Ui::MainWindow *ui_;
