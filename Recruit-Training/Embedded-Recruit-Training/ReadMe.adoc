@@ -30,7 +30,8 @@ To break it down into steps:
 5) edit the receive CAN message routine in CAN.c to decode the Green LED state message
 6) Implement some form of routine (or edit an already available task) to blink the RED LED based on the Green LED status
 
+Great Resource for starting with embedded on STM: https://embedded.fm/blog/embedded-wednesdays
+
 Once the above is implemented and sucessfully compiled, let a senior embedded member know to test it on the lights and helios-dev boards
 
 If you have any questions or need clarifications, please let the embedded lead know after struggling with it for a bit. This is a learning experience, not a "bang your head against a wall" experience.
-
