@@ -7,7 +7,7 @@
 
 #include "BlueSwitchTask.h"
 
-static const uint32_t BLUE_LED_EXID = 0xAAAAAAA;
+static const uint32_t BLUE_LED_EXID = 0xCCCCCCC;
 
 void blueSwitchTask(void const* arg)
 {

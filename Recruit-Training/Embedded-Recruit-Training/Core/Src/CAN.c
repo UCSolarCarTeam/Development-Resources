@@ -272,4 +272,9 @@ void CANRxInterruptTask(void const* arg)
 	{
 		blueStatus = 1;
 	}
+
+	if(ID = 0xAAA){
+		greenStatus = data;
+	}
+
 }

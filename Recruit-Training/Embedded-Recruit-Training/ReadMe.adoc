@@ -1,9 +1,15 @@
 Embedded Recruit Training 
 ------------------------
 
-In this recruit training you will be implementing a task for the Helios-dev-board. You will need to write code to read from a GPIO (hooked up to a switch), upon reading the switch you will toggle the green LED on the lights board by sending a CAN message to the lights board. You will also receive the state of said LED and will blink the red LED on the Helios-dev-board based on the state of the Lights board LED. 
+In this recruit training you will be implementing a task for the Helios-dev-board. 
+You will need to write code to read from a GPIO (hooked up to a switch), 
+upon reading the switch you will toggle the green LED on the lights 
+board by sending a CAN message to the lights board. 
+You will also receive the state of said LED and will blink the red LED on the 
+Helios-dev-board based on the state of the Lights board LED. 
 
-If you aren't familiar with CAN messages or how they work, refer to https://uofcsolarcar.atlassian.net/wiki/spaces/ES/pages/19988502/Controller+Area+Network+CAN[this]
+If you aren't familiar with CAN messages or how they work, 
+refer to https://uofcsolarcar.atlassian.net/wiki/spaces/ES/pages/19988502/Controller+Area+Network+CAN[this]
 
 We will begin by discussing the directory structure for the recruit training project.
 
@@ -13,25 +19,34 @@ We will begin by discussing the directory structure for the recruit training pro
 * Drivers: where all the HAL driver functions go
 * Middlewares: where all of the OS functions (FREERTOS and CMSIS) are
 
-If there are any functions that you think you need, but aren't given, refer to Documentation/HALFunctionReferences.adoc and CMSISV2 online documentation
+If there are any functions that you think you need, but aren't given, 
+refer to Documentation/HALFunctionReferences.adoc and CMSISV2 online documentation
 
-There is already a blueSwitch Toggle task implemented as an example, you will need to recreate the task with some differences:
-1) Green light message uses a standard ID, not extended, and its 0xAAA
-2) The "on" message is 0x5A5A, and the "off" message is 0xA5A5
-3) The blue LED message has an extended ID of 0xCCCCCCC, the green LED state message has a standard ID of 0xDDD
-4) The lights board sends a periodical blue LED state message only when its on, but it sends a periodical state message where bit number 6 is the state of the green LED instead.
-5) The Red LED on the Helios-dev-board must blink every 350ms as long as the Green LED on the lights board is on
+There is already a blueSwitch Toggle task implemented as an example, 
+you will need to recreate the task with some differences:
+1. Green light message uses a standard ID, not extended, and its 0xAAA
+2. The "on" message is 0x5A5A, and the "off" message is 0xA5A5
+3. The blue LED message has an extended ID of 0xCCCCCCC, the green LED state message has a standard ID of 0xDDD
+4. The lights board sends a periodical blue LED state message only when its on, 
+    but it sends a periodical state message where bit number 6 is the state of the green LED instead.
+5. The Red LED on the Helios-dev-board must blink every 350ms as long as the Green LED on the lights board is on
 
 To break it down into steps:
-1) You will need to add the RED LED gpio into the .ioc file. To find which pin to use, you will need to check the helios-dev-board schematic (in the drive under embedded/schematics) (you should find thats its on pin PC12)
-2) You will need to create the task files (source and header) into the project
-3) Implement the task to perodically check the state of the switch (already configured as PC9 in the IOC) and send the appropiate CAN message to turn the Green LED on when the switch state is 1.
-4) Youw will need to create the GreenSwitchtask handler on main.c and initialize it
-5) edit the receive CAN message routine in CAN.c to decode the Green LED state message
-6) Implement some form of routine (or edit an already available task) to blink the RED LED based on the Green LED status
+1. You will need to add the RED LED gpio into the .ioc file. To find which pin to use, 
+    you will need to check the helios-dev-board schematic (in the drive under embedded/schematics) 
+    (you should find thats its on pin PC12)
+2. You will need to create the task files (source and header) into the project
+3. Implement the task to perodically check the state of the switch (already configured as PC9 in the IOC) and 
+    send the appropiate CAN message to turn the Green LED on when the switch state is 1.
+4. You will need to create the GreenSwitchtask handler on main.c and initialize it
+5. edit the receive CAN message routine in CAN.c to decode the Green LED state message
+6. Implement some form of routine (or edit an already available task) to blink the RED LED based on the Green LED status
 
 Great Resource for starting with embedded on STM: https://embedded.fm/blog/embedded-wednesdays
 
-Once the above is implemented and sucessfully compiled, let a senior embedded member know to test it on the lights and helios-dev boards
+Once the above is implemented and sucessfully compiled, 
+let a senior embedded member know to test it on the lights and helios-dev boards
 
-If you have any questions or need clarifications, please let the embedded lead know after struggling with it for a bit. This is a learning experience, not a "bang your head against a wall" experience.
+If you have any questions or need clarifications, 
+please let the embedded lead know after struggling with it for a bit. 
+This is a learning experience, not a "bang your head against a wall" experience.
