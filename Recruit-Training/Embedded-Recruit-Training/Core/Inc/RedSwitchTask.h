@@ -10,6 +10,8 @@
 #include "stm32l1xx.h"
 #include "stm32l1xx_hal_gpio.h"
 #include "CAN.h"
+#include "FreeRTOS.h"
+#include "FreeRTOSConfig.h"
 #include "cmsis_os.h"
 #include "main.h"
 

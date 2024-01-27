@@ -32,3 +32,4 @@ extern osMessageQueueId_t CANTxMessageQueue;
 
 extern uint8_t blueStatus;
 extern uint8_t greenStatus;
+extern uint8_t redStatus;

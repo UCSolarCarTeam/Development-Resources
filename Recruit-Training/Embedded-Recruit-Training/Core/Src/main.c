@@ -24,6 +24,8 @@
 /* USER CODE BEGIN Includes */
 #include "CAN.h"
 #include "BlueSwitchTask.h"
+#include "GreenSwitchTask.h"
+#include "RedSwitchTask.h"
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -51,6 +53,14 @@ const osThreadAttr_t defaultTask_attributes = {
   .stack_size = 128 * 4,
   .priority = (osPriority_t) osPriorityNormal,
 };
+/* Definitions for redSwitchTask */
+osThreadId_t redTaskHandle;
+const osThreadAttr_t redTask_attributes = {
+  .name = "redTask",
+  .stack_size = 128 * 4,
+  .priority = (osPriority_t) osPriorityNormal,
+};
+
 /* Definitions for SPIMutex */
 osMutexId_t SPIMutexHandle;
 const osMutexAttr_t SPIMutex_attributes = {
@@ -59,6 +69,8 @@ const osMutexAttr_t SPIMutex_attributes = {
 /* USER CODE BEGIN PV */
 
 uint8_t blueStatus;
+uint8_t greenStatus;
+uint8_t redStatus;
 
 /* Definitions for defaultTask */
 osThreadId_t blueSwitchTaskHandle;
@@ -146,8 +158,11 @@ int main(void)
   /* Create the thread(s) */
   /* creation of defaultTask */
   defaultTaskHandle = osThreadNew(StartDefaultTask, NULL, &defaultTask_attributes);
-
+  
   /* USER CODE BEGIN RTOS_THREADS */
+  /* creation of redTask*/
+  redTaskHandle = osThreadNew((osThreadFunc_t)redSwitchTask, NULL, &redTask_attributes);
+
   blueSwitchTaskHandle = osThreadNew((osThreadFunc_t)blueSwitchTask, NULL, &blueSwitchTask_attributes);
   /* USER CODE END RTOS_THREADS */
 
@@ -344,9 +359,11 @@ void HAL_GPIO_EXTI_Callback(uint16_t GPIO_Pin)
 void StartDefaultTask(void *argument)
 {
   /* USER CODE BEGIN 5 */
-  if(blueStatus) {
-    HAL_GPIO_TogglePin(LED_BLUE_GPIO_Port, LED_BLUE_Pin);
-    blueStatus = 0;
+  while(1){
+    if(blueStatus) {
+      HAL_GPIO_TogglePin(LED_BLUE_GPIO_Port, LED_BLUE_Pin);
+      blueStatus = 0;
+    }
   }
   /* USER CODE END 5 */
 }

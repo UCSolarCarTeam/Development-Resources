@@ -273,8 +273,16 @@ void CANRxInterruptTask(void const* arg)
 		blueStatus = 1;
 	}
 
-	if(ID = 0xAAA){
-		greenStatus = data;
+	if(ID == 0xAAA){
+		greenStatus = *data;
 	}
 
+	if(ID == 0xDDD){
+		uint8_t greenState = (*data >> 6) & 1;
+		if(greenState == 1){
+			redStatus = 1;
+		} else {
+			redStatus = 0;
+		}
+	}
 }
