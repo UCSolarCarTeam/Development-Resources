@@ -53,14 +53,6 @@ const osThreadAttr_t defaultTask_attributes = {
   .stack_size = 128 * 4,
   .priority = (osPriority_t) osPriorityNormal,
 };
-/* Definitions for redSwitchTask */
-osThreadId_t redTaskHandle;
-const osThreadAttr_t redTask_attributes = {
-  .name = "redTask",
-  .stack_size = 128 * 4,
-  .priority = (osPriority_t) osPriorityNormal,
-};
-
 /* Definitions for SPIMutex */
 osMutexId_t SPIMutexHandle;
 const osMutexAttr_t SPIMutex_attributes = {
@@ -76,6 +68,14 @@ uint8_t redStatus;
 osThreadId_t blueSwitchTaskHandle;
 const osThreadAttr_t blueSwitchTask_attributes = {
   .name = "defaultTask",
+  .stack_size = 128 * 4,
+  .priority = (osPriority_t) osPriorityNormal,
+};
+
+/* Definitions for redTask */
+osThreadId_t redToggleTaskHandle;
+const osThreadAttr_t redTask_attributes = {
+  .name = "redTask",
   .stack_size = 128 * 4,
   .priority = (osPriority_t) osPriorityNormal,
 };
@@ -158,10 +158,10 @@ int main(void)
   /* Create the thread(s) */
   /* creation of defaultTask */
   defaultTaskHandle = osThreadNew(StartDefaultTask, NULL, &defaultTask_attributes);
-  
+
   /* USER CODE BEGIN RTOS_THREADS */
   /* creation of redTask*/
-  redTaskHandle = osThreadNew((osThreadFunc_t)redSwitchTask, NULL, &redTask_attributes);
+  redToggleTaskHandle = osThreadNew((osThreadFunc_t)redToggleTask, NULL, &redTask_attributes);
 
   blueSwitchTaskHandle = osThreadNew((osThreadFunc_t)blueSwitchTask, NULL, &blueSwitchTask_attributes);
   /* USER CODE END RTOS_THREADS */

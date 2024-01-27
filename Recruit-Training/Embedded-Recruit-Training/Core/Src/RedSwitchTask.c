@@ -7,7 +7,7 @@
 
 #include "RedSwitchTask.h"
 
-void redSwitchTask(void const* arg){
+void redToggleTask(void const* arg){
     if(redStatus == 1){
         HAL_GPIO_TogglePin(LED_RED_GPIO_Port, LED_RED_Pin);
         osDelay(350 / portTICK_PERIOD_MS);

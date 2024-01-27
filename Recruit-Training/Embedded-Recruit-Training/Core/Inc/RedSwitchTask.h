@@ -17,4 +17,4 @@
 
 extern osMutexId_t SPIMutexHandle;
 
-void redSwitchTask(void const* arg);
+void redToggleTask(void const* arg);
