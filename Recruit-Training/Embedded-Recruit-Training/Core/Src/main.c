@@ -19,11 +19,14 @@
 /* Includes ------------------------------------------------------------------*/
 #include "main.h"
 #include "cmsis_os.h"
+#include "FreeRTOS.h"
+#include "task.h"
 
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
 #include "CAN.h"
 #include "BlueSwitchTask.h"
+#include "GreenSwitch.h"
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -68,6 +71,14 @@ const osThreadAttr_t blueSwitchTask_attributes = {
   .priority = (osPriority_t) osPriorityNormal,
 };
 
+uint8_t greenStatus;
+
+osThreadId_t greenSwitchHandle;
+const osThreadAttr_t greenSwitch_attributes = {
+  .name = "defaultTask",
+  .stack_size = 128 * 4,
+  .priority = (osPriority_t) osPriorityNormal,
+};
 osMessageQueueId_t CANInterruptQueue;
 
 /* USER CODE END PV */
@@ -149,6 +160,7 @@ int main(void)
 
   /* USER CODE BEGIN RTOS_THREADS */
   blueSwitchTaskHandle = osThreadNew((osThreadFunc_t)blueSwitchTask, NULL, &blueSwitchTask_attributes);
+  greenSwitchHandle = osThreadNew((osThreadFunc_t)greenSwitch, NULL, &greenSwitch_attributes);
   /* USER CODE END RTOS_THREADS */
 
   /* USER CODE BEGIN RTOS_EVENTS */
@@ -341,14 +353,27 @@ void HAL_GPIO_EXTI_Callback(uint16_t GPIO_Pin)
   * @retval None
   */
 /* USER CODE END Header_StartDefaultTask */
+
+int iterator = 0
 void StartDefaultTask(void *argument)
 {
-  /* USER CODE BEGIN 5 */
-  if(blueStatus) {
-    HAL_GPIO_TogglePin(LED_BLUE_GPIO_Port, LED_BLUE_Pin);
-    blueStatus = 0;
-  }
+  for(;;) {
+    osDelayUntil(1);
+    if( (iterator % 350) == 0){
+      /* USER CODE BEGIN 5 */
+      if(blueStatus) {
+        HAL_GPIO_TogglePin(LED_BLUE_GPIO_Port, LED_BLUE_Pin);
+        blueStatus = 0;
+      }
+
+      if(greenStatus){
+        HAL_GPIO_TogglePin(LED_RED_GPIO_Port, LED_RED_Pin); //Alend- I think this sends a high voltage to redpin
+        
+      }
+    }
+    iterator++; 
   /* USER CODE END 5 */
+  }
 }
 
 /**
