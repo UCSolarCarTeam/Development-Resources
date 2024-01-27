@@ -19,14 +19,14 @@
 /* Includes ------------------------------------------------------------------*/
 #include "main.h"
 #include "cmsis_os.h"
-#include "FreeRTOS.h"
-#include "task.h"
 
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
 #include "CAN.h"
 #include "BlueSwitchTask.h"
 #include "GreenSwitch.h"
+#include "FreeRTOS.h"
+#include "task.h"
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -353,27 +353,23 @@ void HAL_GPIO_EXTI_Callback(uint16_t GPIO_Pin)
   * @retval None
   */
 /* USER CODE END Header_StartDefaultTask */
-
-int iterator = 0
 void StartDefaultTask(void *argument)
 {
-  for(;;) {
-    osDelayUntil(1);
-    if( (iterator % 350) == 0){
-      /* USER CODE BEGIN 5 */
+  /* USER CODE BEGIN 5 */
+	int iterator = 0;
+	for(;;){
+		osDelayUntil(1);
       if(blueStatus) {
         HAL_GPIO_TogglePin(LED_BLUE_GPIO_Port, LED_BLUE_Pin);
         blueStatus = 0;
       }
 
       if(greenStatus){
-        HAL_GPIO_TogglePin(LED_RED_GPIO_Port, LED_RED_Pin); //Alend- I think this sends a high voltage to redpin
-        
+        HAL_GPIO_TogglePin(LED_RED_GPIO_Port, LED_RED_Pin);
       }
-    }
-    iterator++; 
+    iterator++;
+	}
   /* USER CODE END 5 */
-  }
 }
 
 /**

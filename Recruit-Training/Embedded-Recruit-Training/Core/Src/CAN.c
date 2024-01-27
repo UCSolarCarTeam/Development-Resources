@@ -275,7 +275,7 @@ void CANRxInterruptTask(void const* arg)
 
 	if(ID == 0xDDD){
 		  //Use this variable need to check the 6th bit for status 
-		  uint8_t triggerbit = (data>> 5) & 1 	//Checks the 6th bit of the data
+		  uint8_t triggerbit = (*data>> 5) & 1;	//Checks the 6th bit of the data
 		  if(triggerbit == 1){greenStatus = 1;}	//If the tiggerbit is high then set status = 1
 	}
 }
