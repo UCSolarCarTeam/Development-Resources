@@ -1,4 +1,10 @@
-const SpeedInput = () => {
+const SpeedInput = ({
+  value,
+  onChange,
+}: {
+  value: number | undefined;
+  onChange: React.ChangeEventHandler<HTMLInputElement>;
+}) => {
   return (
     <>
       <div className="flex w-full flex-col items-center gap-2">
@@ -9,6 +15,8 @@ const SpeedInput = () => {
           name="speed"
           type="number"
           placeholder="Speed"
+          value={value !== undefined ? value : ""}
+          onChange={onChange}
         />
       </div>
     </>

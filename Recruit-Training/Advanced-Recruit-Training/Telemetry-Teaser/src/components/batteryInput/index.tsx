@@ -1,4 +1,10 @@
-const BatteryInput = () => {
+const BatteryInput = ({
+  value,
+  onChange,
+}: {
+  value: number | undefined;
+  onChange: React.ChangeEventHandler<HTMLInputElement>;
+}) => {
   return (
     <div className="flex w-full flex-col items-center gap-2">
       <label>Battery Percentage (%):</label>
@@ -8,6 +14,8 @@ const BatteryInput = () => {
         name="battery"
         type="number"
         placeholder="Battery"
+        value={value ? value : ""}
+        onChange={onChange}
       />
     </div>
   );
