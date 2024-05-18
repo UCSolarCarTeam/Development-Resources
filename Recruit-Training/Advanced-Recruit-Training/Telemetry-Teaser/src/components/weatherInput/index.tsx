@@ -1,11 +1,17 @@
 import { useState } from "react";
 
 interface WeatherInputProps {
-  setWeatherInput: (value: number) => void;
+  setInput: React.Dispatch<
+    React.SetStateAction<{
+      batteryInput: number;
+      speedInput: number;
+      weatherInput: number;
+    }>
+  >;
   setShow: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
-function WeatherInput({ setWeatherInput, setShow }: WeatherInputProps) {
+function WeatherInput({ setInput, setShow }: WeatherInputProps) {
   const [sliderValue, setSliderValue] = useState(50);
   return (
     <>
@@ -18,8 +24,12 @@ function WeatherInput({ setWeatherInput, setShow }: WeatherInputProps) {
         max="100"
         value={sliderValue}
         onChange={(e) => {
-          setWeatherInput(Number(e.target.value));
-          setSliderValue(Number(e.target.value));
+          const newWeatherInput = Number(e.target.value);
+          setInput((prevState) => ({
+            ...prevState,
+            weatherInput: newWeatherInput,
+          }));
+          setSliderValue(newWeatherInput);
           setShow(false);
         }}
       />

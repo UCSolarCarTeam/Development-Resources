@@ -1,12 +1,21 @@
 interface BatteryInputProps {
-  setBatteryInput: (value: number) => void;
+  setInput: React.Dispatch<
+    React.SetStateAction<{
+      batteryInput: number;
+      speedInput: number;
+      weatherInput: number;
+    }>
+  >;
   setShow: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
-export function BatteryInput({ setBatteryInput, setShow }: BatteryInputProps) {
+export function BatteryInput({ setInput, setShow }: BatteryInputProps) {
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setShow(false);
-    setBatteryInput(Number(e.target.value));
+    setInput((prevState) => ({
+      ...prevState,
+      weatherInput: Number(e.target.value),
+    }));
   };
 
   return (

@@ -1,13 +1,21 @@
 interface SpeedInputProps {
-  setSpeedInput: (value: number) => void;
+  setInput: React.Dispatch<
+    React.SetStateAction<{
+      batteryInput: number;
+      speedInput: number;
+      weatherInput: number;
+    }>
+  >;
   setShow: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
-export function SpeedInput({ setSpeedInput, setShow }: SpeedInputProps) {
+export function SpeedInput({ setInput, setShow }: SpeedInputProps) {
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const speedValue = Number(e.target.value);
     setShow(false);
-    setSpeedInput(speedValue);
+    setInput((prevState) => ({
+      ...prevState,
+      weatherInput: Number(e.target.value),
+    }));
   };
 
   return (
