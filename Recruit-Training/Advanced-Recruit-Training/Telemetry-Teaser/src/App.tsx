@@ -1,4 +1,6 @@
-import { useEffect, useState } from "react";
+import { useReducer, useState } from "react";
+
+import { type Action, type Input } from "~/lib/types";
 
 import BatteryInput from "~/components/batteryInput";
 import Header from "~/components/header";
@@ -6,31 +8,50 @@ import SpeedInput from "~/components/speedInput";
 import WeatherInput from "~/components/weatherInput";
 
 const App = () => {
-  const [input, setInput] = useState({
+  const [show, setShow] = useState<boolean>(false);
+
+  const reducer = (prev: Input, action: Action) => {
+    setShow(false);
+    switch (action.type) {
+      case "batteryInput":
+        return { ...prev, batteryInput: action.payload };
+      case "speedInput":
+        return { ...prev, speedInput: action.payload };
+      case "weatherInput":
+        return { ...prev, weatherInput: action.payload };
+      default:
+        return prev;
+    }
+  };
+
+  const [input, dispatch] = useReducer(reducer, {
     batteryInput: 0,
     speedInput: 0,
     weatherInput: 0,
   });
-  const [show, setShow] = useState<boolean>(false);
-
-  useEffect(() => {
-    console.log(input);
-  }, [input.speedInput, input.batteryInput, input.weatherInput]);
 
   const range =
     -((input.speedInput * input.speedInput * input.batteryInput) / 2500) +
     4 * input.batteryInput +
     input.weatherInput;
+
+  const invalidBatteryInput =
+    input.batteryInput < 0 || input.batteryInput > 100
+      ? "The battery percentage should be with the range of 0 to 100"
+      : input.batteryInput === 0
+      ? "Battery is required"
+      : "";
+  const invalidSpeedInput =
+    input.speedInput < 0 || input.speedInput > 90
+      ? "The speed should be with the range of 0 to 90"
+      : input.batteryInput === 0
+      ? "Speed is required"
+      : "";
+
   const calculateRange = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    setShow((prev) => !prev);
+    invalidBatteryInput && invalidSpeedInput ? setShow(false) : setShow(true);
   };
-
-  const isBatteryInputEmpty = input.batteryInput === 0;
-  const invalidBatteryInput =
-    input.batteryInput < 0 || input.batteryInput > 100;
-  const isSpeedInputInvalid = input.speedInput < 0 || input.speedInput > 90;
-  const invalidSpeedInput = input.speedInput === 0;
 
   return (
     <div className="h-screen w-screen bg-[#212121]">
@@ -42,27 +63,13 @@ const App = () => {
           className="flex w-full flex-col items-center"
         >
           <div className="mb-4 flex w-full flex-col items-center gap-y-4">
-            <SpeedInput setInput={setInput} setShow={setShow} />
-            {isSpeedInputInvalid ? (
-              <p className="text-red-500">
-                The speed should be with the range of 0 to 90
-              </p>
-            ) : null}
-            {invalidSpeedInput ? (
-              <p className="text-red-500">Speed is required</p>
-            ) : null}
-            <BatteryInput setInput={setInput} setShow={setShow} />
-            {isBatteryInputEmpty ? (
-              <p className="text-red-500">Battery percentage is required</p>
-            ) : null}
-            {invalidBatteryInput ? (
-              <p className="text-red-500">
-                The battery percentage should be with the range of 0 to 100
-              </p>
-            ) : null}
+            <SpeedInput dispatch={dispatch} />
+            <p>{invalidSpeedInput}</p>
+            <BatteryInput dispatch={dispatch} />
+            <p>{invalidBatteryInput}</p>
           </div>
           <div className="flex w-full flex-row justify-center gap-4">
-            <WeatherInput setInput={setInput} setShow={setShow} />
+            <WeatherInput dispatch={dispatch} />
           </div>
           <button
             type="submit"

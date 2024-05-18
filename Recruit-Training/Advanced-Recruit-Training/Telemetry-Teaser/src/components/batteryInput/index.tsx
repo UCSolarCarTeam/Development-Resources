@@ -1,21 +1,12 @@
+import { type Action } from "~/lib/types";
+
 interface BatteryInputProps {
-  setInput: React.Dispatch<
-    React.SetStateAction<{
-      batteryInput: number;
-      speedInput: number;
-      weatherInput: number;
-    }>
-  >;
-  setShow: React.Dispatch<React.SetStateAction<boolean>>;
+  dispatch: React.Dispatch<Action>;
 }
 
-export function BatteryInput({ setInput, setShow }: BatteryInputProps) {
+export function BatteryInput({ dispatch }: BatteryInputProps) {
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setShow(false);
-    setInput((prevState) => ({
-      ...prevState,
-      batteryInput: Number(e.target.value),
-    }));
+    dispatch({ type: "batteryInput", payload: Number(e.target.value) });
   };
 
   return (

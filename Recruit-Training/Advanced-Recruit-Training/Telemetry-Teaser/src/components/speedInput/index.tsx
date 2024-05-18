@@ -1,22 +1,12 @@
+import { type Action } from "~/lib/types";
+
 interface SpeedInputProps {
-  setInput: React.Dispatch<
-    React.SetStateAction<{
-      batteryInput: number;
-      speedInput: number;
-      weatherInput: number;
-    }>
-  >;
-  setShow: React.Dispatch<React.SetStateAction<boolean>>;
+  dispatch: React.Dispatch<Action>;
 }
 
-export function SpeedInput({ setInput, setShow }: SpeedInputProps) {
+export function SpeedInput({ dispatch }: SpeedInputProps) {
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setShow(false);
-    console.log(e.target.value);
-    setInput((prevState) => ({
-      ...prevState,
-      speedInput: Number(e.target.value),
-    }));
+    dispatch({ type: "speedInput", payload: Number(e.target.value) });
   };
 
   return (

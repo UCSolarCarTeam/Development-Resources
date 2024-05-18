@@ -1,18 +1,10 @@
-import { useState } from "react";
+import { type Action } from "~/lib/types";
 
 interface WeatherInputProps {
-  setInput: React.Dispatch<
-    React.SetStateAction<{
-      batteryInput: number;
-      speedInput: number;
-      weatherInput: number;
-    }>
-  >;
-  setShow: React.Dispatch<React.SetStateAction<boolean>>;
+  dispatch: React.Dispatch<Action>;
 }
 
-function WeatherInput({ setInput, setShow }: WeatherInputProps) {
-  const [sliderValue, setSliderValue] = useState(50);
+function WeatherInput({ dispatch }: WeatherInputProps) {
   return (
     <>
       <img src="/Cloud.png" height="66px" width="66px" alt="Cloud" />
@@ -22,15 +14,9 @@ function WeatherInput({ setInput, setShow }: WeatherInputProps) {
         type="range"
         min="0"
         max="100"
-        value={sliderValue}
         onChange={(e) => {
           const newWeatherInput = Number(e.target.value);
-          setInput((prevState) => ({
-            ...prevState,
-            weatherInput: newWeatherInput,
-          }));
-          setSliderValue(newWeatherInput);
-          setShow(false);
+          dispatch({ type: "weatherInput", payload: newWeatherInput });
         }}
       />
       <img src="/Sun.png" height="66px" width="66px" alt="Sun" />
