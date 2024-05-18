@@ -1,4 +1,14 @@
-const BatteryInput = () => {
+interface BatteryInputProps {
+  setBatteryInput: (value: number) => void;
+  setShow: React.Dispatch<React.SetStateAction<boolean>>;
+}
+
+export function BatteryInput({ setBatteryInput, setShow }: BatteryInputProps) {
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setShow(false);
+    setBatteryInput(Number(e.target.value));
+  };
+
   return (
     <div className="flex w-full flex-col items-center gap-2">
       <label>Battery Percentage (%):</label>
@@ -8,9 +18,10 @@ const BatteryInput = () => {
         name="battery"
         type="number"
         placeholder="Battery"
+        onChange={(e) => handleChange(e)}
       />
     </div>
   );
-};
+}
 
 export default BatteryInput;
