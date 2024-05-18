@@ -14,7 +14,7 @@ export function BatteryInput({ setInput, setShow }: BatteryInputProps) {
     setShow(false);
     setInput((prevState) => ({
       ...prevState,
-      weatherInput: Number(e.target.value),
+      batteryInput: Number(e.target.value),
     }));
   };
 

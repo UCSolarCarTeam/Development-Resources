@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 import BatteryInput from "~/components/batteryInput";
 import Header from "~/components/header";
@@ -12,6 +12,10 @@ const App = () => {
     weatherInput: 0,
   });
   const [show, setShow] = useState<boolean>(false);
+
+  useEffect(() => {
+    console.log(input);
+  }, [input.speedInput, input.batteryInput, input.weatherInput]);
 
   const range =
     -((input.speedInput * input.speedInput * input.batteryInput) / 2500) +

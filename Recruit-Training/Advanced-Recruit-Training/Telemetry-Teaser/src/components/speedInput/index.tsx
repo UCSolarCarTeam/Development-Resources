@@ -12,9 +12,10 @@ interface SpeedInputProps {
 export function SpeedInput({ setInput, setShow }: SpeedInputProps) {
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setShow(false);
+    console.log(e.target.value);
     setInput((prevState) => ({
       ...prevState,
-      weatherInput: Number(e.target.value),
+      speedInput: Number(e.target.value),
     }));
   };
 
