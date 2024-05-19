@@ -5,13 +5,13 @@ const WeatherInput = ({
   onChange,
 }: {
   value: number;
-  onChange: (num: string) => void;
+  onChange: (num: number) => void;
 }) => {
   const handleWeatherIncrement = () => {
-    onChange(String(value + 1));
+    onChange(value + 1);
   };
   const handleWeatherDecrement = () => {
-    onChange(String(value - 1));
+    onChange(value - 1);
   };
 
   return (
@@ -30,7 +30,7 @@ const WeatherInput = ({
         min="0"
         max="100"
         value={value}
-        onChange={(e) => onChange(e.target.value)}
+        onChange={(e) => onChange(Number(e.target.value))}
       />
       <img
         src="/Sun.png"

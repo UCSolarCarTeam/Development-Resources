@@ -1,4 +1,7 @@
+// import { parse } from "path";
+// import { stringify } from "querystring";
 import { useState } from "react";
+import { useReducer } from "react";
 
 import BatteryInput from "~/components/batteryInput";
 import Header from "~/components/header";
@@ -12,42 +15,54 @@ const App = () => {
     battery: number | undefined;
     weather: number;
   };
-  const [inputs, setInputs] = useState<InputState>({
+  type Action =
+    | { type: "SET_BATTERY"; payload: number | undefined }
+    | { type: "SET_SPEED"; payload: number | undefined }
+    | { type: "SET_WEATHER"; payload: number };
+
+  const initialState: InputState = {
     speed: 0,
-    weather: 50,
     battery: 100,
-  });
+    weather: 50,
+  };
 
   const calculateRange = () => {
     event?.preventDefault();
     setVisible(true);
   };
-
-  const BatteryChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const value = parseInt(event.target.value);
-    setVisible(false);
-    if (value) {
-      setInputs({ ...inputs, battery: value });
+  function BatteryValid() {
+    const battery = inputs["battery"];
+    if (battery !== undefined && battery <= 100 && battery >= 0) {
+      return true;
     } else {
-      setInputs({ ...inputs, battery: undefined });
+      return false;
+    }
+  }
+
+  function SpeedValid() {
+    const speed = inputs["speed"];
+    if (speed !== undefined && speed <= 90 && speed >= 0) {
+      return true;
+    } else {
+      return false;
+    }
+  }
+
+  const reducer = (state: InputState, action: Action) => {
+    setVisible(false);
+
+    switch (action.type) {
+      case "SET_BATTERY":
+        return { ...state, battery: action.payload };
+      case "SET_SPEED":
+        return { ...state, speed: action.payload };
+      case "SET_WEATHER":
+        return { ...state, weather: action.payload };
+      default:
+        return state;
     }
   };
-
-  const SpeedChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const value = parseInt(event.target.value);
-    setVisible(false);
-    if (value !== undefined) {
-      setInputs({ ...inputs, speed: value });
-    } else {
-      setInputs({ ...inputs, speed: undefined });
-    }
-  };
-
-  const sliderChange = (num: string) => {
-    const value = parseFloat(num);
-    setInputs({ ...inputs, weather: value });
-    setVisible(false);
-  };
+  const [inputs, dispatch] = useReducer(reducer, initialState);
 
   return (
     <div className="h-screen w-screen bg-[#212121]">
@@ -55,46 +70,66 @@ const App = () => {
         <Header />
         <form name="simulator" className="flex w-full flex-col items-center">
           <div className="mb-4 flex w-full flex-col items-center gap-y-4">
-            <SpeedInput value={inputs["speed"]} onChange={SpeedChange} />
-            {inputs["speed"] !== undefined &&
-              (inputs["speed"] > 100 || inputs["speed"] < 0) && (
-                <p className="text-red-500">
-                  {" "}
-                  The speed should be within the range of 0 to 90
-                </p>
-              )}
+            <SpeedInput
+              value={inputs["speed"]}
+              onChange={(e) =>
+                dispatch({
+                  type: "SET_SPEED",
+                  payload: parseInt(e.target.value),
+                })
+              }
+            />
+            {!SpeedValid() && (
+              <p className="text-red-500">
+                {" "}
+                The speed should be within the range of 0 to 90
+              </p>
+            )}
             {inputs["speed"] === undefined && (
               <p className="text-red-500">Speed is required</p>
             )}
-            <BatteryInput value={inputs["battery"]} onChange={BatteryChange} />
-            {inputs["battery"] !== undefined &&
-              (inputs["battery"] > 100 || inputs["battery"] < 0) && (
-                <p className="text-red-500">
-                  The battery percentage should be with the range of 0 to 100
-                </p>
-              )}
+            <BatteryInput
+              value={inputs["battery"]}
+              onChange={(e) =>
+                dispatch({
+                  type: "SET_BATTERY",
+                  payload: parseInt(e.target.value),
+                })
+              }
+            />
+            {!BatteryValid() && (
+              <p className="text-red-500">
+                The battery percentage should be with the range of 0 to 100
+              </p>
+            )}
             {inputs["battery"] === undefined && (
               <p className="text-red-500">Battery percentage is required</p>
             )}
           </div>
           <div className="flex w-full flex-row justify-center gap-4">
-            <WeatherInput value={inputs["weather"]} onChange={sliderChange} />
+            <WeatherInput
+              value={inputs["weather"]}
+              onChange={(value) =>
+                dispatch({
+                  type: "SET_WEATHER",
+                  payload: value,
+                })
+              }
+            />
           </div>
 
           <button
             className="mt-10 h-10 w-60 rounded bg-blue-200 text-white"
+            type="submit"
             onClick={() => calculateRange()}
           >
             Submit
           </button>
           {visible &&
-            inputs["speed"] !== undefined &&
+            BatteryValid() &&
+            SpeedValid() &&
             inputs["battery"] !== undefined &&
-            inputs["weather"] !== undefined &&
-            inputs["battery"] <= 100 &&
-            inputs["battery"] >= 0 &&
-            inputs["speed"] <= 100 &&
-            inputs["speed"] >= 0 && (
+            inputs["speed"] !== undefined && (
               <p className="mt-10">
                 The predicted range of the Eylsia is{" "}
                 {(

@@ -14,7 +14,7 @@ const BatteryInput = ({
         name="battery"
         type="number"
         placeholder="Battery"
-        value={value ? value : ""}
+        value={value !== undefined ? value : ""}
         onChange={onChange}
       />
     </div>
