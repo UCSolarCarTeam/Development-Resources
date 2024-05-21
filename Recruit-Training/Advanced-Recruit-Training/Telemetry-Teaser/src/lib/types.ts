@@ -1,4 +1,4 @@
-export type Input = {
+export type inputState = {
   batteryInput: number;
   speedInput: number;
   weatherInput: number;

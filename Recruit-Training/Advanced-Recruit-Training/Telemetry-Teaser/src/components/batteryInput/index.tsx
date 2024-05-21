@@ -5,10 +5,6 @@ interface BatteryInputProps {
 }
 
 export function BatteryInput({ dispatch }: BatteryInputProps) {
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    dispatch({ type: "batteryInput", payload: Number(e.target.value) });
-  };
-
   return (
     <div className="flex w-full flex-col items-center gap-2">
       <label>Battery Percentage (%):</label>
@@ -18,7 +14,10 @@ export function BatteryInput({ dispatch }: BatteryInputProps) {
         name="battery"
         type="number"
         placeholder="Battery"
-        onChange={(e) => handleChange(e)}
+        onChange={(e) => {
+          const newBatteryInput = Number(e.target.value);
+          dispatch({ type: "batteryInput", payload: newBatteryInput });
+        }}
       />
     </div>
   );

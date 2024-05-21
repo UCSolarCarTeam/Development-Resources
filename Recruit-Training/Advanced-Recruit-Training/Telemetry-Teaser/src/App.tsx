@@ -1,6 +1,6 @@
 import { useReducer, useState } from "react";
 
-import { type Action, type Input } from "~/lib/types";
+import { type Action, type inputState } from "~/lib/types";
 
 import BatteryInput from "~/components/batteryInput";
 import Header from "~/components/header";
@@ -10,7 +10,7 @@ import WeatherInput from "~/components/weatherInput";
 const App = () => {
   const [show, setShow] = useState<boolean>(false);
 
-  const reducer = (prev: Input, action: Action) => {
+  const reducer = (prev: inputState, action: Action) => {
     setShow(false);
     switch (action.type) {
       case "batteryInput":

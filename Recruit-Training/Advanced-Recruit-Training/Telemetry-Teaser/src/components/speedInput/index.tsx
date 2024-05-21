@@ -5,10 +5,6 @@ interface SpeedInputProps {
 }
 
 export function SpeedInput({ dispatch }: SpeedInputProps) {
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    dispatch({ type: "speedInput", payload: Number(e.target.value) });
-  };
-
   return (
     <>
       <div className="flex w-full flex-col items-center gap-2">
@@ -19,7 +15,10 @@ export function SpeedInput({ dispatch }: SpeedInputProps) {
           name="speed"
           type="number"
           placeholder="Speed"
-          onChange={(e) => handleChange(e)}
+          onChange={(e) => {
+            const newSpeedInput = Number(e.target.value);
+            dispatch({ type: "speedInput", payload: newSpeedInput });
+          }}
         />
       </div>
     </>
