@@ -17,7 +17,7 @@ function WeatherInput({ dispatch, input }: WeatherInputProps) {
         max="100"
         value={input.weatherInput}
         onChange={(e) => {
-          const newWeatherInput = e.target.value;
+          const newWeatherInput = Number(e.target.value);
           dispatch({ type: "weatherInput", payload: newWeatherInput });
         }}
       />

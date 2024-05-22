@@ -1,10 +1,10 @@
 export type inputState = {
-  batteryInput: string;
-  speedInput: string;
-  weatherInput: string;
+  batteryInput: number | undefined;
+  speedInput: number | undefined;
+  weatherInput: number;
 };
 
 export type Action = {
   type: "batteryInput" | "speedInput" | "weatherInput";
-  payload: string;
+  payload: number | undefined;
 };

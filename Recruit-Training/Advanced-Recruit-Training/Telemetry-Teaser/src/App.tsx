@@ -25,31 +25,26 @@ const App = () => {
   };
 
   const [input, dispatch] = useReducer(reducer, {
-    batteryInput: "" as string,
-    speedInput: "" as string,
-    weatherInput: "" as string,
+    batteryInput: 0,
+    speedInput: 0,
+    weatherInput: 50,
   });
 
   const range =
-    -(
-      (Number(input.speedInput) *
-        Number(input.speedInput) *
-        Number(input.batteryInput)) /
-      2500
-    ) +
-    4 * Number(input.batteryInput) +
-    Number(input.weatherInput);
+    -((input.speedInput * input.speedInput * input.batteryInput) / 2500) +
+    4 * input.batteryInput +
+    input.weatherInput;
 
   const invalidBatteryInput =
-    Number(input.batteryInput) < 0 || Number(input.batteryInput) > 100
+    input.batteryInput < 0 || input.batteryInput > 100
       ? "The battery percentage should be with the range of 0 to 100"
-      : Number(input.batteryInput) === 0
+      : input.batteryInput === undefined
       ? "Battery is required"
       : "";
   const invalidSpeedInput =
-    Number(input.speedInput) < 0 || Number(input.speedInput) > 90
+    input.speedInput < 0 || input.speedInput > 90
       ? "The speed should be with the range of 0 to 90"
-      : Number(input.batteryInput) === 0
+      : input.batteryInput === undefined
       ? "Speed is required"
       : "";
 

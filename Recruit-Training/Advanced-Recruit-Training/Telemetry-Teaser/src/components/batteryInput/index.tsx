@@ -15,9 +15,10 @@ export function BatteryInput({ dispatch, input }: BatteryInputProps) {
         name="battery"
         type="number"
         placeholder="Battery"
-        value={input.batteryInput}
+        value={input.batteryInput === undefined ? "" : input.batteryInput}
         onChange={(e) => {
-          const newBatteryInput = e.target.value;
+          const newBatteryInput =
+            e.target.value === "" ? undefined : Number(e.target.value);
           dispatch({ type: "batteryInput", payload: newBatteryInput });
         }}
       />

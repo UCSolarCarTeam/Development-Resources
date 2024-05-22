@@ -16,9 +16,11 @@ export function SpeedInput({ dispatch, input }: SpeedInputProps) {
           name="speed"
           type="number"
           placeholder="Speed"
-          value={input.speedInput}
+          value={input.speedInput === undefined ? "" : input.speedInput}
           onChange={(e) => {
-            const newSpeedInput = e.target.value;
+            console.log(e.target.value);
+            const newSpeedInput =
+              e.target.value === "" ? undefined : Number(e.target.value);
             dispatch({ type: "speedInput", payload: newSpeedInput });
           }}
         />
