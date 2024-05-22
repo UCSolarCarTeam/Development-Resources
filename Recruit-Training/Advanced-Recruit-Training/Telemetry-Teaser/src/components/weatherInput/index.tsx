@@ -1,4 +1,4 @@
-const WeatherInput = ({ value, setValue }) => {
+const WeatherInput = ({ value, setValue, setRange }) => {
   return (
     <>
       <img src="/Cloud.png" height="66px" width="66px" alt="Cloud" />
@@ -9,7 +9,12 @@ const WeatherInput = ({ value, setValue }) => {
         min="0"
         max="100"
         value={value}
-        onChange={(e) => e.target.value !== "" ? setValue(parseInt(e.target.value)) : setValue(null)}
+        onChange={(e) => {
+          setRange(null);
+          e.target.value !== ""
+            ? setValue(parseInt(e.target.value))
+            : setValue(null);
+        }}
       />
       <img src="/Sun.png" height="66px" width="66px" alt="Sun" />
     </>

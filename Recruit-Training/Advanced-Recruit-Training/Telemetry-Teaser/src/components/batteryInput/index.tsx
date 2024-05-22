@@ -1,4 +1,4 @@
-const BatteryInput = ({ value, setValue }) => {
+const BatteryInput = ({ value, setValue, setRange }) => {
   return (
     <div className="flex w-full flex-col items-center gap-2">
       <label>Battery Percentage (%):</label>
@@ -8,7 +8,12 @@ const BatteryInput = ({ value, setValue }) => {
         name="battery"
         type="number"
         placeholder="Battery"
-        onChange={(e) => e.target.value !== "" ? setValue(parseInt(e.target.value)) : setValue(null)}
+        onChange={(e) => {
+          setRange(null);
+          e.target.value !== ""
+            ? setValue(parseInt(e.target.value))
+            : setValue(null);
+        }}
       />
     </div>
   );
