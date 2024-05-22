@@ -1,4 +1,4 @@
-const SpeedInput = () => {
+const SpeedInput = ({ value, setValue }) => {
   return (
     <>
       <div className="flex w-full flex-col items-center gap-2">
@@ -9,6 +9,7 @@ const SpeedInput = () => {
           name="speed"
           type="number"
           placeholder="Speed"
+          onChange={(e) => e.target.value !== "" ? setValue(parseInt(e.target.value)) : setValue(null)}
         />
       </div>
     </>
