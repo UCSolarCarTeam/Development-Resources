@@ -1,10 +1,10 @@
 export type inputState = {
-  batteryInput: number;
-  speedInput: number;
-  weatherInput: number;
+  batteryInput: string;
+  speedInput: string;
+  weatherInput: string;
 };
 
 export type Action = {
   type: "batteryInput" | "speedInput" | "weatherInput";
-  payload: number;
+  payload: string;
 };

@@ -25,26 +25,31 @@ const App = () => {
   };
 
   const [input, dispatch] = useReducer(reducer, {
-    batteryInput: 0,
-    speedInput: 0,
-    weatherInput: 0,
+    batteryInput: "" as string,
+    speedInput: "" as string,
+    weatherInput: "" as string,
   });
 
   const range =
-    -((input.speedInput * input.speedInput * input.batteryInput) / 2500) +
-    4 * input.batteryInput +
-    input.weatherInput;
+    -(
+      (Number(input.speedInput) *
+        Number(input.speedInput) *
+        Number(input.batteryInput)) /
+      2500
+    ) +
+    4 * Number(input.batteryInput) +
+    Number(input.weatherInput);
 
   const invalidBatteryInput =
-    input.batteryInput < 0 || input.batteryInput > 100
+    Number(input.batteryInput) < 0 || Number(input.batteryInput) > 100
       ? "The battery percentage should be with the range of 0 to 100"
-      : input.batteryInput === 0
+      : Number(input.batteryInput) === 0
       ? "Battery is required"
       : "";
   const invalidSpeedInput =
-    input.speedInput < 0 || input.speedInput > 90
+    Number(input.speedInput) < 0 || Number(input.speedInput) > 90
       ? "The speed should be with the range of 0 to 90"
-      : input.batteryInput === 0
+      : Number(input.batteryInput) === 0
       ? "Speed is required"
       : "";
 
@@ -63,13 +68,13 @@ const App = () => {
           className="flex w-full flex-col items-center"
         >
           <div className="mb-4 flex w-full flex-col items-center gap-y-4">
-            <SpeedInput dispatch={dispatch} />
+            <SpeedInput dispatch={dispatch} input={input} />
             <p>{invalidSpeedInput}</p>
-            <BatteryInput dispatch={dispatch} />
+            <BatteryInput dispatch={dispatch} input={input} />
             <p>{invalidBatteryInput}</p>
           </div>
           <div className="flex w-full flex-row justify-center gap-4">
-            <WeatherInput dispatch={dispatch} />
+            <WeatherInput dispatch={dispatch} input={input} />
           </div>
           <button
             type="submit"

@@ -1,10 +1,11 @@
-import { type Action } from "~/lib/types";
+import { type Action, type inputState } from "~/lib/types";
 
 interface SpeedInputProps {
   dispatch: React.Dispatch<Action>;
+  input: inputState;
 }
 
-export function SpeedInput({ dispatch }: SpeedInputProps) {
+export function SpeedInput({ dispatch, input }: SpeedInputProps) {
   return (
     <>
       <div className="flex w-full flex-col items-center gap-2">
@@ -15,8 +16,9 @@ export function SpeedInput({ dispatch }: SpeedInputProps) {
           name="speed"
           type="number"
           placeholder="Speed"
+          value={input.speedInput}
           onChange={(e) => {
-            const newSpeedInput = Number(e.target.value);
+            const newSpeedInput = e.target.value;
             dispatch({ type: "speedInput", payload: newSpeedInput });
           }}
         />
