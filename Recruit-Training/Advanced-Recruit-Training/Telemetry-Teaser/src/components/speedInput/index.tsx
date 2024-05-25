@@ -1,4 +1,4 @@
-const SpeedInput = ({ value, setValue, setRange }) => {
+const SpeedInput = ({ dispatch }) => {
   return (
     <>
       <div className="flex w-full flex-col items-center gap-2">
@@ -10,10 +10,9 @@ const SpeedInput = ({ value, setValue, setRange }) => {
           type="number"
           placeholder="Speed"
           onChange={(e) => {
-            setRange(null);
-            e.target.value !== ""
-              ? setValue(parseInt(e.target.value))
-              : setValue(null);
+            const speedValue =
+              e.target.value !== "" ? parseInt(e.target.value) : null;
+            dispatch({ type: "setSpeed", payload: speedValue });
           }}
         />
       </div>

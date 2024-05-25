@@ -1,4 +1,4 @@
-const WeatherInput = ({ value, setValue, setRange }) => {
+const WeatherInput = ({ state, dispatch }) => {
   return (
     <>
       <img src="/Cloud.png" height="66px" width="66px" alt="Cloud" />
@@ -8,12 +8,11 @@ const WeatherInput = ({ value, setValue, setRange }) => {
         type="range"
         min="0"
         max="100"
-        value={value}
+        value={state.weather}
         onChange={(e) => {
-          setRange(null);
-          e.target.value !== ""
-            ? setValue(parseInt(e.target.value))
-            : setValue(null);
+          const weatherValue =
+            e.target.value !== "" ? parseInt(e.target.value) : null;
+          dispatch({ type: "setWeather", payload: weatherValue });
         }}
       />
       <img src="/Sun.png" height="66px" width="66px" alt="Sun" />
