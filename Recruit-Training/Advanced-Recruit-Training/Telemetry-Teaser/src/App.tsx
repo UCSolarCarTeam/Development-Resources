@@ -20,6 +20,15 @@ const App = () => {
           <div className="flex w-full flex-row justify-center gap-4">
             <WeatherInput />
           </div>
+
+        {/*make the button*/}
+          <div className="mt-8">
+            <button type="button" 
+            onClick={calculateRange}
+            className="bg-blue-500 text-white font-bold py-2 px-4 rounded w-48"
+            >
+              Calculate</button>
+          </div>
         </form>
       </div>
     </div>
