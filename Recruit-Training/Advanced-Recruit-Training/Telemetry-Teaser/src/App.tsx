@@ -18,11 +18,15 @@ const App = () => {
   const handleSpeedChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value;
     setSpeed(value === "" ? "" : Number(value))
+    console.log("Speed:", value); // Add this line
+
   }
   const handleBatteryChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value;
     // Allow empty input, or convert to a number
     setBattery(value === "" ? "" : Number(value));
+    console.log("Battery:", value); // Add this line
+
   };
   const validInputs = () =>{
     let valid = true;
@@ -35,16 +39,14 @@ const App = () => {
     if(speed === ""){
       valid = false;
       setSpeedError("Speed is required");
-      return valid;
     }else if(typeof speed === 'number' && (speed > 90 || speed < 0)){
       valid = false;
-      setSpeedError("The speed should be with the range of 0 to 90");
+      setSpeedError("The speed should be within the range of 0 to 90");
     }
 
     if(battery === ""){
       valid = false;
       setSpeedError("Battery is required");
-      return valid;
     }
     else if (typeof battery === "number" && (battery < 0 || battery > 100)) {
       valid = false;
@@ -58,6 +60,8 @@ const App = () => {
     if(validInputs()){ //only calculates if the inputs are valid
       const calculatedRange = -(Number(speed) * Number(speed) * Number(battery) / 2500) + (4 * Number(battery)) + weather;
       setRange(calculatedRange);
+    }else {
+      setRange(-1); // Reset range if inputs are invalid
     }
     
     return;
@@ -87,8 +91,13 @@ const App = () => {
             className="bg-blue-500 text-white font-bold py-2 px-4 rounded w-48"
             >
               Calculate</button>
+              {range !== -1 && (
+             <div className="mt-4">
+             <p>The predicted range of the Eylsia is {range.toFixed(2)} km.</p>
+           </div>
+            )}
           </div>
-
+            
         </form>
       </div>
     </div>
