@@ -6,14 +6,16 @@ import React, { useState } from "react";
 
 const App = () => {
   const[speed, setSpeed] = useState(0);
-  const[battery, setBattery] = useState(0);
+  const[battery, setBattery] = useState(100);
   const[weather, setWeather] = useState(0);
   const[range, setRange] = useState(0);
-  
+
   const calculateRange = () => {
     //range = -(s * s * b / 2500) + (4 * b) + w
     //Where s = speed, b = battery percentage w = weather 
-    
+    const calculatedRange = -(speed * speed * battery / 2500) + (4 * battery) + weather;
+
+    setRange(calculatedRange);
     return;
   }
 
