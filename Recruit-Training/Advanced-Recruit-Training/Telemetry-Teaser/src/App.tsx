@@ -5,8 +5,8 @@ import WeatherInput from "~/components/weatherInput";
 import React, { useState } from "react";
 
 const App = () => {
-  const[speed, setSpeed] = useState<number>(0);
-  const[battery, setBattery] = useState(100);
+  const[speed, setSpeed] = useState<number | string>("");
+  const[battery, setBattery] = useState<number | string>("");
   const[weather, setWeather] = useState(0);
   const[range, setRange] = useState(0);
 
@@ -14,6 +14,16 @@ const App = () => {
   const [speedError, setSpeedError] = useState<string>("")
   const [batteryError, setBatteryError] = useState<string>("")
 
+  //to avoid the type errors:
+  const handleSpeedChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const value = e.target.value;
+    setSpeed(value === "" ? "" : Number(value))
+  }
+  const handleBatteryChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const value = e.target.value;
+    // Allow empty input, or convert to a number
+    setBattery(value === "" ? "" : Number(value));
+  };
   const validInputs = () =>{
     let valid = true;
 
@@ -22,19 +32,34 @@ const App = () => {
     setBatteryError("");
 
     //check the input
-    if(speed === null){
+    if(speed === ""){
       valid = false;
       setSpeedError("Speed is required");
-    }else if(battery === null){
+      return valid;
+    }else if(typeof speed === 'number' && (speed > 90 || speed < 0)){
+      valid = false;
+      setSpeedError("The speed should be with the range of 0 to 90");
+    }
+
+    if(battery === ""){
       valid = false;
       setSpeedError("Battery is required");
+      return valid;
     }
+    else if (typeof battery === "number" && (battery < 0 || battery > 100)) {
+      valid = false;
+      setSpeedError("The battery percentage should be within the range of 0 to 100");
+    }
+    return valid;
   }
   const calculateRange = () => {
     //range = -(s * s * b / 2500) + (4 * b) + w
     //Where s = speed, b = battery percentage w = weather 
-    const calculatedRange = -(speed * speed * battery / 2500) + (4 * battery) + weather;
-    setRange(calculatedRange);
+    if(validInputs()){ //only calculates if the inputs are valid
+      const calculatedRange = -(Number(speed) * Number(speed) * Number(battery) / 2500) + (4 * Number(battery)) + weather;
+      setRange(calculatedRange);
+    }
+    
     return;
   }
 
@@ -44,8 +69,12 @@ const App = () => {
         <Header />
         <form name="simulator" className="flex w-full flex-col items-center">
           <div className="mb-4 flex w-full flex-col items-center gap-y-4">
-            <SpeedInput value={speed} onChange={(e)=>setSpeed(Number(e.target.value))}/>
-            <BatteryInput value={speed} onChange={(e)=>setSpeed(Number(e.target.value))}/>
+            <SpeedInput value={speed} onChange={handleSpeedChange}/>
+            {speedError && <div className="text-red-500">{speedError}</div>} {/* speed error message */}
+
+            <BatteryInput value={battery} onChange={handleBatteryChange}/>
+            {batteryError && <div className="text-red-500">{batteryError}</div>} {/* Battery error message */}
+          
           </div>
           <div className="flex w-full flex-row justify-center gap-4">
             <WeatherInput />
