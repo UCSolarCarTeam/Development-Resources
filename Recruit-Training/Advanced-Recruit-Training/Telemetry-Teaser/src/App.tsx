@@ -5,15 +5,31 @@ import WeatherInput from "~/components/weatherInput";
 import React, { useState } from "react";
 
 const App = () => {
-  const[speed, setSpeed] = useState(0);
+  const[speed, setSpeed] = useState<number>(0);
   const[battery, setBattery] = useState(100);
   const[weather, setWeather] = useState(0);
   const[range, setRange] = useState(0);
 
    // Error messages
-   const [speedError, setSpeedError] = useState("");
-   const [batteryError, setBatteryError] = useState("");
+  const [speedError, setSpeedError] = useState<string>("")
+  const [batteryError, setBatteryError] = useState<string>("")
 
+  const validInputs = () =>{
+    let valid = true;
+
+    //reset battery and speed
+    setSpeedError("");
+    setBatteryError("");
+
+    //check the input
+    if(speed === null){
+      valid = false;
+      setSpeedError("Speed is required");
+    }else if(battery === null){
+      valid = false;
+      setSpeedError("Battery is required");
+    }
+  }
   const calculateRange = () => {
     //range = -(s * s * b / 2500) + (4 * b) + w
     //Where s = speed, b = battery percentage w = weather 
@@ -28,8 +44,8 @@ const App = () => {
         <Header />
         <form name="simulator" className="flex w-full flex-col items-center">
           <div className="mb-4 flex w-full flex-col items-center gap-y-4">
-            <SpeedInput value={speed} onChange={(e)=>setSpeed(e.target.value)}/>
-            <BatteryInput />
+            <SpeedInput value={speed} onChange={(e)=>setSpeed(Number(e.target.value))}/>
+            <BatteryInput value={speed} onChange={(e)=>setSpeed(Number(e.target.value))}/>
           </div>
           <div className="flex w-full flex-row justify-center gap-4">
             <WeatherInput />
