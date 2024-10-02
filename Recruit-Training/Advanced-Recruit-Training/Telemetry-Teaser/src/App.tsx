@@ -10,11 +10,14 @@ const App = () => {
   const[weather, setWeather] = useState(0);
   const[range, setRange] = useState(0);
 
+   // Error messages
+   const [speedError, setSpeedError] = useState("");
+   const [batteryError, setBatteryError] = useState("");
+
   const calculateRange = () => {
     //range = -(s * s * b / 2500) + (4 * b) + w
     //Where s = speed, b = battery percentage w = weather 
     const calculatedRange = -(speed * speed * battery / 2500) + (4 * battery) + weather;
-
     setRange(calculatedRange);
     return;
   }
@@ -25,7 +28,7 @@ const App = () => {
         <Header />
         <form name="simulator" className="flex w-full flex-col items-center">
           <div className="mb-4 flex w-full flex-col items-center gap-y-4">
-            <SpeedInput />
+            <SpeedInput value={speed} onChange={(e)=>setSpeed(e.target.value)}/>
             <BatteryInput />
           </div>
           <div className="flex w-full flex-row justify-center gap-4">
