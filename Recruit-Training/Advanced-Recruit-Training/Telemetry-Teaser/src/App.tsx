@@ -2,34 +2,35 @@ import BatteryInput from "~/components/batteryInput";
 import Header from "~/components/header";
 import SpeedInput from "~/components/speedInput";
 import WeatherInput from "~/components/weatherInput";
-import React, { useState } from "react";
+import React, { useState, useCallback } from "react";
 
 const App = () => {
-  const[speed, setSpeed] = useState<number | string>("");
-  const[battery, setBattery] = useState<number | string>("");
-  const[weather, setWeather] = useState(0);
+  const [speed, setSpeed] = useState<number | string>("");
+  const [battery, setBattery] = useState<number | string>("");
+  const [weather, setWeather] = useState(0);
+  const [range, setRange] = useState(-1);
 
-  let range = -1;
 
-   // Error messages
+  // Error messages
   const [speedError, setSpeedError] = useState<string>("")
   const [batteryError, setBatteryError] = useState<string>("")
 
   //to avoid the type errors:
-  const handleSpeedChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleSpeedChange = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value;
     setSpeed(value === "" ? "" : Number(value))
     console.log("Speed:", value); // Add this line
 
-  }
-  const handleBatteryChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  }, [])
+
+  const handleBatteryChange = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value;
     // Allow empty input, or convert to a number
     setBattery(value === "" ? "" : Number(value));
     console.log("Battery:", value); // Add this line
 
-  };
-  const validInputs = () =>{
+  }, []);
+  const validInputs = () => {
     let valid = true;
 
     //reset battery and speed
@@ -37,15 +38,15 @@ const App = () => {
     setBatteryError("");
 
     //check the input
-    if(speed === ""){
+    if (speed === "") {
       valid = false;
       setSpeedError("Speed is required");
-    }else if(typeof speed === 'number' && (speed > 90 || speed < 0)){
+    } else if (typeof speed === 'number' && (speed > 90 || speed < 0)) {
       valid = false;
       setSpeedError("The speed should be within the range of 0 to 90");
     }
 
-    if(battery === ""){
+    if (battery === "") {
       valid = false;
       setSpeedError("Battery is required");
     }
@@ -58,12 +59,12 @@ const App = () => {
   const calculateRange = () => {
     //range = -(s * s * b / 2500) + (4 * b) + w
     //Where s = speed, b = battery percentage w = weather 
-    if(validInputs()){ //only calculates if the inputs are valid
+    if (validInputs()) { //only calculates if the inputs are valid
       const calculatedRange = -(Number(speed) * Number(speed) * Number(battery) / 2500) + (4 * Number(battery)) + weather;
-      range = calculatedRange;
-      
-    }else {
-      range = -1; // Reset range if inputs are invalid
+      setRange(calculatedRange);
+
+    } else {
+      setRange(-1); // Reset range if inputs are invalid
     }
     console.log(range);
     return range;
@@ -75,32 +76,32 @@ const App = () => {
         <Header />
         <form name="simulator" className="flex w-full flex-col items-center">
           <div className="mb-4 flex w-full flex-col items-center gap-y-4">
-            <SpeedInput value={speed} onChange={handleSpeedChange}/>
+            <SpeedInput value={speed} onChange={handleSpeedChange} />
             {speedError && <div className="text-red-500">{speedError}</div>} {/* speed error message */}
 
-            <BatteryInput value={battery} onChange={handleBatteryChange}/>
+            <BatteryInput value={battery} onChange={handleBatteryChange} />
             {batteryError && <div className="text-red-500">{batteryError}</div>} {/* Battery error message */}
-          
+
           </div>
           <div className="flex w-full flex-row justify-center gap-4">
             <WeatherInput />
           </div>
 
-        {/*make the button*/}
+          {/*make the button*/}
           <div className="mt-8">
             <button type="button"
-            onClick={calculateRange}
-            className="bg-blue-500 text-white font-bold py-2 px-4 rounded w-48"
+              onClick={calculateRange}
+              className="bg-blue-500 text-white font-bold py-2 px-4 rounded w-48"
             >
               Calculate</button>
-              {range === -1 ? 
+            {range === -1 ?
               null :
-             <div className="mt-4">
-             <p>The predicted range of the Eylsia is {range} km.</p>
-           </div>
-             }
+              <div className="mt-4">
+                <p>The predicted range of the Eylsia is {range} km.</p>
+              </div>
+            }
           </div>
-            
+
         </form>
       </div>
     </div>
