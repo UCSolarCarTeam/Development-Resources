@@ -1,4 +1,4 @@
-const WeatherInput = () => {
+const WeatherInput = ({stateChanger}) => {
   return (
     <>
       <img src="/Cloud.png" height="66px" width="66px" alt="Cloud" />
@@ -9,6 +9,7 @@ const WeatherInput = () => {
         min="0"
         max="100"
         value="50"
+        onChange={(event)=>stateChanger(event.target.value)}
       />
       <img src="/Sun.png" height="66px" width="66px" alt="Sun" />
     </>
