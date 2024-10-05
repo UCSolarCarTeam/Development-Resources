@@ -8,7 +8,7 @@ const App = () => {
   const [speed, setSpeed] = useState<number | string>("");
   const [battery, setBattery] = useState<number | string>("");
   const [weather, setWeather] = useState(0);
-  const [range, setRange] = useState(-1);
+  const [valid, setValid] = useState(false);
 
 
   // Error messages
@@ -20,6 +20,9 @@ const App = () => {
     const value = e.target.value;
     setSpeed(value === "" ? "" : Number(value))
     console.log("Speed:", value); // Add this line
+    if(value === ""){
+      setValid(false)
+    }
 
   }, [])
 
@@ -28,10 +31,11 @@ const App = () => {
     // Allow empty input, or convert to a number
     setBattery(value === "" ? "" : Number(value));
     console.log("Battery:", value); // Add this line
-
+    if(value===""){
+      setValid(false)
+    }
   }, []);
   const validInputs = () => {
-    let valid = true;
 
     //reset battery and speed
     setSpeedError("");
@@ -39,36 +43,28 @@ const App = () => {
 
     //check the input
     if (speed === "") {
-      valid = false;
+      setValid(false);
       setSpeedError("Speed is required");
     } else if (typeof speed === 'number' && (speed > 90 || speed < 0)) {
-      valid = false;
+      setValid(false);
       setSpeedError("The speed should be within the range of 0 to 90");
     }
 
     if (battery === "") {
-      valid = false;
+      setValid(false);
       setSpeedError("Battery is required");
     }
     else if (typeof battery === "number" && (battery < 0 || battery > 100)) {
-      valid = false;
+      setValid(false);
       setSpeedError("The battery percentage should be within the range of 0 to 100");
     }
-    return valid;
-  }
-  const calculateRange = () => {
-    //range = -(s * s * b / 2500) + (4 * b) + w
-    //Where s = speed, b = battery percentage w = weather 
-    if (validInputs()) { //only calculates if the inputs are valid
-      const calculatedRange = -(Number(speed) * Number(speed) * Number(battery) / 2500) + (4 * Number(battery)) + weather;
-      setRange(calculatedRange);
 
-    } else {
-      setRange(-1); // Reset range if inputs are invalid
-    }
-    console.log(range);
-    return range;
+    setValid(true);
   }
+
+  //calculate range and then in the return function, call valid inputs. if it returns false, print null, else print confirmatin message
+  const range = -(Number(speed) * Number(speed) * Number(battery) / 2500) + (4 * Number(battery)) + weather;
+
 
   return (
     <div className="h-screen w-screen bg-[#212121]">
@@ -88,19 +84,21 @@ const App = () => {
           </div>
 
           {/*make the button*/}
-          <div className="mt-8">
-            <button type="button"
-              onClick={calculateRange}
-              className="bg-blue-500 text-white font-bold py-2 px-4 rounded w-48"
-            >
-              Calculate</button>
-            {range === -1 ?
-              null :
-              <div className="mt-4">
-                <p>The predicted range of the Eylsia is {range} km.</p>
-              </div>
-            }
-          </div>
+<div className="mt-8 text-center"> {/* Add text-center here */}
+  <button
+    type="button"
+    onClick={validInputs}
+    className="bg-blue-500 text-white font-bold py-2 px-4 rounded w-48"
+  >
+    Calculate
+  </button>
+  {valid ? ( // Assuming 'valid' is a state that indicates whether the inputs are valid
+    <div className="mt-4">
+      <p>The predicted range of the Eylsia is {range} km.</p>
+    </div>
+  ) : null}
+</div>
+
 
         </form>
       </div>
