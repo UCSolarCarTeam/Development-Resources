@@ -1,4 +1,8 @@
-const BatteryInput = ({stateChanger}) => {
+interface inputProps {
+  stateChanger: (value: number) => void;
+}
+
+const BatteryInput: React.FC<inputProps> = ({ stateChanger }) => {
   return (
     <div className="flex w-full flex-col items-center gap-2">
       <label>Battery Percentage (%):</label>
@@ -8,7 +12,7 @@ const BatteryInput = ({stateChanger}) => {
         name="battery"
         type="number"
         placeholder="Battery"
-        onChange={(event)=>stateChanger(event.target.value)}
+        onChange={(event) => stateChanger(Number(event.target.value))}
       />
     </div>
   );

@@ -1,4 +1,8 @@
-const SpeedInput = ({stateChanger}) => {
+interface inputProps {
+  stateChanger: (value: number) => void;
+}
+
+const SpeedInput: React.FC<inputProps> = ({ stateChanger }) => {
   return (
     <>
       <div className="flex w-full flex-col items-center gap-2">
@@ -9,7 +13,7 @@ const SpeedInput = ({stateChanger}) => {
           name="speed"
           type="number"
           placeholder="Speed"
-          onChange={(event)=>stateChanger(event.target.value)}
+          onChange={(event) => stateChanger(Number(event.target.value))}
         />
       </div>
     </>

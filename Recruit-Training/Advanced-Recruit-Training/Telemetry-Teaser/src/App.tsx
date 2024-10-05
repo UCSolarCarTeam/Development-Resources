@@ -19,11 +19,11 @@ interface inputAction {
 const App = () => {
   const [state, dispatch] = useReducer(reducer, {
     //useReducer to manage more complex states
-    speed: 0, //the initial state
+    speed: 0, //the initial state of speed, battery, weather values
     battery: 0,
     weather: 50,
   });
-  const [range, setRange] = useState(null);
+  const [range, setRange] = useState("");
   const [errors, setErrors] = useState({ speedError: "", batteryError: "" });
 
   //the reducer function, updates the state when input values (speed,battery,weather) are changed
@@ -70,21 +70,21 @@ const App = () => {
   //use the given formula to estimate range
   const calculateRange = useCallback(() => {
     if (validateInputs()) {
-      const s = parseFloat(state.speed);
-      const b = parseFloat(state.battery);
-      const w = parseFloat(state.weather);
+      const s = state.speed;
+      const b = state.battery;
+      const w = state.weather;
 
       const calculatedRange = -((s * s * b) / 2500) + 4 * b + w;
       setRange(calculatedRange.toFixed(2));
     } else {
-      setRange(null); //stops a previous range value from being passed on to resultMessage if a new input is invalid
+      setRange(""); //stops a previous value of range from being passed on to resultMessage, if a new input is invalid
     }
   }, [state.speed, state.battery, state.weather, validateInputs]);
 
   //show the result of estimated range
   const resultMessage = useMemo(() => {
-    if (range !== null) {
-      return `The predicted range of the Elysia is ${range} km.`;
+    if (range !== "") {
+      return "The predicted range of the Elysia is " + range + "km.";
     }
     return null;
   }, [range]);
@@ -96,7 +96,7 @@ const App = () => {
         <form name="simulator" className="flex w-full flex-col items-center">
           <div className="mb-4 flex w-full flex-col items-center gap-y-4">
             <SpeedInput //pass a stateChanger prop to each component, causing changes to inputs to call the dispatch function of useReducer
-              stateChanger={(value) =>
+              stateChanger={(value: number) =>
                 dispatch({ type: "changed_speed", payload: value })
               }
             />
@@ -104,7 +104,7 @@ const App = () => {
               <p className="text-red-500">{errors.speedError}</p>
             )}
             <BatteryInput
-              stateChanger={(value) =>
+              stateChanger={(value: number) =>
                 dispatch({ type: "changed_battery", payload: value })
               }
             />
@@ -114,7 +114,7 @@ const App = () => {
           </div>
           <div className="flex w-full flex-row justify-center gap-4">
             <WeatherInput
-              stateChanger={(value) =>
+              stateChanger={(value: number) =>
                 dispatch({ type: "changed_weather", payload: value })
               }
             />
