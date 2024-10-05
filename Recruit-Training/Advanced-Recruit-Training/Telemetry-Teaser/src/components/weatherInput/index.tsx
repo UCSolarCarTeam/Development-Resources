@@ -1,4 +1,11 @@
-const WeatherInput = () => {
+import { type Action, type inputState } from "~/lib/types";
+
+interface WeatherInputProps {
+  dispatch: React.Dispatch<Action>;
+  input: inputState;
+}
+
+function WeatherInput({ dispatch, input }: WeatherInputProps) {
   return (
     <>
       <img src="/Cloud.png" height="66px" width="66px" alt="Cloud" />
@@ -8,11 +15,15 @@ const WeatherInput = () => {
         type="range"
         min="0"
         max="100"
-        value="50"
+        value={input.weatherInput}
+        onChange={(e) => {
+          const newWeatherInput = Number(e.target.value);
+          dispatch({ type: "weatherInput", payload: newWeatherInput });
+        }}
       />
       <img src="/Sun.png" height="66px" width="66px" alt="Sun" />
     </>
   );
-};
+}
 
 export default WeatherInput;

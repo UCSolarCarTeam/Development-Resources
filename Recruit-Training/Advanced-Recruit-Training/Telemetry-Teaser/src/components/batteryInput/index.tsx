@@ -1,4 +1,11 @@
-const BatteryInput = () => {
+import { type Action, type inputState } from "~/lib/types";
+
+interface BatteryInputProps {
+  dispatch: React.Dispatch<Action>;
+  input: inputState;
+}
+
+export function BatteryInput({ dispatch, input }: BatteryInputProps) {
   return (
     <div className="flex w-full flex-col items-center gap-2">
       <label>Battery Percentage (%):</label>
@@ -8,9 +15,15 @@ const BatteryInput = () => {
         name="battery"
         type="number"
         placeholder="Battery"
+        value={input.batteryInput === undefined ? "" : input.batteryInput}
+        onChange={(e) => {
+          const newBatteryInput =
+            e.target.value === "" ? undefined : Number(e.target.value);
+          dispatch({ type: "batteryInput", payload: newBatteryInput });
+        }}
       />
     </div>
   );
-};
+}
 
 export default BatteryInput;
