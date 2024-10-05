@@ -1,4 +1,10 @@
-const SpeedInput = () => {
+// Define the props type
+interface SpeedInputProps {
+  value: number | string; // Expecting a string for the input value
+  onChange: (e: React.ChangeEvent<HTMLInputElement>) => void; // Function to handle changes
+}
+
+const SpeedInput: React.FC<SpeedInputProps> = ({ value, onChange }) => {
   return (
     <>
       <div className="flex w-full flex-col items-center gap-2">
@@ -9,6 +15,9 @@ const SpeedInput = () => {
           name="speed"
           type="number"
           placeholder="Speed"
+          value={value}
+          onChange={onChange}
+          required
         />
       </div>
     </>
