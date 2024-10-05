@@ -8,7 +8,8 @@ const App = () => {
   const[speed, setSpeed] = useState<number | string>("");
   const[battery, setBattery] = useState<number | string>("");
   const[weather, setWeather] = useState(0);
-  const[range, setRange] = useState(0);
+
+  let range = -1;
 
    // Error messages
   const [speedError, setSpeedError] = useState<string>("")
@@ -59,12 +60,13 @@ const App = () => {
     //Where s = speed, b = battery percentage w = weather 
     if(validInputs()){ //only calculates if the inputs are valid
       const calculatedRange = -(Number(speed) * Number(speed) * Number(battery) / 2500) + (4 * Number(battery)) + weather;
-      setRange(calculatedRange);
+      range = calculatedRange;
+      
     }else {
-      setRange(-1); // Reset range if inputs are invalid
+      range = -1; // Reset range if inputs are invalid
     }
-    
-    return;
+    console.log(range);
+    return range;
   }
 
   return (
@@ -86,16 +88,17 @@ const App = () => {
 
         {/*make the button*/}
           <div className="mt-8">
-            <button type="button" 
+            <button type="button"
             onClick={calculateRange}
             className="bg-blue-500 text-white font-bold py-2 px-4 rounded w-48"
             >
               Calculate</button>
-              {range !== -1 && (
+              {range === -1 ? 
+              null :
              <div className="mt-4">
-             <p>The predicted range of the Eylsia is {range.toFixed(2)} km.</p>
+             <p>The predicted range of the Eylsia is {range} km.</p>
            </div>
-            )}
+             }
           </div>
             
         </form>
