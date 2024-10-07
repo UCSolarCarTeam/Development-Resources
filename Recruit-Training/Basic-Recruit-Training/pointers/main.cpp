@@ -11,6 +11,7 @@ using namespace std;
 
 void foo(int *a, int b);
 void bar(int *a, int b);
+void mySwap(int* &a, int* &b);
 
 int main()
 {
@@ -19,28 +20,36 @@ int main()
     int *p = &x;
 
     //TODO in the line below predict what what is going to be output
-    cout << "Predicted value of p: " /* << PLACE YOUR PREDICTION HERE*/ << endl;
+    cout << "Predicted value of p: "  << "address such as 0x7ffc0b657c7c" << endl;
     cout << "Actual value of p: " << p << endl;
-    cout << "Predicted value &x: " /* << PLACE YOUR PREDICTION HERE*/ << endl;
+    cout << "Predicted value &x: "  << "address such as 0x7ffc0b657c7c" << endl;
     cout << "Actual value &x: " << &x << endl;
-    cout << "Predicted value of *p: " /* << PLACE YOUR PREDICTION HERE*/ << endl;
+    cout << "Predicted value of *p: "  << "3" << endl;
     cout << "Actual value of *p: " << *p << endl;
     
     foo(p, x);
     
-    cout << "Predicted value of *p: " /* << PLACE YOUR PREDICTION HERE*/ << endl;
+    cout << "Predicted value of *p: "  << "42" << endl;
     cout << "Actual value of *p: " << *p << endl;
-    cout << "Predicted value of x: " /* << PLACE YOUR PREDICTION HERE*/ << endl;
+    cout << "Predicted value of x: " << "42" << endl;
     cout << "Actual value of x: " << x << endl;
     foo(p, y);
 
-    cout << "Predicted value of *p: " /* << PLACE YOUR PREDICTION HERE*/ << endl;
+    cout << "Predicted value of *p: " << "42" << endl;
     cout << "Actual value of *p: " << *p << endl;
-    cout << "Predicted value of y: " /* << PLACE YOUR PREDICTION HERE*/ << endl;
+    cout << "Predicted value of y: " << "4" << endl;
     cout << "Actual value of y: " << y << endl;
-
-    //start writing mySwap here
     
+    //start writing mySwap here
+    int *q = &y;
+    mySwap(p, q);
+
+    cout << "Testing mySwap:" << endl;
+    cout << "Predicted value of *p: " << "4" << endl;
+    cout << "Actual value of *p: " << *p << endl;
+    cout << "Predicted value of *q: " << "42" << endl;
+    cout << "Actual value of *q: " << *q << endl;
+
     return 0;
 }
 
@@ -50,8 +59,15 @@ int main()
    b = 78;
 }
 
-void var(int *a, int b)
+void bar(int *a, int b)
 {
     *a = 365;
     b = 912;
+}
+
+// Pass references to the pointers so values are changed inside main
+void mySwap(int* &a, int *&b) {
+    int *temp = a;
+    a = b;
+    b = temp;
 }
