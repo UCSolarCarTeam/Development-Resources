@@ -1,4 +1,9 @@
-const WeatherInput = () => {
+interface WeatherInputProps {
+  value: number | string; // Expecting a string for the input value
+  onChange: (e: React.ChangeEvent<HTMLInputElement>) => void; // Function to handle changes
+}
+
+const WeatherInput: React.FC<WeatherInputProps> = ({ value, onChange }) => {
   return (
     <>
       <img src="/Cloud.png" height="66px" width="66px" alt="Cloud" />
@@ -8,7 +13,8 @@ const WeatherInput = () => {
         type="range"
         min="0"
         max="100"
-        value="50"
+        value={value}
+        onChange={onChange}
       />
       <img src="/Sun.png" height="66px" width="66px" alt="Sun" />
     </>

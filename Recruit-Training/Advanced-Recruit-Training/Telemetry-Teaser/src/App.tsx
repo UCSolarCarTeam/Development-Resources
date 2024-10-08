@@ -7,7 +7,7 @@ import React, { useState, useCallback } from "react";
 const App = () => {
   const [speed, setSpeed] = useState<number | string>("");
   const [battery, setBattery] = useState<number | string>("");
-  const [weather, setWeather] = useState(0);
+  const [weather, setWeather] = useState<number | string>(0);
   const [valid, setValid] = useState(false);
 
 
@@ -35,6 +35,17 @@ const App = () => {
       setValid(false)
     }
   }, []);
+
+  const handleWeatherChange = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
+    const value = e.target.value;
+    // Allow empty input, or convert to a number
+    setWeather(value === "" ? "" : Number(value));
+    console.log("weather:", value); // Add this line
+    if(value===""){
+      setValid(false)
+    }
+  }, []);
+
   const validInputs = () => {
 
     //reset battery and speed
@@ -63,7 +74,7 @@ const App = () => {
   }
 
   //calculate range and then in the return function, call valid inputs. if it returns false, print null, else print confirmatin message
-  const range = -(Number(speed) * Number(speed) * Number(battery) / 2500) + (4 * Number(battery)) + weather;
+  const range = -(Number(speed) * Number(speed) * Number(battery) / 2500) + (4 * Number(battery)) + Number(weather);
 
 
   return (
@@ -80,7 +91,7 @@ const App = () => {
 
           </div>
           <div className="flex w-full flex-row justify-center gap-4">
-            <WeatherInput />
+            <WeatherInput value={weather} onChange={handleWeatherChange}/>
           </div>
 
           {/*make the button*/}
