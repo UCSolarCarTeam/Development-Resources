@@ -1,4 +1,4 @@
-import { useCallback, useMemo, useReducer, useState } from "react";
+import { useCallback, useReducer, useState } from "react";
 
 import BatteryInput from "~/components/batteryInput";
 import Header from "~/components/header";
@@ -17,29 +17,30 @@ interface inputAction {
 }
 
 const App = () => {
+  const [showResult, setShowResult] = useState(false);
+  const [errors, setErrors] = useState({ speedError: "", batteryError: "" });
+
+  //the reducer function, updates the state when input values (speed,battery,weather) are changed
+  const reducer = (state: inputState, action: inputAction) => {
+    setShowResult(false); // Reset showResult when inputs change
+    switch (action.type) {
+      case "changed_speed":
+        return { ...state, speed: action.payload };
+      case "changed_battery":
+        return { ...state, battery: action.payload };
+      case "changed_weather":
+        return { ...state, weather: action.payload };
+      default:
+        return state;
+    }
+  };
+
   const [state, dispatch] = useReducer(reducer, {
     //useReducer to manage more complex states
     speed: 0, //the initial state of speed, battery, weather values
     battery: 0,
     weather: 50,
   });
-  const [range, setRange] = useState("");
-  const [errors, setErrors] = useState({ speedError: "", batteryError: "" });
-
-  //the reducer function, updates the state when input values (speed,battery,weather) are changed
-  function reducer(state: inputState, action: inputAction) {
-    switch (action.type) {
-      case "changed_speed": {
-        return { ...state, speed: action.payload };
-      }
-      case "changed_battery": {
-        return { ...state, battery: action.payload };
-      }
-      case "changed_weather": {
-        return { ...state, weather: action.payload };
-      }
-    }
-  }
 
   //validate speed and battery inputs
   const validateInputs = useCallback(() => {
@@ -67,36 +68,30 @@ const App = () => {
     return isValid;
   }, [state.speed, state.battery]);
 
-  //use the given formula to estimate range
-  const calculateRange = useCallback(() => {
+  const calculateRange = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault(); //clicking this button would previously trigger the form to submit and refresh the page, deleting the input. This line prevents that default submission
     if (validateInputs()) {
-      const s = state.speed;
-      const b = state.battery;
-      const w = state.weather;
-
-      const calculatedRange = -((s * s * b) / 2500) + 4 * b + w;
-      setRange(calculatedRange.toFixed(2));
-    } else {
-      setRange(""); //stops a previous value of range from being passed on to resultMessage, if a new input is invalid
+      setShowResult(true);
     }
-  }, [state.speed, state.battery, state.weather, validateInputs]);
+  };
 
-  //show the result of estimated range
-  const resultMessage = useMemo(() => {
-    if (range !== "") {
-      return "The predicted range of the Elysia is " + range + "km.";
-    }
-    return null;
-  }, [range]);
+  //use the given formula to estimate range
+  const range =
+    -((state.speed * state.speed * state.battery) / 2500) +
+    4 * state.battery +
+    state.weather;
 
   return (
     <div className="h-screen w-screen bg-[#212121]">
       <div className="flex h-full flex-col items-center pt-36 text-white">
         <Header />
-        <form name="simulator" className="flex w-full flex-col items-center">
+        <form
+          onSubmit={calculateRange}
+          className="flex w-full flex-col items-center"
+        >
           <div className="mb-4 flex w-full flex-col items-center gap-y-4">
             <SpeedInput //pass a stateChanger prop to each component, causing changes to inputs to call the dispatch function of useReducer
-              stateChanger={(value: number) =>
+              stateChanger={(value) =>
                 dispatch({ type: "changed_speed", payload: value })
               }
             />
@@ -104,7 +99,7 @@ const App = () => {
               <p className="text-red-500">{errors.speedError}</p>
             )}
             <BatteryInput
-              stateChanger={(value: number) =>
+              stateChanger={(value) =>
                 dispatch({ type: "changed_battery", payload: value })
               }
             />
@@ -114,26 +109,20 @@ const App = () => {
           </div>
           <div className="flex w-full flex-row justify-center gap-4">
             <WeatherInput
-              stateChanger={(value: number) =>
+              stateChanger={(value) =>
                 dispatch({ type: "changed_weather", payload: value })
               }
             />
           </div>
-          <div>
-            <button
-              onClick={(event) => {
-                event.preventDefault(); //clicking this button would previously trigger the form to submit and refresh the page, deleting the input. This line prevents that default submission
-                calculateRange();
-              }}
-              className="rounded bg-blue-700 text-center "
-            >
-              Calculate
-            </button>
-            {resultMessage && (
-              <p className="mt-4 text-green-500">{resultMessage}</p>
-            )}
-          </div>
+          <button type="submit" className="rounded bg-blue-700 text-center">
+            Calculate
+          </button>
         </form>
+        {showResult && (
+          <p className="mt-4 text-green-500">
+            The predicted range of the Elysia is {range.toFixed(2)} km.
+          </p>
+        )}
       </div>
     </div>
   );
