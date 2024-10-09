@@ -1,4 +1,4 @@
-import { useCallback, useReducer, useState } from "react";
+import { useCallback, useMemo, useReducer, useState } from "react";
 
 import BatteryInput from "~/components/batteryInput";
 import Header from "~/components/header";
@@ -18,7 +18,6 @@ interface inputAction {
 
 const App = () => {
   const [showResult, setShowResult] = useState(false);
-  const [errors, setErrors] = useState({ speedError: "", batteryError: "" });
 
   //the reducer function, updates the state when input values (speed,battery,weather) are changed
   const reducer = useCallback((state: inputState, action: inputAction) => {
@@ -43,34 +42,32 @@ const App = () => {
   });
 
   //validate speed and battery inputs
-  const validateInputs = useCallback(() => {
+  const validateInputs = useMemo(() => {
     const newErrors = { speedError: "", batteryError: "" };
-    let isValid = true;
 
     if (!state.speed) {
       newErrors.speedError = "Speed is required";
-      isValid = false;
     } else if (state.speed < 0 || state.speed > 90) {
       newErrors.speedError = "The speed should be with the range of 0 to 90";
-      isValid = false;
     }
 
     if (!state.battery) {
       newErrors.batteryError = "Battery percentage is required";
-      isValid = false;
     } else if (state.battery < 0 || state.battery > 100) {
       newErrors.batteryError =
         "The battery percentage should be with the range of 0 to 100";
-      isValid = false;
     }
 
-    setErrors(newErrors);
-    return isValid;
+    return newErrors;
   }, [state.speed, state.battery]);
+
+  const isValid = useMemo(() => {
+    return !validateInputs.speedError && !validateInputs.batteryError;
+  }, [validateInputs]);
 
   const calculateRange = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault(); //clicking this button would previously trigger the form to submit and refresh the page, deleting the input. This line prevents that default submission
-    if (validateInputs()) {
+    if (isValid) {
       setShowResult(true);
     }
   };
@@ -95,16 +92,16 @@ const App = () => {
                 dispatch({ type: "changed_speed", payload: value })
               }
             />
-            {errors.speedError && (
-              <p className="text-red-500">{errors.speedError}</p>
+            {validateInputs.speedError && (
+              <p className="text-red-500">{validateInputs.speedError}</p>
             )}
             <BatteryInput
               stateChanger={(value: number) =>
                 dispatch({ type: "changed_battery", payload: value })
               }
             />
-            {errors.batteryError && (
-              <p className="text-red-500">{errors.batteryError}</p>
+            {validateInputs.batteryError && (
+              <p className="text-red-500">{validateInputs.batteryError}</p>
             )}
           </div>
           <div className="flex w-full flex-row justify-center gap-4">
