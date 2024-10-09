@@ -21,7 +21,7 @@ const App = () => {
   const [errors, setErrors] = useState({ speedError: "", batteryError: "" });
 
   //the reducer function, updates the state when input values (speed,battery,weather) are changed
-  const reducer = (state: inputState, action: inputAction) => {
+  const reducer = useCallback((state: inputState, action: inputAction) => {
     setShowResult(false);
     switch (action.type) {
       case "changed_speed":
@@ -33,7 +33,7 @@ const App = () => {
       default:
         return state;
     }
-  };
+  }, []);
 
   const [state, dispatch] = useReducer(reducer, {
     //useReducer to manage more complex states
