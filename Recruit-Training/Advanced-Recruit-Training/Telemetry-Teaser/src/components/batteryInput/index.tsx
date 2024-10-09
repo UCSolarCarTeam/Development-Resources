@@ -1,4 +1,6 @@
-const BatteryInput = () => {
+import { InputProps } from '/Users/macbook/Documents/Development-Resources/Recruit-Training/Advanced-Recruit-Training/Telemetry-Teaser/src/InputProps.ts';
+
+const BatteryInput: React.FC<InputProps> = ({ value, onChange }) => {
   return (
     <div className="flex w-full flex-col items-center gap-2">
       <label>Battery Percentage (%):</label>
@@ -8,6 +10,9 @@ const BatteryInput = () => {
         name="battery"
         type="number"
         placeholder="Battery"
+        value={value}
+        onChange={onChange}
+        required
       />
     </div>
   );
