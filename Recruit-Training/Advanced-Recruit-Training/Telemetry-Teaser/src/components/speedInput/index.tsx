@@ -1,10 +1,6 @@
-// Define the props type
-interface SpeedInputProps {
-  value: number | string; // Expecting a string for the input value
-  onChange: (e: React.ChangeEvent<HTMLInputElement>) => void; // Function to handle changes
-}
+import { InputProps } from '/Users/macbook/Documents/Development-Resources/Recruit-Training/Advanced-Recruit-Training/Telemetry-Teaser/src/InputProps.ts';
 
-const SpeedInput: React.FC<SpeedInputProps> = ({ value, onChange }) => {
+const SpeedInput: React.FC<InputProps> = ({ value, onChange }) => {
   return (
     <>
       <div className="flex w-full flex-col items-center gap-2">

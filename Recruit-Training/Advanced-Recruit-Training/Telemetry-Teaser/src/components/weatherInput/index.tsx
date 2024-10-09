@@ -1,9 +1,7 @@
-interface WeatherInputProps {
-  value: number | string; // Expecting a string for the input value
-  onChange: (e: React.ChangeEvent<HTMLInputElement>) => void; // Function to handle changes
-}
+import React from 'react';
+import { InputProps } from '/Users/macbook/Documents/Development-Resources/Recruit-Training/Advanced-Recruit-Training/Telemetry-Teaser/src/InputProps.ts';
 
-const WeatherInput: React.FC<WeatherInputProps> = ({ value, onChange }) => {
+const WeatherInput: React.FC<InputProps> = ({ value, onChange }) => {
   return (
     <>
       <img src="/Cloud.png" height="66px" width="66px" alt="Cloud" />

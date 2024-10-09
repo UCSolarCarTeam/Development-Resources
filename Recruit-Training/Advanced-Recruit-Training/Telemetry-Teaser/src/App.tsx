@@ -11,16 +11,12 @@ const App = () => {
   const [valid, setValid] = useState(false);
 
 
-  // Error messages
-  const [speedError, setSpeedError] = useState<string>("")
-  const [batteryError, setBatteryError] = useState<string>("")
-
   //to avoid the type errors:
   const handleSpeedChange = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value;
     setSpeed(value === "" ? "" : Number(value))
     console.log("Speed:", value); // Add this line
-    if(value === ""){
+    if (value === "") {
       setValid(false)
     }
 
@@ -31,7 +27,7 @@ const App = () => {
     // Allow empty input, or convert to a number
     setBattery(value === "" ? "" : Number(value));
     console.log("Battery:", value); // Add this line
-    if(value===""){
+    if (value === "") {
       setValid(false)
     }
   }, []);
@@ -41,38 +37,49 @@ const App = () => {
     // Allow empty input, or convert to a number
     setWeather(value === "" ? "" : Number(value));
     console.log("weather:", value); // Add this line
-    if(value===""){
+    if (value === "") {
       setValid(false)
     }
   }, []);
 
-  const validInputs = () => {
+
+  const validInputs = (speed: string | number, battery: string | number): { speedError: string; batteryError: string; isValid: boolean } => {
 
     //reset battery and speed
-    setSpeedError("");
-    setBatteryError("");
+    let speedError = "";
+    let batteryError = "";
+    let isValid = true;
 
     //check the input
     if (speed === "") {
-      setValid(false);
-      setSpeedError("Speed is required");
-    } else if (typeof speed === 'number' && (speed > 90 || speed < 0)) {
-      setValid(false);
-      setSpeedError("The speed should be within the range of 0 to 90");
+      isValid = false;
+      speedError = "Speed is required";
+    } else if (Number(speed) < 0 || Number(speed) > 90) {
+      isValid = false;
+      speedError = "The speed should be within the range of 0 to 90";
     }
 
     if (battery === "") {
-      setValid(false);
-      setSpeedError("Battery is required");
+      isValid = false;
+      batteryError = "Battery is required";
     }
     else if (typeof battery === "number" && (battery < 0 || battery > 100)) {
-      setValid(false);
-      setSpeedError("The battery percentage should be within the range of 0 to 100");
+      isValid = false;
+      batteryError = "The battery percentage should be within the range of 0 to 100";
     }
 
-    setValid(true);
+    setValid(isValid);
+
+    return { speedError, batteryError, isValid };
   }
 
+  const handleButtonClick = () => {
+    const { speedError, batteryError, isValid } = validInputs(speed, battery);
+    if (!isValid) {
+      console.error(speedError, batteryError);
+      return;
+    }
+  }
   //calculate range and then in the return function, call valid inputs. if it returns false, print null, else print confirmatin message
   const range = -(Number(speed) * Number(speed) * Number(battery) / 2500) + (4 * Number(battery)) + Number(weather);
 
@@ -84,31 +91,31 @@ const App = () => {
         <form name="simulator" className="flex w-full flex-col items-center">
           <div className="mb-4 flex w-full flex-col items-center gap-y-4">
             <SpeedInput value={speed} onChange={handleSpeedChange} />
-            {speedError && <div className="text-red-500">{speedError}</div>} {/* speed error message */}
+            {validInputs(speed, battery).speedError && <div className="text-red-500">{validInputs(speed, battery).speedError}</div>} {/* speed error message */}
 
             <BatteryInput value={battery} onChange={handleBatteryChange} />
-            {batteryError && <div className="text-red-500">{batteryError}</div>} {/* Battery error message */}
+            {validInputs(speed, battery).batteryError && <div className="text-red-500">{validInputs(speed, battery).batteryError}</div>} {/* Battery error message */}
 
           </div>
           <div className="flex w-full flex-row justify-center gap-4">
-            <WeatherInput value={weather} onChange={handleWeatherChange}/>
+            <WeatherInput value={weather} onChange={handleWeatherChange} />
           </div>
 
           {/*make the button*/}
-<div className="mt-8 text-center"> {/* Add text-center here */}
-  <button
-    type="button"
-    onClick={validInputs}
-    className="bg-blue-500 text-white font-bold py-2 px-4 rounded w-48"
-  >
-    Calculate
-  </button>
-  {valid ? ( // Assuming 'valid' is a state that indicates whether the inputs are valid
-    <div className="mt-4">
-      <p>The predicted range of the Eylsia is {range} km.</p>
-    </div>
-  ) : null}
-</div>
+          <div className="mt-8 text-center"> {/* Add text-center here */}
+            <button
+              type="button"
+              onClick={handleButtonClick}
+              className="bg-blue-500 text-white font-bold py-2 px-4 rounded w-48"
+            >
+              Calculate
+            </button>
+            {valid ? ( // Assuming 'valid' is a state that indicates whether the inputs are valid
+              <div className="mt-4">
+                <p>The predicted range of the Eylsia is {range.toFixed(2)} km.</p>
+              </div>
+            ) : null}
+          </div>
 
 
         </form>
