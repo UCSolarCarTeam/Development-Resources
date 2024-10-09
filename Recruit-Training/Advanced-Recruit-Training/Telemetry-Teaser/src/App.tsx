@@ -88,6 +88,7 @@ const App = () => {
         >
           <div className="mb-4 flex w-full flex-col items-center gap-y-4">
             <SpeedInput //pass a stateChanger prop to each component, causing changes to inputs to call the dispatch function of useReducer
+              value={state.speed}
               stateChanger={(value: number) =>
                 dispatch({ type: "changed_speed", payload: value })
               }
@@ -96,6 +97,7 @@ const App = () => {
               <p className="text-red-500">{validateInputs.speedError}</p>
             )}
             <BatteryInput
+              value={state.battery}
               stateChanger={(value: number) =>
                 dispatch({ type: "changed_battery", payload: value })
               }
@@ -106,6 +108,7 @@ const App = () => {
           </div>
           <div className="flex w-full flex-row justify-center gap-4">
             <WeatherInput
+              value={state.weather}
               stateChanger={(value: number) =>
                 dispatch({ type: "changed_weather", payload: value })
               }

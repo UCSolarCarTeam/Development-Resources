@@ -1,6 +1,6 @@
 import type { InputProps } from "~/components/interfaces/interfaces.ts";
 
-const WeatherInput: React.FC<InputProps> = ({ stateChanger }) => {
+const WeatherInput: React.FC<InputProps> = ({ value, stateChanger }) => {
   return (
     <>
       <img src="/Cloud.png" height="66px" width="66px" alt="Cloud" />
@@ -10,7 +10,7 @@ const WeatherInput: React.FC<InputProps> = ({ stateChanger }) => {
         type="range"
         min="0"
         max="100"
-        value="50"
+        value={value === 0 ? "" : value} //if the value is 0, show an empty string. else show the value
         onChange={(event) => stateChanger(Number(event.target.value))}
       />
       <img src="/Sun.png" height="66px" width="66px" alt="Sun" />
