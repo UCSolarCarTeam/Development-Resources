@@ -1,8 +1,6 @@
-interface inputProps {
-  stateChanger: (value: number) => void;
-}
+import type { InputProps } from "~/components/interfaces/interfaces.ts";
 
-const SpeedInput: React.FC<inputProps> = ({ stateChanger }) => {
+const SpeedInput: React.FC<InputProps> = ({ stateChanger }) => {
   return (
     <>
       <div className="flex w-full flex-col items-center gap-2">

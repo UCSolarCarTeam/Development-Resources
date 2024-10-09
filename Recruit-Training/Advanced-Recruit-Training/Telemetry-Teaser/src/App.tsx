@@ -22,7 +22,7 @@ const App = () => {
 
   //the reducer function, updates the state when input values (speed,battery,weather) are changed
   const reducer = (state: inputState, action: inputAction) => {
-    setShowResult(false); // Reset showResult when inputs change
+    setShowResult(false);
     switch (action.type) {
       case "changed_speed":
         return { ...state, speed: action.payload };
@@ -91,7 +91,7 @@ const App = () => {
         >
           <div className="mb-4 flex w-full flex-col items-center gap-y-4">
             <SpeedInput //pass a stateChanger prop to each component, causing changes to inputs to call the dispatch function of useReducer
-              stateChanger={(value) =>
+              stateChanger={(value: number) =>
                 dispatch({ type: "changed_speed", payload: value })
               }
             />
@@ -99,7 +99,7 @@ const App = () => {
               <p className="text-red-500">{errors.speedError}</p>
             )}
             <BatteryInput
-              stateChanger={(value) =>
+              stateChanger={(value: number) =>
                 dispatch({ type: "changed_battery", payload: value })
               }
             />
@@ -109,7 +109,7 @@ const App = () => {
           </div>
           <div className="flex w-full flex-row justify-center gap-4">
             <WeatherInput
-              stateChanger={(value) =>
+              stateChanger={(value: number) =>
                 dispatch({ type: "changed_weather", payload: value })
               }
             />

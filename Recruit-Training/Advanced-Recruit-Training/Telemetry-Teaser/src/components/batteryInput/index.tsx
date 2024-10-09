@@ -1,8 +1,6 @@
-interface inputProps {
-  stateChanger: (value: number) => void;
-}
+import type { InputProps } from "~/components/interfaces/interfaces.ts";
 
-const BatteryInput: React.FC<inputProps> = ({ stateChanger }) => {
+const BatteryInput: React.FC<InputProps> = ({ stateChanger }) => {
   return (
     <div className="flex w-full flex-col items-center gap-2">
       <label>Battery Percentage (%):</label>

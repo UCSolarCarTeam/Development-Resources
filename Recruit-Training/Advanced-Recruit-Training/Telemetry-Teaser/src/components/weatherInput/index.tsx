@@ -1,8 +1,6 @@
-interface inputProps {
-  stateChanger: (value: number) => void;
-}
+import type { InputProps } from "~/components/interfaces/interfaces.ts";
 
-const WeatherInput: React.FC<inputProps> = ({ stateChanger }) => {
+const WeatherInput: React.FC<InputProps> = ({ stateChanger }) => {
   return (
     <>
       <img src="/Cloud.png" height="66px" width="66px" alt="Cloud" />
