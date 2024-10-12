@@ -5,18 +5,14 @@ function App() {
 
   return (
     <>
-      <h1>Hello</h1>
-      <div className="flex w-full h-full">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.jsx</code> and save to test HMRgjkhghkghjgjhgjh
-        </p>
+      <div className="flex justify-center items-center h-screen">
+        <div className="box-border h-1/2 w-1/5 bg-pink-200 rounded-lg">
+          <div className="box-border h-1/5 w-5/6 bg-pink-300 rounded-lg m-auto mt-4"></div>
+          <div>
+            <Button />
+          </div>
+        </div>
       </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
     </>
   );
 }
