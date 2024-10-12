@@ -42,33 +42,54 @@ const App = () => {
   });
 
   //validate speed and battery inputs
-  const validateInputs = useMemo(() => {
-    const newErrors = { speedError: "", batteryError: "" };
-
-    if (!state.speed) {
-      newErrors.speedError = "Speed is required";
-    } else if (state.speed < 0 || state.speed > 90) {
-      newErrors.speedError = "The speed should be with the range of 0 to 90";
+  const speedExistsError = useMemo(() => {
+    if (state.speed === 0) {
+      return false;
+    } else if (!state.speed) {
+      return true;
     }
+  }, [state.speed]);
 
-    if (!state.battery) {
-      newErrors.batteryError = "Battery percentage is required";
-    } else if (state.battery < 0 || state.battery > 100) {
-      newErrors.batteryError =
-        "The battery percentage should be with the range of 0 to 100";
+  const speedRangeError = useMemo(() => {
+    if (state.speed < 0 || state.speed > 90) {
+      return true;
     }
+  }, [state.speed]);
 
-    return newErrors;
-  }, [state.speed, state.battery]);
+  const batteryExistsError = useMemo(() => {
+    if (state.battery === 0) {
+      return false;
+    } else if (!state.battery) {
+      return true;
+    }
+  }, [state.battery]);
+
+  const batteryRangeError = useMemo(() => {
+    return state.battery < 0 || state.battery > 100;
+  }, [state.battery]);
 
   const isValid = useMemo(() => {
-    return !validateInputs.speedError && !validateInputs.batteryError;
-  }, [validateInputs]);
+    return (
+      state.speed !== 0 &&
+      state.battery !== 0 &&
+      !speedExistsError &&
+      !speedRangeError &&
+      !batteryExistsError &&
+      !batteryRangeError
+    );
+  }, [
+    speedExistsError,
+    speedRangeError,
+    batteryExistsError,
+    batteryRangeError,
+  ]);
 
   const calculateRange = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault(); //form submission would previously trigger a form submit and refresh the page, deleting the input. This line prevents that default submission
     if (isValid) {
       setShowResult(true);
+    } else {
+      setShowResult(false);
     }
   };
 
@@ -93,8 +114,9 @@ const App = () => {
                 dispatch({ type: "changed_speed", payload: value })
               }
             />
-            {validateInputs.speedError && (
-              <p className="text-red-500">{validateInputs.speedError}</p>
+            {speedExistsError && <p>Speed is required</p>}
+            {speedRangeError && (
+              <p>The speed should be with the range of 0 to 90</p>
             )}
             <BatteryInput
               value={state.battery}
@@ -102,8 +124,9 @@ const App = () => {
                 dispatch({ type: "changed_battery", payload: value })
               }
             />
-            {validateInputs.batteryError && (
-              <p className="text-red-500">{validateInputs.batteryError}</p>
+            {batteryExistsError && <p>Battery is required</p>}
+            {batteryRangeError && (
+              <p>The battery should be with the range of 0 to 100</p>
             )}
           </div>
           <div className="flex w-full flex-row justify-center gap-4">
@@ -118,11 +141,15 @@ const App = () => {
             Calculate
           </button>
         </form>
-        {showResult && (
-          <p className="mt-4 text-green-500">
-            The predicted range of the Elysia is {range.toFixed(2)} km.
-          </p>
-        )}
+        {showResult &&
+          !speedExistsError &&
+          !speedRangeError &&
+          !batteryExistsError &&
+          !batteryRangeError && (
+            <p className="mt-4 text-green-500">
+              The predicted range of the Elysia is {range.toFixed(2)} km.
+            </p>
+          )}
       </div>
     </div>
   );
