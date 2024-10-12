@@ -101,7 +101,7 @@ const App = () => {
         <Header />
         <form
           onSubmit={calculateRange}
-          className="flex w-full flex-col items-center"
+          className="flex w-full flex-col items-center "
         >
           <div className="mb-4 flex w-full flex-col items-center gap-y-4">
             <SpeedInput //pass a stateChanger prop to each component, causing changes to inputs to call the dispatch function of useReducer
@@ -110,9 +110,13 @@ const App = () => {
                 dispatch({ type: "changed_speed", payload: value })
               }
             />
-            {hasSubmitForm && speedExistsError && <p>Speed is required</p>}
+            {hasSubmitForm && speedExistsError && (
+              <p className="text-red-500">Speed is required</p>
+            )}
             {speedRangeError && (
-              <p>The speed should be with the range of 0 to 90</p>
+              <p className="text-red-500">
+                The speed should be with the range of 0 to 90
+              </p>
             )}
             <BatteryInput
               value={state.battery}
@@ -120,12 +124,16 @@ const App = () => {
                 dispatch({ type: "changed_battery", payload: value })
               }
             />
-            {hasSubmitForm && batteryExistsError && <p>Battery is required</p>}
+            {hasSubmitForm && batteryExistsError && (
+              <p className="text-red-500">Battery is required</p>
+            )}
             {batteryRangeError && (
-              <p>The battery should be with the range of 0 to 100</p>
+              <p className="text-red-500">
+                The battery should be with the range of 0 to 100
+              </p>
             )}
           </div>
-          <div className="flex w-full flex-row justify-center gap-4">
+          <div className="flex w-full flex-row justify-center gap-4 ">
             <WeatherInput
               value={state.weather}
               stateChanger={(value: number) =>
@@ -133,7 +141,10 @@ const App = () => {
               }
             />
           </div>
-          <button type="submit" className="rounded bg-blue-700 text-center">
+          <button
+            type="submit"
+            className="rounded bg-blue-700 p-1 text-center outline "
+          >
             Calculate
           </button>
         </form>
@@ -142,7 +153,7 @@ const App = () => {
           !speedRangeError &&
           !batteryExistsError &&
           !batteryRangeError && (
-            <p className="mt-4 text-green-500">
+            <p className="mt-4 text-green-500 ">
               The predicted range of the Elysia is {range.toFixed(2)} km.
             </p>
           )}
