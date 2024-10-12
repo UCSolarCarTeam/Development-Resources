@@ -1,4 +1,4 @@
-import React, { useCallback, useMemo, useState } from "react";
+import React, { useReducer, useCallback, useMemo, useState } from "react";
 
 import BatteryInput from "~/components/batteryInput";
 import Header from "~/components/header";
@@ -12,6 +12,11 @@ const App = () => {
   const [valid, setValid] = useState(true);
   let range = 0;
 
+  const ActionType = {
+    updateSpeed = "Update speed";
+    updateBattery = "Update battery";
+    updateSpeed = "Update speed";
+  }
   //to avoid the type errors:
   const handleSpeedChange = useCallback(
     (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -19,6 +24,7 @@ const App = () => {
       setSpeed(value === "" ? "" : Number(value));
       console.log("Speed:", value); // Add this line
       if (value === "") {
+        console.log("Speed:", value); // Add this line
         setValid(false);
       }
     },
@@ -50,7 +56,6 @@ const App = () => {
     },
     [],
   );
-
   const validInputs = useMemo((): {
     speedError: string;
     batteryError: string;
@@ -83,17 +88,6 @@ const App = () => {
   }, [speed, battery, weather]); //recompute the answer if speed, battery, or weather change
 
   const handleButtonClick = () => {
-    // Use Type Assertion to specify that the queried element is an HTMLInputElement
-    /*const speedInput =
-      (document.querySelector('input[placeholder="Speed"]') as HTMLInputElement)
-        ?.value || "";
-    const batteryInput =
-      (
-        document.querySelector(
-          'input[placeholder="Battery"]',
-        ) as HTMLInputElement
-      )?.value || "";*/
-
     const { speedError, batteryError, isValid } = validInputs;
 
     if (!isValid) {
@@ -115,7 +109,7 @@ const App = () => {
       2,
     )} km.`;
   };
-
+//useReducer 
   return (
     <div className="h-screen w-screen bg-[#212121]">
       <div className="flex h-full flex-col items-center pt-36 text-white">
