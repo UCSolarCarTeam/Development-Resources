@@ -107,6 +107,13 @@ const App = () => {
       Number(weather);
 
     console.log(`Calculated range: ${range.toFixed(2)} km`);
+
+    // Directly manipulate the DOM to show the calculated range
+    document.getElementById(
+      "range-output",
+    )!.innerText = `The predicted range of the Eylsia is ${range.toFixed(
+      2,
+    )} km.`;
   };
 
   return (
@@ -141,13 +148,14 @@ const App = () => {
             >
               Calculate
             </button>
-            {valid && ( // Assuming 'valid' is a state that indicates whether the inputs are valid
+            <div id="range-output" className="mt-4"></div>
+            {/*{valid && ( // Assuming 'valid' is a state that indicates whether the inputs are valid
               <div className="mt-4">
                 <p>
                   The predicted range of the Eylsia is {range.toFixed(2)} km.
                 </p>
               </div>
-            )}
+            )}*/}
           </div>
         </form>
       </div>
