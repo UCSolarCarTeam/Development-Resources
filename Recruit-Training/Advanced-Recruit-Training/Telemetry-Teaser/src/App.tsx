@@ -18,6 +18,7 @@ interface inputAction {
 
 const App = () => {
   const [showResult, setShowResult] = useState(false);
+  const [hasSubmitForm, setHasSubmitForm] = useState(false);
 
   //the reducer function, updates the state when input values (speed,battery,weather) are changed
   const reducer = useCallback((state: inputState, action: inputAction) => {
@@ -43,9 +44,7 @@ const App = () => {
 
   //validate speed and battery inputs
   const speedExistsError = useMemo(() => {
-    if (state.speed === 0) {
-      return false;
-    } else if (!state.speed) {
+    if (!state.speed) {
       return true;
     }
   }, [state.speed]);
@@ -57,9 +56,7 @@ const App = () => {
   }, [state.speed]);
 
   const batteryExistsError = useMemo(() => {
-    if (state.battery === 0) {
-      return false;
-    } else if (!state.battery) {
+    if (!state.battery) {
       return true;
     }
   }, [state.battery]);
@@ -70,8 +67,6 @@ const App = () => {
 
   const isValid = useMemo(() => {
     return (
-      state.speed !== 0 &&
-      state.battery !== 0 &&
       !speedExistsError &&
       !speedRangeError &&
       !batteryExistsError &&
@@ -86,6 +81,7 @@ const App = () => {
 
   const calculateRange = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault(); //form submission would previously trigger a form submit and refresh the page, deleting the input. This line prevents that default submission
+    setHasSubmitForm(true);
     if (isValid) {
       setShowResult(true);
     } else {
@@ -114,7 +110,7 @@ const App = () => {
                 dispatch({ type: "changed_speed", payload: value })
               }
             />
-            {speedExistsError && <p>Speed is required</p>}
+            {hasSubmitForm && speedExistsError && <p>Speed is required</p>}
             {speedRangeError && (
               <p>The speed should be with the range of 0 to 90</p>
             )}
@@ -124,7 +120,7 @@ const App = () => {
                 dispatch({ type: "changed_battery", payload: value })
               }
             />
-            {batteryExistsError && <p>Battery is required</p>}
+            {hasSubmitForm && batteryExistsError && <p>Battery is required</p>}
             {batteryRangeError && (
               <p>The battery should be with the range of 0 to 100</p>
             )}
