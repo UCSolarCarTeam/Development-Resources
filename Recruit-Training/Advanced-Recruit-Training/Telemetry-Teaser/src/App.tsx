@@ -1,32 +1,86 @@
-import React, { useReducer, useCallback, useMemo, useState } from "react";
+import { stat } from "node:fs";
+import React, { useCallback, useMemo, useReducer, useState } from "react";
 
 import BatteryInput from "~/components/batteryInput";
 import Header from "~/components/header";
 import SpeedInput from "~/components/speedInput";
 import WeatherInput from "~/components/weatherInput";
 
+// 1. Define the State interface
+interface State {
+  speed: number | string;
+  battery: number | string;
+  weather: number | string;
+  valid: boolean;
+  changed: {
+    speed: boolean;
+    battery: boolean;
+  };
+}
+
+type ActionType =
+  | { type: "Update speed"; payload: number | string }
+  | { type: "Update battery"; payload: number | string }
+  | { type: "Update weather"; payload: number | string }
+  | { type: "Update valid"; payload: boolean }
+  | { type: "changed"; field: "speed" | "battery"; payload: boolean };
+
+const initialState: State = {
+  speed: "",
+  battery: "",
+  weather: 0,
+  valid: true,
+  changed: {
+    speed: false,
+    battery: false,
+  },
+};
+
+const reducer = (state: State, action: ActionType): State => {
+  switch (action.type) {
+    case "Update speed":
+      return { ...state, speed: action.payload };
+    case "Update battery":
+      return { ...state, battery: action.payload };
+    case "Update weather":
+      return { ...state, weather: action.payload };
+    case "Update valid":
+      return { ...state, valid: action.payload };
+    case "changed":
+      return {
+        ...state,
+        changed: { ...state.changed, [action.field]: action.payload },
+      };
+    default:
+      return state;
+  }
+};
 const App = () => {
-  const [speed, setSpeed] = useState<number | string>("");
+  const [state, dispatch] = useReducer(reducer, initialState);
+  /*const [speed, setSpeed] = useState<number | string>("");
   const [battery, setBattery] = useState<number | string>("");
-  const [weather, setWeather] = useState<number | string>(0);
-  const [valid, setValid] = useState(true);
+  const [weather, setWeather] = useState<number | string>(0);*/
+  const { speed, battery, weather } = state; //initialize the state
+  //const [valid, setValid] = useState(true);
   let range = 0;
 
-  const ActionType = {
-    updateSpeed = "Update speed";
-    updateBattery = "Update battery";
-    updateSpeed = "Update speed";
-  }
   //to avoid the type errors:
   const handleSpeedChange = useCallback(
     (e: React.ChangeEvent<HTMLInputElement>) => {
       const value = e.target.value;
-      setSpeed(value === "" ? "" : Number(value));
+      dispatch({
+        type: "Update speed",
+        payload: value === "" ? "" : Number(value),
+      });
+      //setSpeed(value === "" ? "" : Number(value));
+      // Dispatch to update touched state when the input changes
+      dispatch({
+        type: "changed",
+        field: "speed", // Correctly specify the field
+        payload: value === "", // Set to true if the value is an empty string
+      });
+
       console.log("Speed:", value); // Add this line
-      if (value === "") {
-        console.log("Speed:", value); // Add this line
-        setValid(false);
-      }
     },
     [],
   );
@@ -35,10 +89,17 @@ const App = () => {
     (e: React.ChangeEvent<HTMLInputElement>) => {
       const value = e.target.value;
       // Allow empty input, or convert to a number
-      setBattery(value === "" ? "" : Number(value));
+      //setBattery(value === "" ? "" : Number(value));
+      dispatch({
+        type: "Update battery",
+        payload: value === "" ? "" : Number(value),
+      });
       console.log("Battery:", value); // Add this line
       if (value === "") {
-        setValid(false);
+        dispatch({
+          type: "Update valid",
+          payload: false,
+        });
       }
     },
     [],
@@ -48,44 +109,53 @@ const App = () => {
     (e: React.ChangeEvent<HTMLInputElement>) => {
       const value = e.target.value;
       // Allow empty input, or convert to a number
-      setWeather(value === "" ? "" : Number(value));
+      dispatch({
+        type: "Update weather",
+        payload: value === "" ? "" : Number(value),
+      });
       console.log("weather:", value); // Add this line
       if (value === "") {
-        setValid(false);
+        dispatch({
+          type: "Update valid",
+          payload: false,
+        });
       }
     },
     [],
   );
-  const validInputs = useMemo((): {
-    speedError: string;
-    batteryError: string;
-    isValid: boolean;
-  } => {
+  const validInputs = useMemo(() => {
     //reset battery and speed
     let speedError = "";
     let batteryError = "";
     let isValid = true;
 
-    //use memo for this function : put the stuff inside the fxn inside the dependency array
-    //check the input
-    if (speed === "") {
-      isValid = false;
-      speedError = "Speed is required";
-    } else if (Number(speed) < 0 || Number(speed) > 90) {
-      isValid = false;
-      speedError = "The speed should be within the range of 0 to 90";
+    //check the chnaged fields
+    if (state.changed.speed) {
+      if (speed === "") {
+        isValid = false;
+        speedError = "Speed is required";
+      } else if (Number(speed) < 0 || Number(speed) > 90) {
+        isValid = false;
+        speedError = "The speed should be within the range of 0 to 90";
+      }
     }
 
-    if (battery === "") {
-      isValid = false;
-      batteryError = "Battery is required";
-    } else if (typeof battery === "number" && (battery < 0 || battery > 100)) {
-      isValid = false;
-      batteryError =
-        "The battery percentage should be within the range of 0 to 100";
+    if (state.changed.battery) {
+      if (battery === "") {
+        isValid = false;
+        batteryError = "Battery is required";
+      } else if (
+        typeof battery === "number" &&
+        (battery < 0 || battery > 100)
+      ) {
+        isValid = false;
+        batteryError =
+          "The battery percentage should be within the range of 0 to 100";
+      }
     }
+
     return { speedError, batteryError, isValid };
-  }, [speed, battery, weather]); //recompute the answer if speed, battery, or weather change
+  }, [state.changed, speed, battery]); //recompute the answer if speed, battery, or weather change
 
   const handleButtonClick = () => {
     const { speedError, batteryError, isValid } = validInputs;
@@ -109,7 +179,7 @@ const App = () => {
       2,
     )} km.`;
   };
-//useReducer 
+  //useReducer
   return (
     <div className="h-screen w-screen bg-[#212121]">
       <div className="flex h-full flex-col items-center pt-36 text-white">
