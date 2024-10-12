@@ -10,7 +10,7 @@ const WeatherInput: React.FC<InputProps> = ({ value, stateChanger }) => {
         type="range"
         min="0"
         max="100"
-        value={value === 0 ? "" : value} //if the value is 0, show an empty string. else show the value
+        value={value} //if the value is 0, show an empty string. else show the value
         onChange={(event) => stateChanger(Number(event.target.value))}
       />
       <img src="/Sun.png" height="66px" width="66px" alt="Sun" />

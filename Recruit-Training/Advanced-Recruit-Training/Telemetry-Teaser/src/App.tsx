@@ -66,7 +66,7 @@ const App = () => {
   }, [validateInputs]);
 
   const calculateRange = (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault(); //clicking this button would previously trigger the form to submit and refresh the page, deleting the input. This line prevents that default submission
+    e.preventDefault(); //form submission would previously trigger a form submit and refresh the page, deleting the input. This line prevents that default submission
     if (isValid) {
       setShowResult(true);
     }
