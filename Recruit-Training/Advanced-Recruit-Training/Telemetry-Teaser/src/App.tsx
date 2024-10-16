@@ -1,5 +1,4 @@
-import { stat } from "node:fs";
-import React, { useCallback, useMemo, useReducer, useState } from "react";
+import React, { useCallback, useMemo, useReducer } from "react";
 
 import BatteryInput from "~/components/batteryInput";
 import Header from "~/components/header";
@@ -11,7 +10,6 @@ interface State {
   speed: number | string;
   battery: number | string;
   weather: number | string;
-  valid: boolean;
   changed: {
     speed: boolean;
     battery: boolean;
@@ -19,17 +17,19 @@ interface State {
 }
 
 type ActionType =
-  | { type: "Update speed"; payload: number | string }
-  | { type: "Update battery"; payload: number | string }
-  | { type: "Update weather"; payload: number | string }
-  | { type: "Update valid"; payload: boolean }
-  | { type: "changed"; field: "speed" | "battery"; payload: boolean };
+  | { type: "UPDATE_SPEED"; payload: number | string }
+  | { type: "UPDATE_BATTERY"; payload: number | string }
+  | { type: "UPDATE_WEATHER"; payload: number | string }
+  | {
+      type: "CHANGED";
+      field: "speed" | "battery" | "weather";
+      payload: boolean;
+    };
 
 const initialState: State = {
   speed: "",
   battery: "",
   weather: 0,
-  valid: true,
   changed: {
     speed: false,
     battery: false,
@@ -38,15 +38,13 @@ const initialState: State = {
 
 const reducer = (state: State, action: ActionType): State => {
   switch (action.type) {
-    case "Update speed":
+    case "UPDATE_SPEED":
       return { ...state, speed: action.payload };
-    case "Update battery":
+    case "UPDATE_BATTERY":
       return { ...state, battery: action.payload };
-    case "Update weather":
+    case "UPDATE_WEATHER":
       return { ...state, weather: action.payload };
-    case "Update valid":
-      return { ...state, valid: action.payload };
-    case "changed":
+    case "CHANGED":
       return {
         ...state,
         changed: { ...state.changed, [action.field]: action.payload },
@@ -57,11 +55,7 @@ const reducer = (state: State, action: ActionType): State => {
 };
 const App = () => {
   const [state, dispatch] = useReducer(reducer, initialState);
-  /*const [speed, setSpeed] = useState<number | string>("");
-  const [battery, setBattery] = useState<number | string>("");
-  const [weather, setWeather] = useState<number | string>(0);*/
   const { speed, battery, weather } = state; //initialize the state
-  //const [valid, setValid] = useState(true);
   let range = 0;
 
   //to avoid the type errors:
@@ -69,13 +63,12 @@ const App = () => {
     (e: React.ChangeEvent<HTMLInputElement>) => {
       const value = e.target.value;
       dispatch({
-        type: "Update speed",
+        type: "UPDATE_SPEED",
         payload: value === "" ? "" : Number(value),
       });
-      //setSpeed(value === "" ? "" : Number(value));
-      // Dispatch to update touched state when the input changes
+      // Dispatch to update changed state when the input changes
       dispatch({
-        type: "changed",
+        type: "CHANGED",
         field: "speed", // Correctly specify the field
         payload: value === "", // Set to true if the value is an empty string
       });
@@ -89,18 +82,17 @@ const App = () => {
     (e: React.ChangeEvent<HTMLInputElement>) => {
       const value = e.target.value;
       // Allow empty input, or convert to a number
-      //setBattery(value === "" ? "" : Number(value));
       dispatch({
-        type: "Update battery",
+        type: "UPDATE_BATTERY",
         payload: value === "" ? "" : Number(value),
       });
       console.log("Battery:", value); // Add this line
-      if (value === "") {
-        dispatch({
-          type: "Update valid",
-          payload: false,
-        });
-      }
+      // Dispatch to update changed state when the input changes
+      dispatch({
+        type: "CHANGED",
+        field: "battery", // Correctly specify the field
+        payload: value === "", // Set to true if the value is an empty string
+      });
     },
     [],
   );
@@ -110,16 +102,16 @@ const App = () => {
       const value = e.target.value;
       // Allow empty input, or convert to a number
       dispatch({
-        type: "Update weather",
+        type: "UPDATE_WEATHER",
         payload: value === "" ? "" : Number(value),
       });
       console.log("weather:", value); // Add this line
-      if (value === "") {
-        dispatch({
-          type: "Update valid",
-          payload: false,
-        });
-      }
+      // Dispatch to update changed state when the input changes
+      dispatch({
+        type: "CHANGED",
+        field: "weather", // Correctly specify the field
+        payload: value === "", // Set to true if the value is an empty string
+      });
     },
     [],
   );

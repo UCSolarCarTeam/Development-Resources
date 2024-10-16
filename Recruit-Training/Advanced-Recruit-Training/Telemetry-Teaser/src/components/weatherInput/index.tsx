@@ -1,5 +1,6 @@
-import React from 'react';
-import { InputProps } from '/Users/macbook/Documents/Development-Resources/Recruit-Training/Advanced-Recruit-Training/Telemetry-Teaser/src/InputProps.ts';
+import React from "react";
+
+import type { InputProps } from "./InputProps";
 
 const WeatherInput: React.FC<InputProps> = ({ value, onChange }) => {
   return (

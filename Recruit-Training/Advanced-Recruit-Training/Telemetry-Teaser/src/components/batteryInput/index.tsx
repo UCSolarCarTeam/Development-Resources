@@ -1,4 +1,4 @@
-import { InputProps } from '/Users/macbook/Documents/Development-Resources/Recruit-Training/Advanced-Recruit-Training/Telemetry-Teaser/src/InputProps.ts';
+import type { InputProps } from "./InputProps";
 
 const BatteryInput: React.FC<InputProps> = ({ value, onChange }) => {
   return (
