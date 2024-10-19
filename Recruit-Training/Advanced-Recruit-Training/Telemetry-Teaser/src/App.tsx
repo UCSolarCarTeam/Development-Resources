@@ -1,4 +1,4 @@
-import React, { useCallback, useMemo, useReducer } from "react";
+import React, { useCallback, useMemo, useReducer, useRef } from "react";
 
 import BatteryInput from "~/components/batteryInput";
 import Header from "~/components/header";
@@ -19,26 +19,26 @@ interface State {
 
 type ActionType =
   | {
-    type: "UPDATE_SPEED_AND_CHANGED"; // New combined action type
-    payload: {
-      speed: number | string; // Speed value
-      altered: boolean; // Indicates if the input was changed
-    };
-  }
+      type: "UPDATE_SPEED_AND_CHANGED"; // New combined action type
+      payload: {
+        speed: number | string; // Speed value
+        altered: boolean; // Indicates if the input was changed
+      };
+    }
   | {
-    type: "UPDATE_BATTERY_AND_CHANGED"; // New combined action type
-    payload: {
-      battery: number | string; // battery value
-      altered: boolean; // Indicates if the input was changed
-    };
-  }
+      type: "UPDATE_BATTERY_AND_CHANGED"; // New combined action type
+      payload: {
+        battery: number | string; // battery value
+        altered: boolean; // Indicates if the input was changed
+      };
+    }
   | {
-    type: "UPDATE_WEATHER_AND_CHANGED"; // New combined action type
-    payload: {
-      weather: number | string; // battery value
-      altered: boolean; // Indicates if the input was changed
+      type: "UPDATE_WEATHER_AND_CHANGED"; // New combined action type
+      payload: {
+        weather: number | string; // battery value
+        altered: boolean; // Indicates if the input was changed
+      };
     };
-  };
 
 const initialState: State = {
   speed: "",
@@ -47,39 +47,39 @@ const initialState: State = {
   changed: {
     speed: false,
     battery: false,
-    weather: false
+    weather: false,
   },
 };
 
 const reducer = (state: State, action: ActionType): State => {
   switch (action.type) {
     case "UPDATE_SPEED_AND_CHANGED":
-      return{
+      return {
         ...state,
         speed: action.payload.speed,
         changed: {
           ...state.changed,
-          speed: action.payload.altered
-        }
-      }
-      case "UPDATE_BATTERY_AND_CHANGED":
-      return{
+          speed: action.payload.altered,
+        },
+      };
+    case "UPDATE_BATTERY_AND_CHANGED":
+      return {
         ...state,
         battery: action.payload.battery,
         changed: {
           ...state.changed,
-          battery: action.payload.altered
-        }
-      }
-      case "UPDATE_WEATHER_AND_CHANGED":
-      return{
+          battery: action.payload.altered,
+        },
+      };
+    case "UPDATE_WEATHER_AND_CHANGED":
+      return {
         ...state,
         weather: action.payload.weather,
         changed: {
           ...state.changed,
-          weather: action.payload.altered
-        }
-      }
+          weather: action.payload.altered,
+        },
+      };
     default:
       return state;
   }
@@ -87,14 +87,14 @@ const reducer = (state: State, action: ActionType): State => {
 const App = () => {
   const [state, dispatch] = useReducer(reducer, initialState);
   const { speed, battery, weather } = state; //initialize the state
-  let range = 0;
 
+  const rangeRef = useRef<number | null>(null); // Ref to hold the calculated range
   //to avoid the type errors:
   const handleSpeedChange = useCallback(
     (e: React.ChangeEvent<HTMLInputElement>) => {
       const value = e.target.value;
       dispatch({
-        type:"UPDATE_SPEED_AND_CHANGED",
+        type: "UPDATE_SPEED_AND_CHANGED",
         payload: {
           speed: value === "" ? "" : Number(value), //empty input is allowed or the input is converted to a number
           altered: true, //the input changed so we chnage it to true
@@ -110,7 +110,7 @@ const App = () => {
     (e: React.ChangeEvent<HTMLInputElement>) => {
       const value = e.target.value;
       dispatch({
-        type:"UPDATE_BATTERY_AND_CHANGED",
+        type: "UPDATE_BATTERY_AND_CHANGED",
         payload: {
           battery: value === "" ? "" : Number(value), //empty input is allowed or the input is converted to a number
           altered: true, //the input changed so we chnage it to true
@@ -125,7 +125,7 @@ const App = () => {
       const value = e.target.value;
       // Allow empty input, or convert to a number
       dispatch({
-        type:"UPDATE_WEATHER_AND_CHANGED",
+        type: "UPDATE_WEATHER_AND_CHANGED",
         payload: {
           weather: value === "" ? "" : Number(value), //empty input is allowed or the input is converted to a number
           altered: true, //the input changed so we chnage it to true
@@ -134,63 +134,94 @@ const App = () => {
     },
     [],
   );
+
   const validInputs = useMemo(() => {
     //reset battery and speed
     let speedError = "";
     let batteryError = "";
     let isValid = true;
 
-    //check the chnaged fields
+    //check the changed fields
     if (state.changed.speed) {
-      if (speed === "") {
+      if (state.speed === "") {
         isValid = false;
         speedError = "Speed is required";
-      } else if (Number(speed) < 0 || Number(speed) > 90) {
+      } else if (Number(state.speed) < 0 || Number(state.speed) > 90) {
         isValid = false;
         speedError = "The speed should be within the range of 0 to 90";
       }
+    } else if (state.speed === "") {
+      //when nothing has been entered yet
+      isValid = false;
     }
 
     if (state.changed.battery) {
-      if (battery === "") {
+      if (state.battery === "") {
         isValid = false;
         batteryError = "Battery is required";
       } else if (
-        typeof battery === "number" &&
-        (battery < 0 || battery > 100)
+        typeof state.battery === "number" &&
+        (state.battery < 0 || state.battery > 100)
       ) {
         isValid = false;
         batteryError =
           "The battery percentage should be within the range of 0 to 100";
       }
+    } else if (state.battery === "") {
+      //when nothing has been entered yet
+      isValid = false;
     }
 
     return { speedError, batteryError, isValid };
-  }, [state.changed, speed, battery]); //recompute the answer if speed, battery, or weather change
+  }, [state.changed, state.speed, state.battery]); //recompute the answer if speed or battery change
 
-  const handleButtonClick = () => {
+  /*const calculateRange = useMemo(() => {
     const { speedError, batteryError, isValid } = validInputs;
 
     if (!isValid) {
       console.error(speedError, batteryError);
-      return;
+      return null;
     }
-    //calculate range and then in the return function, call valid inputs. if it returns false, print null, else print confirmatin message
-    range =
-      -((Number(speed) * Number(speed) * Number(battery)) / 2500) +
-      4 * Number(battery) +
-      Number(weather);
+    return (
+      -(
+        (Number(state.speed) * Number(state.speed) * Number(state.battery)) /
+        2500
+      ) +
+      4 * Number(state.battery) +
+      Number(state.weather)
+    );
+  }, [validInputs.isValid, state.battery, state.speed, state.weather]);
 
-    console.log(`Calculated range: ${range.toFixed(2)} km`);
+  const handleClick = () => {
+    const range = calculateRange; // Get the calculated range
+    rangeRef.current = range; // Set the calculated range to the ref
+    console.log(rangeRef.current);
+    console.log(typeof rangeRef.current);
+    console.log(rangeRef.current !== null);
+  };*/
 
-    // Directly manipulate the DOM to show the calculated range
-    document.getElementById(
-      "range-output",
-    )!.innerText = `The predicted range of the Eylsia is ${range.toFixed(
-      2,
-    )} km.`;
+  const handleClick = () => {
+    const { speedError, batteryError, isValid } = validInputs;
+
+    // Perform the range calculation only when valid inputs are provided
+    if (!isValid) {
+      console.error(speedError, batteryError);
+      rangeRef.current = null; // Set rangeRef to null for invalid inputs
+    } else {
+      const range =
+        -(
+          (Number(state.speed) * Number(state.speed) * Number(state.battery)) /
+          2500
+        ) +
+        4 * Number(state.battery) +
+        Number(state.weather);
+        
+      rangeRef.current = range; // Set the calculated range to the ref
+      console.log(range);
+      console.log(rangeRef.current !== null);
+      console.log(typeof rangeRef.current);
+    }
   };
-  //useReducer
   return (
     <div className="h-screen w-screen bg-[#212121]">
       <div className="flex h-full flex-col items-center pt-36 text-white">
@@ -218,19 +249,24 @@ const App = () => {
             {/* Add text-center here */}
             <button
               type="button"
-              onClick={handleButtonClick}
+              onClick={handleClick}
               className="w-48 rounded bg-blue-500 px-4 py-2 font-bold text-white"
             >
               Calculate
             </button>
-            <div id="range-output" className="mt-4"></div>
-            {/*{valid && ( // Assuming 'valid' is a state that indicates whether the inputs are valid
-              <div className="mt-4">
+            <div id="range-output" className="mt-4">
+              {rangeRef.current !== null &&
+              typeof rangeRef.current === "number" ? (
                 <p>
-                  The predicted range of the Eylsia is {range.toFixed(2)} km.
+                  The predicted range of the Eylsia is{" "}
+                  {rangeRef.current.toFixed(2)} km.
                 </p>
-              </div>
-            )}*/}
+              ) : (
+                <p className="text-red-500">
+                  Invalid inputs, cannot calculate range.
+                </p>
+              )}
+            </div>
           </div>
         </form>
       </div>

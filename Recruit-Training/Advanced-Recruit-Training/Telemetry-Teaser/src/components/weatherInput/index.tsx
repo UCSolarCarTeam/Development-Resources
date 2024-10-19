@@ -1,6 +1,6 @@
 import React from "react";
 
-import type { InputProps } from "./InputProps";
+import type { InputProps } from "~/InputProps";
 
 const WeatherInput: React.FC<InputProps> = ({ value, onChange }) => {
   return (

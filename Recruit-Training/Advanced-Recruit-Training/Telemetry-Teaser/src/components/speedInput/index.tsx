@@ -1,4 +1,4 @@
-import type { InputProps } from "./InputProps";
+import type { InputProps } from "~/InputProps";
 
 const SpeedInput: React.FC<InputProps> = ({ value, onChange }) => {
   return (
