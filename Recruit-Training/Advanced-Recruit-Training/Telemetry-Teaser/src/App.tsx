@@ -91,10 +91,10 @@ const reducer = (state: State, action: ActionType): State => {
   }
 };
 const App = () => {
+  const [displayRange, setSD] = useState(false);
   const [state, dispatch] = useReducer(reducer, initialState);
   const { speed, battery, weather } = state; //initialize the state
 
-  const [renderFlag, setRenderFlag] = useState(false); // State to trigger re-render
   //to avoid the type errors:
   const handleSpeedChange = useCallback(
     (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -106,7 +106,7 @@ const App = () => {
           altered: true, //the input changed so we chnage it to true
         },
       });
-
+      setSD(false);
       console.log("Speed:", value); // Add this line
     },
     [],
@@ -122,6 +122,7 @@ const App = () => {
           altered: true, //the input changed so we chnage it to true
         },
       });
+      setSD(false);
     },
     [],
   );
@@ -137,6 +138,7 @@ const App = () => {
           altered: true, //the input changed so we chnage it to true
         },
       });
+      setSD(false);
     },
     [],
   );
@@ -206,27 +208,34 @@ const App = () => {
     console.log(rangeRef.current !== null);
   };*/
 
-  const calculatedRangeRef = useRef<number | null>(null);
-
-  const handleClick = () => {
-    const { speedError, batteryError, isValid } = validInputs;
-    if (!isValid) {
-      console.error(speedError, batteryError);
-      calculatedRangeRef.current = null;
-    } else {
-      const calculatedRange =
+  const calculatedRange = useMemo(() => {
+    const { isValid } = validInputs;
+    if (isValid)
+      return (
         -(
           (Number(state.speed) * Number(state.speed) * Number(state.battery)) /
           2500
         ) +
         4 * Number(state.battery) +
-        Number(state.weather);
+        Number(state.weather)
+      );
+    return null;
+  }, [
+    validInputs.isValid,
+    state.speed,
+    state.battery,
+    state.weather,
+    displayRange,
+  ]);
 
-      calculatedRangeRef.current = calculatedRange; // Update ref with calculated range
-      console.log("Calculated Range:", calculatedRangeRef.current); // Log immediately
+  const handleClick = () => {
+    if (validInputs.isValid) {
+      setSD(true); // Show the range if inputs are valid
+    } else {
+      setSD(false); // Hide or show an error message if inputs are invalid
     }
-    setRenderFlag((prev) => !prev); // Toggle the state to force a re-render
   };
+
   return (
     <div className="h-screen w-screen bg-[#212121]">
       <div className="flex h-full flex-col items-center pt-36 text-white">
@@ -260,16 +269,13 @@ const App = () => {
               Calculate
             </button>
             <div id="range-output" className="mt-4">
-              {calculatedRangeRef.current !== null &&
-              typeof calculatedRangeRef.current === "number" ? (
+              {displayRange && calculatedRange !== null ? (
                 <p>
                   The predicted range of the Eylsia is{" "}
-                  {calculatedRangeRef.current.toFixed(2)} km.
+                  {calculatedRange.toFixed(2)} km.
                 </p>
               ) : (
-                <p className="text-red-500">
-                  Invalid inputs, cannot calculate range.
-                </p>
+                <p></p>
               )}
             </div>
           </div>
