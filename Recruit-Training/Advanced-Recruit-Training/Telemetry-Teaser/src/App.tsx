@@ -1,4 +1,10 @@
-import React, { useCallback, useMemo, useReducer, useRef } from "react";
+import React, {
+  useCallback,
+  useMemo,
+  useReducer,
+  useRef,
+  useState,
+} from "react";
 
 import BatteryInput from "~/components/batteryInput";
 import Header from "~/components/header";
@@ -88,7 +94,7 @@ const App = () => {
   const [state, dispatch] = useReducer(reducer, initialState);
   const { speed, battery, weather } = state; //initialize the state
 
-  const rangeRef = useRef<number | null>(null); // Ref to hold the calculated range
+  const [renderFlag, setRenderFlag] = useState(false); // State to trigger re-render
   //to avoid the type errors:
   const handleSpeedChange = useCallback(
     (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -200,27 +206,26 @@ const App = () => {
     console.log(rangeRef.current !== null);
   };*/
 
+  const calculatedRangeRef = useRef<number | null>(null);
+
   const handleClick = () => {
     const { speedError, batteryError, isValid } = validInputs;
-
-    // Perform the range calculation only when valid inputs are provided
     if (!isValid) {
       console.error(speedError, batteryError);
-      rangeRef.current = null; // Set rangeRef to null for invalid inputs
+      calculatedRangeRef.current = null;
     } else {
-      const range =
+      const calculatedRange =
         -(
           (Number(state.speed) * Number(state.speed) * Number(state.battery)) /
           2500
         ) +
         4 * Number(state.battery) +
         Number(state.weather);
-        
-      rangeRef.current = range; // Set the calculated range to the ref
-      console.log(range);
-      console.log(rangeRef.current !== null);
-      console.log(typeof rangeRef.current);
+
+      calculatedRangeRef.current = calculatedRange; // Update ref with calculated range
+      console.log("Calculated Range:", calculatedRangeRef.current); // Log immediately
     }
+    setRenderFlag((prev) => !prev); // Toggle the state to force a re-render
   };
   return (
     <div className="h-screen w-screen bg-[#212121]">
@@ -255,11 +260,11 @@ const App = () => {
               Calculate
             </button>
             <div id="range-output" className="mt-4">
-              {rangeRef.current !== null &&
-              typeof rangeRef.current === "number" ? (
+              {calculatedRangeRef.current !== null &&
+              typeof calculatedRangeRef.current === "number" ? (
                 <p>
                   The predicted range of the Eylsia is{" "}
-                  {rangeRef.current.toFixed(2)} km.
+                  {calculatedRangeRef.current.toFixed(2)} km.
                 </p>
               ) : (
                 <p className="text-red-500">
