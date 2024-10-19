@@ -1,4 +1,6 @@
-const SpeedInput = () => {
+import type { InputProps } from "~/InputProps";
+
+const SpeedInput: React.FC<InputProps> = ({ value, onChange }) => {
   return (
     <>
       <div className="flex w-full flex-col items-center gap-2">
@@ -9,6 +11,9 @@ const SpeedInput = () => {
           name="speed"
           type="number"
           placeholder="Speed"
+          value={value}
+          onChange={onChange}
+          required
         />
       </div>
     </>

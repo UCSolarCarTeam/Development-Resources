@@ -1,4 +1,8 @@
-const WeatherInput = () => {
+import React from "react";
+
+import type { InputProps } from "~/InputProps";
+
+const WeatherInput: React.FC<InputProps> = ({ value, onChange }) => {
   return (
     <>
       <img src="/Cloud.png" height="66px" width="66px" alt="Cloud" />
@@ -8,7 +12,8 @@ const WeatherInput = () => {
         type="range"
         min="0"
         max="100"
-        value="50"
+        value={value}
+        onChange={onChange}
       />
       <img src="/Sun.png" height="66px" width="66px" alt="Sun" />
     </>
