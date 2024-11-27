@@ -65,7 +65,7 @@ export default function Background() {
       setisError(true);
       return "error";
     } else {
-      const result = eval(cleaned).toFixed(7);
+      const result = Math.round(eval(cleaned) * 100) / 100;
       return result;
     }
   };
