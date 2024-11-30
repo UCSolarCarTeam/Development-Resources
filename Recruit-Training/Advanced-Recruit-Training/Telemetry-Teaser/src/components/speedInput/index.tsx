@@ -1,4 +1,11 @@
-const SpeedInput = () => {
+const SpeedInput = (props) => {
+
+  const { setSpeedInput, speedInput } = props;
+
+  function handleInput(e) {
+    setSpeedInput(e.target.value);
+  }
+  // console.log(speedInput);
   return (
     <>
       <div className="flex w-full flex-col items-center gap-2">
@@ -9,6 +16,7 @@ const SpeedInput = () => {
           name="speed"
           type="number"
           placeholder="Speed"
+          onChange={handleInput}
         />
       </div>
     </>
