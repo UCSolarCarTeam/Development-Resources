@@ -7,18 +7,32 @@ import SpeedInput from "~/components/speedInput";
 import WeatherInput from "~/components/weatherInput";
 
 const App = () => {
-  const [speedInput, setSpeedInput] = useState();
-  const [batteryInput, setBatteryInput] = useState();
-  const [weatherInput, setWeatherInput] = useState();
+  const [speedInput, setSpeedInput] = useState("");
+  const [batteryInput, setBatteryInput] = useState("");
+  const [weatherInput, setWeatherInput] = useState("");
   const [calculatedRange, setCalculatedRange] = useState();
   const [isClicked, setIsClicked] = useState(false);
-  console.log(speedInput);
-  console.log(batteryInput);
-  console.log(weatherInput);
+  // console.log(speedInput);
+  // console.log(batteryInput);
+  // console.log(weatherInput);
 
   const calculateRange = (s, b, w) => {
-    const range = -((s * s * b) / 2500) + 4 * b + w;
-    return range;
+    console.log(s);
+    console.log(b);
+    if (s == "") {
+      return "Speed is required";
+    } else if (0 > s || s > 90) {
+      setSpeedInput("");
+      return "The speed should be within the range of 0 to 90";
+    } else if (b == "") {
+      return "Battery Percentage is required";
+    } else if (0 > b || b > 100) {
+      setBatteryInput("");
+      return "The battery percentage should be within the range of 0 to 100";
+    } else {
+      const range = -((s * s * b) / 2500) + 4 * b + w;
+      return `The predicted range of the Eylsia is ${range.toString()} km.`;
+    }
   };
 
   // useEffect(() => {
@@ -48,12 +62,11 @@ const App = () => {
               weatherInput={weatherInput}
             />
           </div>
-          <div className = "flex flex-col justify-center gap-4">
+          <div className="flex flex-col justify-center">
             <CalculateButton
               calculatedRange={calculatedRange}
               handleClick={handleClick}
               isClicked={isClicked}
-              setIsClicked={setIsClicked}
             />
           </div>
         </form>

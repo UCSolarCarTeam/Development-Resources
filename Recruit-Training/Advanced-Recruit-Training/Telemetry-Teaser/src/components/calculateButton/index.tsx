@@ -1,11 +1,11 @@
 import DisplayText from "../displayMessage";
 
 const CalculateButton = (props) => {
-  const { calculatedRange, handleClick, isClicked, setIsClicked } = props;
-  console.log(isClicked);
-
+  const { calculatedRange, handleClick, isClicked } = props;
+//   console.log(isClicked);
+//   console.log(calculatedRange);
   return (
-    <div className="flex flex-col justify-center text-center">
+    <div className="flex-col justify-center text-center">
       <button
         type="button"
         onClick={handleClick}
