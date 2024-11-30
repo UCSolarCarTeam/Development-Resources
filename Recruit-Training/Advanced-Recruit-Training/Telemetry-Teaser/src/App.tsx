@@ -1,8 +1,7 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 import BatteryInput from "~/components/batteryInput";
 import CalculateButton from "~/components/calculateButton";
-import DisplayText from "~/components/displayMessage";
 import Header from "~/components/header";
 import SpeedInput from "~/components/speedInput";
 import WeatherInput from "~/components/weatherInput";
@@ -12,24 +11,25 @@ const App = () => {
   const [batteryInput, setBatteryInput] = useState();
   const [weatherInput, setWeatherInput] = useState();
   const [calculatedRange, setCalculatedRange] = useState();
+  const [isClicked, setIsClicked] = useState(false);
+  console.log(speedInput);
+  console.log(batteryInput);
+  console.log(weatherInput);
 
-  // console.log(speedInput);
-  // console.log(batteryInput);
-  // console.log(weatherInput);
+  const calculateRange = (s, b, w) => {
+    const range = -((s * s * b) / 2500) + 4 * b + w;
+    return range;
+  };
 
-  // const calculateRange = (speedInput, batteryInput, weatherInput) => {
-  //   let range =
-  //     -((speedInput * speedInput * batteryInput) / 2500) +
-  //     4 * batteryInput +
-  //     weatherInput;
-  //   setCalculatedRange(range);
-  // };
+  // useEffect(() => {
+  //   setCalculatedRange(calculateRange(speedInput, batteryInput, weatherInput));
+  // }, [speedInput, batteryInput, weatherInput]);
 
-  setCalculatedRange(-((speedInput * speedInput * batteryInput) / 2500) +
-  4 * batteryInput +
-  weatherInput)
-  // error too many re renders --> this doesnt look like an infinite loop to me
-  console.log(calculatedRange)
+  function handleClick() {
+    setCalculatedRange(calculateRange(speedInput, batteryInput, weatherInput));
+    setIsClicked(true);
+  }
+
   return (
     <div className="h-screen w-screen bg-[#212121]">
       <div className="flex h-full flex-col items-center pt-36 text-white">
@@ -48,8 +48,14 @@ const App = () => {
               weatherInput={weatherInput}
             />
           </div>
-          <CalculateButton />
-          <DisplayText calculatedRange = {calculatedRange}/>
+          <div className = "flex flex-col justify-center gap-4">
+            <CalculateButton
+              calculatedRange={calculatedRange}
+              handleClick={handleClick}
+              isClicked={isClicked}
+              setIsClicked={setIsClicked}
+            />
+          </div>
         </form>
       </div>
     </div>
