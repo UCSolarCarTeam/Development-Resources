@@ -1,11 +1,11 @@
 const SpeedInput = (props) => {
-
-  const { setSpeedInput, speedInput } = props;
-
+  const { setSpeedInput, speedInput, setIsClicked } = props;
   function handleInput(e) {
     setSpeedInput(e.target.value);
+    if (speedInput) setIsClicked(false);
   }
   // console.log(speedInput);
+
   return (
     <>
       <div className="flex w-full flex-col items-center gap-2">

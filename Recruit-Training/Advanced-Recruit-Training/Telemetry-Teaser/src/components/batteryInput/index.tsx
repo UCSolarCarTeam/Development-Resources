@@ -1,8 +1,9 @@
 const BatteryInput = (props) => {
-  const { batteryInput, setBatteryInput } = props;
+  const { batteryInput, setBatteryInput, setIsClicked } = props;
 
-  function handleInput(e){
-    setBatteryInput(e.target.value)
+  function handleInput(e) {
+    setBatteryInput(e.target.value);
+    if (batteryInput) setIsClicked(false);
   }
 
   return (
@@ -14,7 +15,7 @@ const BatteryInput = (props) => {
         name="battery"
         type="number"
         placeholder="Battery"
-        onChange = {handleInput}
+        onChange={handleInput}
       />
     </div>
   );

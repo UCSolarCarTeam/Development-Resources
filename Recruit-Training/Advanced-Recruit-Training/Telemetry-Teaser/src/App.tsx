@@ -20,18 +20,25 @@ const App = () => {
     console.log(s);
     console.log(b);
     if (s == "") {
-      return "Speed is required";
+      return ["Speed is required", "text-red-500"];
     } else if (0 > s || s > 90) {
-      setSpeedInput("");
-      return "The speed should be within the range of 0 to 90";
+      return [
+        "The speed should be within the range of 0 to 90",
+        "text-red-500",
+      ];
     } else if (b == "") {
-      return "Battery Percentage is required";
+      return ["Battery Percentage is required", "text-red-500"];
     } else if (0 > b || b > 100) {
-      setBatteryInput("");
-      return "The battery percentage should be within the range of 0 to 100";
+      return [
+        "The battery percentage should be within the range of 0 to 100",
+        "text-red-500",
+      ];
     } else {
       const range = -((s * s * b) / 2500) + 4 * b + w;
-      return `The predicted range of the Eylsia is ${range.toString()} km.`;
+      return [
+        `The predicted range of the Eylsia is ${range.toString()} km.`,
+        "white",
+      ];
     }
   };
 
@@ -50,16 +57,22 @@ const App = () => {
         <Header />
         <form name="simulator" className="flex w-full flex-col items-center">
           <div className="mb-4 flex w-full flex-col items-center gap-y-4">
-            <SpeedInput setSpeedInput={setSpeedInput} speedInput={speedInput} />
+            <SpeedInput
+              setSpeedInput={setSpeedInput}
+              speedInput={speedInput}
+              setIsClicked={setIsClicked}
+            />
             <BatteryInput
               setBatteryInput={setBatteryInput}
               batteryInput={batteryInput}
+              setIsClicked={setIsClicked}
             />
           </div>
           <div className="flex w-full flex-row justify-center gap-4">
             <WeatherInput
               setWeatherInput={setWeatherInput}
               weatherInput={weatherInput}
+              setIsClicked={setIsClicked}
             />
           </div>
           <div className="flex flex-col justify-center">

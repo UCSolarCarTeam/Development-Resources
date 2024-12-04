@@ -1,9 +1,11 @@
 const WeatherInput = (props) => {
-  const {weatherInput, setWeatherInput} = props;
+  const { weatherInput, setWeatherInput, setIsClicked } = props;
 
   function handleInput(e) {
-    setWeatherInput(e.target.value)
+    setWeatherInput(e.target.value);
+    if (weatherInput) setIsClicked(false);
   }
+
   return (
     <>
       <img src="/Cloud.png" height="66px" width="66px" alt="Cloud" />
@@ -13,8 +15,8 @@ const WeatherInput = (props) => {
         type="range"
         min="0"
         max="100"
-        value="50"
-        onChange = {handleInput}
+        defaultValue="50"
+        onChange={handleInput}
       />
       <img src="/Sun.png" height="66px" width="66px" alt="Sun" />
     </>
