@@ -1,4 +1,6 @@
-import { useEffect, useState } from "react";
+import { useReducer } from "react";
+
+import { Action, State } from "~/types/types";
 
 import BatteryInput from "~/components/batteryInput";
 import CalculateButton from "~/components/calculateButton";
@@ -6,49 +8,75 @@ import Header from "~/components/header";
 import SpeedInput from "~/components/speedInput";
 import WeatherInput from "~/components/weatherInput";
 
-const App = () => {
-  const [speedInput, setSpeedInput] = useState("");
-  const [batteryInput, setBatteryInput] = useState("");
-  const [weatherInput, setWeatherInput] = useState("");
-  const [calculatedRange, setCalculatedRange] = useState();
-  const [isClicked, setIsClicked] = useState(false);
-  // console.log(speedInput);
-  // console.log(batteryInput);
-  // console.log(weatherInput);
+function reducer(state: State, action: Action): State {
+  switch (action.type) {
+    case "SET_SPEED_INPUT":
+      return { ...state, speedInput: action.payload };
+    case "SET_BATTERY_INPUT":
+      return { ...state, batteryInput: action.payload };
+    case "SET_WEATHER_INPUT":
+      return { ...state, weatherInput: action.payload };
+    case "SET_CALCULATED_RANGE":
+      return { ...state, calculatedRange: action.payload };
+    case "SET_IS_CLICKED":
+      return { ...state, isClicked: action.payload };
+    default:
+      return state;
+  }
+}
 
-  const calculateRange = (s, b, w) => {
-    console.log(s);
-    console.log(b);
-    if (s == "") {
-      return ["Speed is required", "text-red-500"];
-    } else if (0 > s || s > 90) {
-      return [
-        "The speed should be within the range of 0 to 90",
-        "text-red-500",
-      ];
-    } else if (b == "") {
-      return ["Battery Percentage is required", "text-red-500"];
-    } else if (0 > b || b > 100) {
-      return [
-        "The battery percentage should be within the range of 0 to 100",
-        "text-red-500",
-      ];
+const App = () => {
+  const [state, dispatch] = useReducer<React.Reducer<State, Action>>(reducer, {
+    speedInput: "",
+    batteryInput: "",
+    weatherInput: 50,
+    calculatedRange: { message: "", colour: "" },
+    isClicked: false,
+  });
+
+  const calculateRange = (
+    speed: string,
+    battery: string,
+    weather: number,
+  ) => {
+    if (speed == "" ) {
+      return { message: "Speed is required", colour: "text-red-500" };
+    } else if (0 > parseInt(speed) || parseInt(speed) > 90) {
+      return {
+        message: "The speed should be within the range of 0 to 90",
+        colour: "text-red-500",
+      };
+    } else if (battery == "" ) {
+      return {
+        message: "Battery Percentage is required",
+        colour: "text-red-500",
+      };
+    } else if (0 > parseInt(battery) || parseInt(battery) > 100) {
+      return {
+        message:
+          "The battery percentage should be within the range of 0 to 100",
+        colour: "text-red-500",
+      };
     } else {
-      const range = -((s * s * b) / 2500) + 4 * b + w;
-      return [
-        `The predicted range of the Eylsia is ${range.toString()} km.`,
-        "white",
-      ];
+      const range = -((parseInt(speed) * parseInt(speed) * parseInt(battery)) / 2500) + 4 * parseInt(battery) + weather;
+      return {
+        message: `The predicted range of the Eylsia is ${range.toString()} km.`,
+        colour: "white",
+      };
     }
   };
 
-  // useEffect(() => {
-  //   setCalculatedRange(calculateRange(speedInput, batteryInput, weatherInput));
-  // }, [speedInput, batteryInput, weatherInput]);
-
   function handleClick() {
-    setCalculatedRange(calculateRange(speedInput, batteryInput, weatherInput));
-    setIsClicked(true);
+    const result = calculateRange(
+      state.speedInput,
+      state.batteryInput,
+      state.weatherInput,
+    );
+    dispatch({
+      type: "SET_CALCULATED_RANGE",
+      payload: result,
+    });
+    dispatch({ type: "SET_IS_CLICKED", payload: true });
   }
 
   return (
@@ -57,29 +85,17 @@ const App = () => {
         <Header />
         <form name="simulator" className="flex w-full flex-col items-center">
           <div className="mb-4 flex w-full flex-col items-center gap-y-4">
-            <SpeedInput
-              setSpeedInput={setSpeedInput}
-              speedInput={speedInput}
-              setIsClicked={setIsClicked}
-            />
-            <BatteryInput
-              setBatteryInput={setBatteryInput}
-              batteryInput={batteryInput}
-              setIsClicked={setIsClicked}
-            />
+            <SpeedInput value={state.speedInput} dispatch={dispatch} />
+            <BatteryInput value={state.batteryInput} dispatch={dispatch} />
           </div>
           <div className="flex w-full flex-row justify-center gap-4">
-            <WeatherInput
-              setWeatherInput={setWeatherInput}
-              weatherInput={weatherInput}
-              setIsClicked={setIsClicked}
-            />
+            <WeatherInput value={state.weatherInput} dispatch={dispatch} />
           </div>
           <div className="flex flex-col justify-center">
             <CalculateButton
-              calculatedRange={calculatedRange}
+              value={state.calculatedRange}
               handleClick={handleClick}
-              isClicked={isClicked}
+              isClicked={state.isClicked}
             />
           </div>
         </form>

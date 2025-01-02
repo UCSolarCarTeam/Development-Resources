@@ -1,10 +1,17 @@
-const WeatherInput = (props) => {
-  const { weatherInput, setWeatherInput, setIsClicked } = props;
+import { Action } from "~/types/types";
 
-  function handleInput(e) {
-    setWeatherInput(e.target.value);
-    if (weatherInput) setIsClicked(false);
-  }
+interface Props {
+  value: any;
+  dispatch: React.Dispatch<Action>;
+}
+
+const WeatherInput = ({ value, dispatch }: Props) => {
+  const handleInput = (e: any) => {
+    dispatch({ type: "SET_WEATHER_INPUT", payload: e.target.value });
+    if (e.target.value) {
+      dispatch({ type: "SET_IS_CLICKED", payload: false });
+    }
+  };
 
   return (
     <>
@@ -17,6 +24,7 @@ const WeatherInput = (props) => {
         max="100"
         defaultValue="50"
         onChange={handleInput}
+        value={value}
       />
       <img src="/Sun.png" height="66px" width="66px" alt="Sun" />
     </>

@@ -1,13 +1,12 @@
 import DisplayText from "../displayMessage";
-
-const CalculateButton = (props) => {
-  const { calculatedRange, handleClick, isClicked } = props;
-  //   console.log(isClicked);
-  console.log(calculatedRange);
+interface Props {
+  value: { message: string; colour: string };
+  handleClick: any;
+  isClicked: boolean;
+}
+const CalculateButton = ({ value, handleClick, isClicked }: Props) => {
   return (
-    <div
-      className={`flex-col justify-center text-center`}
-    >
+    <div className={`flex-col justify-center text-center`}>
       <button
         type="button"
         onClick={handleClick}
@@ -15,7 +14,7 @@ const CalculateButton = (props) => {
       >
         Calculate
       </button>
-      {isClicked && <DisplayText calculatedRange={calculatedRange} />}
+      {isClicked && <DisplayText calculatedRange={value} />}
     </div>
   );
 };

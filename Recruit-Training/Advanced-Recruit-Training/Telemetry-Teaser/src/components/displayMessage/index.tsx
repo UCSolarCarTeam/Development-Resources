@@ -1,5 +1,13 @@
-const DisplayText = ({ calculatedRange }) => {
-  return <div className={`p-4 ${calculatedRange[1]}`}>{calculatedRange[0]}</div>;
+interface CalculatedRange {
+  calculatedRange: { message: string; colour: string };
+}
+
+const DisplayText = ({ calculatedRange }: CalculatedRange) => {
+  return (
+    <div className={`p-4 ${calculatedRange.colour}`}>
+      {calculatedRange.message}
+    </div>
+  );
 };
 
 export default DisplayText;

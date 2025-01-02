@@ -1,9 +1,21 @@
-const BatteryInput = (props) => {
-  const { batteryInput, setBatteryInput, setIsClicked } = props;
+import { Action } from "~/types/types";
 
-  function handleInput(e) {
-    setBatteryInput(e.target.value);
-    if (batteryInput) setIsClicked(false);
+interface Props {
+  value: string;
+  dispatch: React.Dispatch<Action>;
+}
+
+const BatteryInput = ({value, dispatch}: Props) => {
+  const handleLetters = (e: any) => {
+    if (["e", "E", "+", "-", "."].includes(e.key)) {
+      e.preventDefault();
+    }
+  };
+  const handleInput = (e: any) => {
+    dispatch({type:'SET_BATTERY_INPUT', payload: e.target.value});
+    if (e.target.value) {
+      dispatch({type:'SET_IS_CLICKED', payload: false})
+    };
   }
 
   return (
@@ -16,6 +28,8 @@ const BatteryInput = (props) => {
         type="number"
         placeholder="Battery"
         onChange={handleInput}
+        value = {value}
+        onKeyDown = {handleLetters}
       />
     </div>
   );
