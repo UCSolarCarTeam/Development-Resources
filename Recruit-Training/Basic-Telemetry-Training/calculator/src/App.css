@@ -1,0 +1,47 @@
+@import url("https://fonts.googleapis.com/css2?family=Concert+One&family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=Press+Start+2P&display=swap");
+
+.concert-one-regular {
+  font-family: "Concert One", sans-serif;
+  font-weight: 400;
+  font-style: normal;
+}
+
+.App {
+  text-align: center;;
+}
+
+body {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100vh;
+}
+
+.backing {
+  background-color: grey;
+  padding: 20px;
+  border-radius: 10px;
+  width: 400px;
+  height: 600px;
+  position:relative;
+}
+.button-container {
+   display: grid; 
+   grid-template-columns: repeat(3, 1fr); 
+   grid-gap: 10px;
+}
+
+.buttonnum {
+  background-color: white;
+  border: none;
+  padding: 20px;
+  font-family: "Concert One", sans-serif;
+  text-align: center;
+  border-radius: 2px;
+}
+
+.screen {
+  background-color: white;
+  width: 200px;
+  height: 100px;
+}
