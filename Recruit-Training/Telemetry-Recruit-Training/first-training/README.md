@@ -22,24 +22,47 @@ If you don't already have the yarn CLI (command line interface): https://classic
 
 ## Requirements
 
-With the 6 images in the App.jsx, create a view that shows all 6 of the images in a 2x3 grid using flexbox. The view should be responsive as well.
+Show a bunch of snow leopards in an image gallery that is web responsive.
 
-There should be:
+There should be a clear title on the top of the page, and each image should have a smaller tile above the image with a 5px gap between the image and image title.
 
-- A title that says `Image Gallery`
-- Background of the app should be `grey`
-- Images should each have a title that is centered directly above each image
+### Grid Configuration
 
-Responsiveness requirements:
+- **Desktop (lg)**: 3 columns × 2 rows = 6 images
+- **Tablet (md)**: 2 columns × 3 rows = 6 images
+- **Mobile**: 1 column × 6 rows = 6 images
 
-On large screens:
+### Visual Layout
 
-- Images should be 900x600
+\`\`\`
+Desktop (2x3 Grid):
+┌─────────┬─────────┬─────────┐
+│ Image 1 │ Image 2 │ Image 3 │
+├─────────┼─────────┼─────────┤
+│ Image 4 │ Image 5 │ Image 6 │
+└─────────┴─────────┴─────────┘
 
-On medium screens:
+Tablet (3x2 Grid):
+┌─────────┬─────────┐
+│ Image 1 │ Image 2 │
+├─────────┼─────────┤
+│ Image 3 │ Image 4 │
+├─────────┼─────────┤
+│ Image 5 │ Image 6 │
+└─────────┴─────────┘
 
-- Images should be 600x400
-
-On mobile screen:
-
-- Images should be 300x200
+Mobile (6x1 Grid):
+┌─────────┐
+│ Image 1 │
+├─────────┤
+│ Image 2 │
+├─────────┤
+│ Image 3 │
+├─────────┤
+│ Image 4 │
+├─────────┤
+│ Image 5 │
+├─────────┤
+│ Image 6 │
+└─────────┘
+\`\`\`
