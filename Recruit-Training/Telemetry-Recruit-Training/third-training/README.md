@@ -122,3 +122,4 @@ Good LUCK!!!!!!!
 PS. If you want to get familiar with the technologies that we use on the actual projects I will allow you to use:
 
 - TailwindCSS / SaSS
+- TypeScript
