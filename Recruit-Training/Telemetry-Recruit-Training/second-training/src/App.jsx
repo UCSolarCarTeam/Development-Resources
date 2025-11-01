@@ -8,16 +8,16 @@ function App() {
       {telemetryData.map((card, i) => (
         <div key={card.id} className="telemetry-card">
           <h3>{card.name}</h3>
-            {card.metrics.map((cardValue, j) => (
-              <div key={j} className="data-row">
-                <span className="label">{cardValue.label}: </span>
-                <span className="value">{cardValue.value} </span>
-                <span className="status">{cardValue.status} </span>
-              </div>
-            ))}
-          </div>
-        ))}
-      </div>
+          {card.metrics.map((cardValue, j) => (
+            <div key={j} className="data-row">
+              <span className="label">{cardValue.label}: </span>
+              <span className="value">{cardValue.value} </span>
+              <span className="status">{cardValue.status} </span>
+            </div>
+          ))}
+        </div>
+      ))}
+    </div>
   );
 }
 
