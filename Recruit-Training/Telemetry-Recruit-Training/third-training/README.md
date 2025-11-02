@@ -27,7 +27,7 @@ Fetch from an API and show a bunch of data using the `fetch` api and `useEffect`
 Here is the link to actually show the users:
 
 ```
-https://randomuser.me/api/?results=10&inc=name
+https://randomuser.me/api/?results=10
 ```
 
 This API should return some data with the form:
