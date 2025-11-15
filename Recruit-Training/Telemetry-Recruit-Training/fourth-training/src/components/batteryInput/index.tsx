@@ -1,4 +1,4 @@
-const BatteryInput = () => {
+const BatteryInput = ({battery}:{battery:number}) => {
   return (
     <div className="flex w-full flex-col items-center gap-2">
       <label>Battery Percentage (%):</label>
@@ -8,6 +8,7 @@ const BatteryInput = () => {
         name="battery"
         type="number"
         placeholder="Battery"
+        value={battery}
       />
     </div>
   );
