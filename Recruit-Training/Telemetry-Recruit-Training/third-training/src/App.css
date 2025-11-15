@@ -15,11 +15,13 @@
   gap: 24px;
   width: 100%;
 }
+
 .cards-wrapper input{
   font-size: 16px;
   border-radius: 6px;
   
 }
+
 .container {
   width: 340px;
   background: #fff;

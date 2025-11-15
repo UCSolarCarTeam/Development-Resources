@@ -12,9 +12,14 @@ function App() {
   }, []);
   function fullNames (searchValue) {
     const names = userData.map((firstNames) => (firstNames.name.first.toLowerCase()))
-    const target = document.getElementsByClassName("name");
-    if (names.indexOf(searchValue) !== -1) target[names.indexOf(searchValue)].scrollIntoView({ behavior: "smooth", block: "start" })
+    // const target = document.getElementsByClassName("name");
+    // if (names.indexOf(searchValue) !== -1) target[names.indexOf(searchValue)].scrollIntoView({ behavior: "smooth", block: "start" })
+    userData.map((firstnames) => (
+      firstnames.name.toLowerCase().split("").map((char) => {
+        if (firstnames.name.toLowerCase().includes(char) && firstnames.name.toLowerCase().includes(searchValue)) return(true)
+  })))
   }
+
   return (
     <div className="page-center">
       <div className="cards-wrapper">
@@ -24,6 +29,7 @@ function App() {
             setUserSearch(search.target.value);
             fullNames(search.target.value);
             }} id="fullName" name="fullName" placeholder="John Doe" />
+            
         </div>
         {userData.map((user, i) => (
           <div className="container" key={i}>
@@ -72,5 +78,4 @@ function App() {
     </div>
   );
 }
-
 export default App;
